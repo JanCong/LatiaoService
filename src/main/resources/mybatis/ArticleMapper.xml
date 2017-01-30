@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.izanpin.repository.ArticleRepository">
+    <resultMap id="BaseResultMap" type="com.izanpin.entity.Article">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="author_id" jdbcType="BIGINT" property="authorId"/>
+        <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
+        <result column="author_avatar" jdbcType="VARCHAR" property="authorAvatar"/>
+        <result column="hash_id" jdbcType="VARCHAR" property="hashId"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        content,
+        author_id,
+        author_name,
+        author_avatar,
+        hash_id,
+        comment_count,
+        like_count,
+        hate_count,
+        type,
+        status,
+        create_time,
+        update_time
+  </sql>
+    <select id="find" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where status in(1,2)
+        order by status desc, create_time desc
+    </select>
+    <insert id="insert" parameterType="com.izanpin.entity.Article">
+        insert into article (id, content, author_id,
+        author_name, author_avatar, hash_id,
+        comment_count, like_count, hate_count,
+        type, status, create_time,
+        update_time)
+        values (#{id,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{authorId,jdbcType=BIGINT},
+        #{authorName,jdbcType=VARCHAR}, #{authorAvatar,jdbcType=VARCHAR}, #{hashId,jdbcType=VARCHAR},
+        #{commentCount,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, #{hateCount,jdbcType=INTEGER},
+        #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.izanpin.entity.Article">
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="content != null">
+                content,
+            </if>
+            <if test="authorId != null">
+                author_id,
+            </if>
+            <if test="authorName != null">
+                author_name,
+            </if>
+            <if test="authorAvatar != null">
+                author_avatar,
+            </if>
+            <if test="hashId != null">
+                hash_id,
+            </if>
+            <if test="commentCount != null">
+                comment_count,
+            </if>
+            <if test="likeCount != null">
+                like_count,
+            </if>
+            <if test="hateCount != null">
+                hate_count,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=BIGINT},
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="authorId != null">
+                #{authorId,jdbcType=BIGINT},
+            </if>
+            <if test="authorName != null">
+                #{authorName,jdbcType=VARCHAR},
+            </if>
+            <if test="authorAvatar != null">
+                #{authorAvatar,jdbcType=VARCHAR},
+            </if>
+            <if test="hashId != null">
+                #{hashId,jdbcType=VARCHAR},
+            </if>
+            <if test="commentCount != null">
+                #{commentCount,jdbcType=INTEGER},
+            </if>
+            <if test="likeCount != null">
+                #{likeCount,jdbcType=INTEGER},
+            </if>
+            <if test="hateCount != null">
+                #{hateCount,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+</mapper>
