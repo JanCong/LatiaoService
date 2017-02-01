@@ -1,6 +1,5 @@
 package com.izanpin.entity;
 
-import com.izanpin.enums.UserStatus;
 
 import java.util.Date;
 
@@ -18,6 +17,8 @@ public class User {
     private Integer sex;
 
     private String avatar;
+
+    private Integer type;
 
     private Integer status;
 
@@ -79,6 +80,14 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar == null ? null : avatar.trim();
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Integer getStatus() {

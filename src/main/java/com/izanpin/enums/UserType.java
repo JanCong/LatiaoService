@@ -3,21 +3,20 @@ package com.izanpin.enums;
 /**
  * Created by pengyuancong on 2017/1/29.
  */
-public enum ArticleStatus {
-    //禁用
-    DISABLED(-2),
-    //审核未通过
-    REJECTED(-1),
-    //审核中
-    INREVIEW(0),
+public enum UserType {
     //正常
-    NORMAL(1),
-    //置顶
-    TOP(2);
+    NORMAL(0),
+    //机器人
+    ROBOT(1),
+    //系统
+    SYSTEM(2),
+    //管理员
+    ADMIN(3);
+
 
     private Integer value;
 
-    ArticleStatus(final Integer value) {
+    UserType(final Integer value) {
         this.value = value;
     }
 

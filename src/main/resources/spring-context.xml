@@ -15,10 +15,11 @@
     <mvc:annotation-driven/>
 
     <!-- 静态资源(js、image等)的访问 -->
-    <mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
 
     <!--加载本地的其他配置 -->
     <import resource="spring-base.xml"/>
     <import resource="spring-database.xml"/>
+    <import resource="spring-quartz.xml"/>
 
 </beans>

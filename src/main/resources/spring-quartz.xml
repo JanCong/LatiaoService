@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="importData" class="com.izanpin.data.ImportData"></bean>
+    <bean id="startWorkTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 要调用的bean -->
+        <property name="targetObject" ref="importData"></property>
+        <!-- 要调用的Method -->
+        <property name="targetMethod" value="importJokes"></property>
+        <!-- 是否并发,false表示 如果发生错误也不影响下一次的调用 -->
+        <property name="concurrent" value="false"></property>
+    </bean>
+    <bean id="startWorkTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="startWorkTask"></property>
+        <property name="cronExpression" value="0 0/15 * * * ?"></property>
+    </bean>
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="startWorkTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

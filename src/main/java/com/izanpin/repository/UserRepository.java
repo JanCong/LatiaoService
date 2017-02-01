@@ -3,6 +3,8 @@ package com.izanpin.repository;
 import com.izanpin.entity.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserRepository {
     int deleteByPrimaryKey(Long id);
@@ -16,4 +18,6 @@ public interface UserRepository {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    List<User> getUsersByType(Integer type);
 }

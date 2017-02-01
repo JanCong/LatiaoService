@@ -38,18 +38,13 @@
         where status in(1,2)
         order by status desc, create_time desc
     </select>
-    <insert id="insert" parameterType="com.izanpin.entity.Article">
-        insert into article (id, content, author_id,
-        author_name, author_avatar, hash_id,
-        comment_count, like_count, hate_count,
-        type, status, create_time,
-        update_time)
-        values (#{id,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{authorId,jdbcType=BIGINT},
-        #{authorName,jdbcType=VARCHAR}, #{authorAvatar,jdbcType=VARCHAR}, #{hashId,jdbcType=VARCHAR},
-        #{commentCount,jdbcType=INTEGER}, #{likeCount,jdbcType=INTEGER}, #{hateCount,jdbcType=INTEGER},
-        #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP})
-    </insert>
+    <select id="getByHashId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where hash_id=#{hashId,jdbcType=VARCHAR}
+        limit 1
+    </select>
     <insert id="insertSelective" parameterType="com.izanpin.entity.Article">
         insert into article
         <trim prefix="(" suffix=")" suffixOverrides=",">

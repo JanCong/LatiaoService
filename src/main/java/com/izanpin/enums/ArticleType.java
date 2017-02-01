@@ -14,4 +14,8 @@ public enum ArticleType {
     ArticleType(final Integer value) {
         this.value = value;
     }
+
+    public Integer getValue(){
+        return  value;
+    }
 }

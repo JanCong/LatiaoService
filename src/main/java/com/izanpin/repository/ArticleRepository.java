@@ -9,7 +9,7 @@ import java.util.List;
 public interface ArticleRepository {
     List<Article> find();
 
-    int insert(Article record);
-
     int insertSelective(Article record);
+
+    Article getByHashId(String hashId);
 }

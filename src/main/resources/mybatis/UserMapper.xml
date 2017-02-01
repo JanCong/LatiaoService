@@ -9,6 +9,7 @@
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="sex" jdbcType="INTEGER" property="sex" />
     <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -22,17 +23,23 @@
     from user
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="getUsersByType" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where type = #{type,jdbcType=INTEGER}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.izanpin.entity.User">
     insert into user (id, nickname, phone,
-      email, password, sex, 
+      email, password, sex, type,
       avatar, status, create_time, 
       update_time)
     values (#{id,jdbcType=BIGINT}, #{nickname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
+      #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},  #{type,jdbcType=INTEGER},
       #{avatar,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -57,6 +64,9 @@
       </if>
       <if test="avatar != null">
         avatar,
+      </if>
+      <if test="type != null">
+        type,
       </if>
       <if test="status != null">
         status,
@@ -87,6 +97,9 @@
       </if>
       <if test="avatar != null">
         #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -120,6 +133,9 @@
       <if test="avatar != null">
         avatar = #{avatar,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
@@ -140,6 +156,7 @@
       password = #{password,jdbcType=VARCHAR},
       sex = #{sex,jdbcType=INTEGER},
       avatar = #{avatar,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

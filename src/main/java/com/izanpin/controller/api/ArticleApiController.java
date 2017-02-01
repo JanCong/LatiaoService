@@ -1,26 +1,33 @@
 package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
+import com.izanpin.data.ImportData;
 import com.izanpin.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by pengyuancong on 2017/1/29.
  */
-@Controller
+@RestController
 @RequestMapping(value = "/api/article")
 public class ArticleApiController {
     @Autowired
     ArticleService articleService;
+    @Autowired
+    ImportData importData;
+
 
     @RequestMapping(value = "/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getArticles(@PathVariable Integer page, @PathVariable Integer size) {
         return articleService.getArticles(page, size);
+    }
+
+    @RequestMapping(value = "/import", method = RequestMethod.GET)
+    @ResponseBody
+    public void importData() throws Exception {
+        importData.importJokes();
     }
 }
