@@ -2,9 +2,8 @@ package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
-import com.izanpin.services.ArticleService;
+import com.izanpin.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**

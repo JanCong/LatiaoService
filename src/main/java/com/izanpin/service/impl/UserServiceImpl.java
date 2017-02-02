@@ -1,9 +1,9 @@
-package com.izanpin.services.impl;
+package com.izanpin.service.impl;
 
 import com.izanpin.entity.User;
 import com.izanpin.enums.UserType;
 import com.izanpin.repository.UserRepository;
-import com.izanpin.services.UserService;
+import com.izanpin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
