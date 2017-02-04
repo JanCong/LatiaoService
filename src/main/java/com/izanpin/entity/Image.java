@@ -1,10 +1,16 @@
 package com.izanpin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import java.util.Date;
 
 public class Image {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long articleId;
 
     private String url;
@@ -12,6 +18,10 @@ public class Image {
     private String thumbnailUrl;
 
     private Date createTime;
+
+    @JsonIgnore
+    private Article article;
+
 
     public Long getId() {
         return id;
@@ -51,5 +61,13 @@ public class Image {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Article getArticle() {
+        return article;
+    }
+
+    public void setArticle(Article article) {
+        this.article = article;
     }
 }

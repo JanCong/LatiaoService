@@ -9,6 +9,8 @@ import com.izanpin.utils.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by Smart on 2017/1/30.
  */
@@ -25,8 +27,14 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void addArticle(Article article) throws Exception {
-        SnowFlake snowFlake = new SnowFlake(0,0);
-        article.setId(snowFlake.nextId());
+        long id = article.getId();
+        if (id <= 0) {
+            SnowFlake snowFlake = new SnowFlake(0, 0);
+            article.setId(snowFlake.nextId());
+        }
+
+        article.setCreateTime(new Date());
+        article.setUpdateTime(new Date());
         articleRepository.insertSelective(article);
     }
 

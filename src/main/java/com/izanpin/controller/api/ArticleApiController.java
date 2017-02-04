@@ -27,6 +27,6 @@ public class ArticleApiController {
     @RequestMapping(value = "/import", method = RequestMethod.GET)
     @ResponseBody
     public void importData() throws Exception {
-        importData.importJokes();
+        importData.importData();
     }
 }

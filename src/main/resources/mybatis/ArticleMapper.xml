@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.izanpin.repository.ArticleRepository">
     <resultMap id="BaseResultMap" type="com.izanpin.entity.Article">
-        <result column="id" jdbcType="BIGINT" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="author_id" jdbcType="BIGINT" property="authorId"/>
         <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
@@ -16,6 +16,32 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+
+    <resultMap id="ResultMap" type="com.izanpin.entity.Article">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="author_id" jdbcType="BIGINT" property="authorId"/>
+        <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
+        <result column="author_avatar" jdbcType="VARCHAR" property="authorAvatar"/>
+        <result column="hash_id" jdbcType="VARCHAR" property="hashId"/>
+        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
+        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
+        <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+
+        <collection property="images" ofType="com.izanpin.entity.Image">
+            <id column="image_id" jdbcType="BIGINT" property="id"/>
+            <result column="article_id" jdbcType="BIGINT" property="articleId"/>
+            <result column="url" jdbcType="VARCHAR" property="url"/>
+            <result column="thumbnail_url" jdbcType="VARCHAR" property="thumbnailUrl"/>
+            <result column="image_create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        </collection>
+    </resultMap>
+
+
     <sql id="Base_Column_List">
         id,
         content,
@@ -31,12 +57,11 @@
         create_time,
         update_time
   </sql>
-    <select id="find" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from article
-        where status in(1,2)
-        order by status desc, create_time desc
+    <select id="find" parameterType="java.lang.Long" resultMap="ResultMap">
+        select article.*,
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        from article left join image on article.id = image.article_id
+        order by article.status desc, article.create_time desc
     </select>
     <select id="getByHashId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select

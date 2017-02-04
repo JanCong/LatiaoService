@@ -1,15 +1,18 @@
 package com.izanpin.entity;
 
-import com.izanpin.enums.ArticleStatus;
-import com.izanpin.enums.ArticleType;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
 import java.util.Date;
+import java.util.List;
 
 public class Article {
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     private String content;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long authorId;
 
     private String authorName;
@@ -31,6 +34,8 @@ public class Article {
     private Date createTime;
 
     private Date updateTime;
+
+    private List<Image> images;
 
     public Long getId() {
         return id;
@@ -134,5 +139,13 @@ public class Article {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="importData" class="com.izanpin.data.ImportData"></bean>
+    <bean id="importData" class="com.izanpin.data.impl.ImportDataImpl"></bean>
     <bean id="startWorkTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <!-- 要调用的bean -->
         <property name="targetObject" ref="importData"></property>
