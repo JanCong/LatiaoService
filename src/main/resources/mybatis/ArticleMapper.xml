@@ -57,11 +57,25 @@
         create_time,
         update_time
   </sql>
-    <select id="find" parameterType="java.lang.Long" resultMap="ResultMap">
+    <select id="find" resultMap="ResultMap">
         select article.*,
         image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
         from article left join image on article.id = image.article_id
         order by article.status desc, article.create_time desc
+    </select>
+    <select id="findByType" parameterType="java.lang.Integer" resultMap="ResultMap">
+        select article.*,
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        from article left join image on article.id = image.article_id
+        where article.type = #{type,jdbcType=INTEGER}
+        order by article.status desc, article.create_time desc
+    </select>
+    <select id="get" parameterType="java.lang.Long" resultMap="ResultMap">
+        select article.*,
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        from article left join image on article.id = image.article_id
+        where article.id = #{id,jdbcType=BIGINT}
+        limit 1
     </select>
     <select id="getByHashId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select

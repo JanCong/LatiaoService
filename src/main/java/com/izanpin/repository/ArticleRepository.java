@@ -12,4 +12,8 @@ public interface ArticleRepository {
     int insertSelective(Article record);
 
     Article getByHashId(String hashId);
+
+    Article get(Long id);
+
+    List<Article> findByType(Integer value);
 }

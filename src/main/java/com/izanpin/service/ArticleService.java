@@ -8,6 +8,14 @@ import com.izanpin.entity.Article;
  */
 public interface ArticleService {
     PageInfo getArticles(Integer page, Integer size);
+
     void addArticle(Article article) throws Exception;
+
     boolean existHashId(String hashId);
+
+    PageInfo getPictures(Integer page, Integer size);
+
+    PageInfo getJokes(Integer page, Integer size);
+
+    Article getById(Long id);
 }

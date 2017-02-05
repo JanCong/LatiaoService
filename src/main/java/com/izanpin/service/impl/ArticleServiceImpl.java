@@ -3,6 +3,7 @@ package com.izanpin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.entity.Article;
+import com.izanpin.enums.ArticleType;
 import com.izanpin.repository.ArticleRepository;
 import com.izanpin.service.ArticleService;
 import com.izanpin.utils.SnowFlake;
@@ -41,5 +42,22 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public boolean existHashId(String hashId) {
         return articleRepository.getByHashId(hashId) != null;
+    }
+
+    @Override
+    public PageInfo getPictures(Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        return new PageInfo(articleRepository.findByType(ArticleType.PICTURE.getValue()));
+    }
+
+    @Override
+    public PageInfo getJokes(Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        return new PageInfo(articleRepository.findByType(ArticleType.JOKE.getValue()));
+    }
+
+    @Override
+    public Article getById(Long id) {
+        return articleRepository.get(id);
     }
 }
