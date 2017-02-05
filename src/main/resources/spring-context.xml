@@ -43,6 +43,9 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+
+    <bean class="com.izanpin.common.config.MySwaggerConfig" />
+
     <!--加载本地的其他配置 -->
     <import resource="spring-base.xml"/>
     <import resource="spring-database.xml"/>

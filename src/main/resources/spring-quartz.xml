@@ -8,7 +8,7 @@
         <!-- 要调用的bean -->
         <property name="targetObject" ref="importData"></property>
         <!-- 要调用的Method -->
-        <property name="targetMethod" value="importJokes"></property>
+        <property name="targetMethod" value="importData"></property>
         <!-- 是否并发,false表示 如果发生错误也不影响下一次的调用 -->
         <property name="concurrent" value="false"></property>
     </bean>
