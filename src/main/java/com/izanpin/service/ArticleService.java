@@ -18,4 +18,8 @@ public interface ArticleService {
     PageInfo getJokes(Integer page, Integer size);
 
     Article getById(Long id);
+
+    void like(Long id, Long userId);
+
+    void hate(Long id, Long userId);
 }

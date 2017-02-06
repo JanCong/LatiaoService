@@ -60,4 +60,14 @@ public class ArticleServiceImpl implements ArticleService {
     public Article getById(Long id) {
         return articleRepository.get(id);
     }
+
+    @Override
+    public void like(Long id, Long userId) {
+
+    }
+
+    @Override
+    public void hate(Long id, Long userId) {
+
+    }
 }
