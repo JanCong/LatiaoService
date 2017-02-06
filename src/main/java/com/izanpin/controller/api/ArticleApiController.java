@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
+import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
@@ -65,6 +66,7 @@ public class ArticleApiController {
         articleService.hate(id, userId);
     }
 
+    @ApiIgnore
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseBody
