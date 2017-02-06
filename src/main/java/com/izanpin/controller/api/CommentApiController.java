@@ -54,4 +54,18 @@ public class CommentApiController {
                       @ApiParam(value = "评论内容") @RequestBody AddCommentDto dto) {
         commentService.reply(commentId, dto.getUserId(), dto.getContent());
     }
+
+    @ApiOperation(value = "赞")
+    @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public void like(@PathVariable Long id, @RequestBody(required = false) Long userId) {
+        commentService.like(id, userId);
+    }
+
+    @ApiOperation(value = "踩")
+    @RequestMapping(value = "/hate/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public void hate(@PathVariable Long id, @RequestBody(required = false) Long userId) {
+        commentService.hate(id, userId);
+    }
 }
