@@ -27,7 +27,8 @@ public class ArticleApiController {
     @ApiOperation(value = "获取 无聊图/段子")
     @RequestMapping(value = "/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
-    public PageInfo getArticles(@ApiParam(value = "页码") @PathVariable Integer page, @ApiParam(value = "页大小") @PathVariable Integer size) {
+    public PageInfo getArticles(@ApiParam(value = "页码") @PathVariable Integer page,
+                                @ApiParam(value = "页大小") @PathVariable Integer size) {
         return articleService.getArticles(page, size);
     }
 
@@ -41,14 +42,16 @@ public class ArticleApiController {
     @ApiOperation(value = "获取无聊图")
     @RequestMapping(value = "/picture/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
-    public PageInfo getPictures(@ApiParam(value = "页码") @PathVariable Integer page, @ApiParam(value = "页大小") @PathVariable Integer size) {
+    public PageInfo getPictures(@ApiParam(value = "页码") @PathVariable Integer page,
+                                @ApiParam(value = "页大小") @PathVariable Integer size) {
         return articleService.getPictures(page, size);
     }
 
     @ApiOperation(value = "获取段子")
     @RequestMapping(value = "/joke/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
-    public PageInfo getJokes(@ApiParam(value = "页码") @PathVariable Integer page, @ApiParam(value = "页大小") @PathVariable Integer size) {
+    public PageInfo getJokes(@ApiParam(value = "页码") @PathVariable Integer page,
+                             @ApiParam(value = "页大小") @PathVariable Integer size) {
         return articleService.getJokes(page, size);
     }
 

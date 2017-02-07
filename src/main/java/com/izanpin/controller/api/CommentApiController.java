@@ -28,7 +28,9 @@ public class CommentApiController {
     @ApiOperation(value = "获取评论")
     @RequestMapping(value = "/{articleId}/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
-    public PageInfo getComments(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId, @ApiParam(value = "页码") @PathVariable Integer page, @ApiParam(value = "页大小") @PathVariable Integer size) {
+    public PageInfo getComments(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId,
+                                @ApiParam(value = "页码") @PathVariable Integer page,
+                                @ApiParam(value = "页大小") @PathVariable Integer size) {
         return commentService.getComments(articleId, page, size);
     }
 
