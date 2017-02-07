@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * Created by pengyuancong on 2017/1/29.
  */
-@ApiIgnore
 @Controller
 public class MainController {
 
