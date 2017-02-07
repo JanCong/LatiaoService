@@ -10,11 +10,14 @@ import java.util.List;
 public interface CommentRepository {
     List<Comment> findByArticleId(Long articleId);
 
-    void insert(Comment comment);
+    void addComment(Comment comment);
+
+    void addReply(Comment comment);
 
     Comment get(Long id);
 
-    void increaseLikeCount(Integer count);
+    void increaseLikeCount(Long id, Long userId, Integer count);
 
-    void increaseHateCount(Integer count);
+    void increaseHateCount(Long id, Long userId, Integer count);
+
 }

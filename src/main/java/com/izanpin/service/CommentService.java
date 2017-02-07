@@ -10,11 +10,11 @@ import java.util.List;
  * Created by Smart on 2017/1/30.
  */
 public interface CommentService {
-    PageInfo getArticles(Long articleId, Integer page, Integer size);
+    PageInfo getComments(Long articleId, Integer page, Integer size);
 
     void addComment(Long articleId, Long userId, String content);
 
-    void reply(Long commentId, Long userId, String content);
+    void reply(Long replyToId, Long userId, String content);
 
     Comment getById(Long id);
 

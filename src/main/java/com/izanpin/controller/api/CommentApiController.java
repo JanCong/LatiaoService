@@ -29,7 +29,7 @@ public class CommentApiController {
     @RequestMapping(value = "/{articleId}/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getComments(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId, @ApiParam(value = "页码") @PathVariable Integer page, @ApiParam(value = "页大小") @PathVariable Integer size) {
-        return commentService.getArticles(articleId, page, size);
+        return commentService.getComments(articleId, page, size);
     }
 
     @ApiOperation(value = "根据ID获取")
@@ -48,11 +48,11 @@ public class CommentApiController {
     }
 
     @ApiOperation(value = "回复评论")
-    @RequestMapping(value = "/reply/{commentId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/reply/{replyToId}", method = RequestMethod.POST)
     @ResponseBody
-    public void reply(@ApiParam(value = "评论ID") @PathVariable Long commentId,
-                      @ApiParam(value = "评论内容") @RequestBody AddCommentDto dto) {
-        commentService.reply(commentId, dto.getUserId(), dto.getContent());
+    public void reply(@ApiParam(value = "评论ID") @PathVariable Long replyToId,
+                      @ApiParam(value = "回复内容") @RequestBody AddCommentDto dto) {
+        commentService.reply(replyToId, dto.getUserId(), dto.getContent());
     }
 
     @ApiOperation(value = "赞")

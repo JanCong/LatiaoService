@@ -17,7 +17,7 @@ public class Comment {
     private Long userId;
 
     @JsonSerialize(using = ToStringSerializer.class)
-    private Long commentId;
+    private Long replyToId;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long articleId;
@@ -62,12 +62,12 @@ public class Comment {
         this.userId = userId;
     }
 
-    public Long getCommentId() {
-        return commentId;
+    public Long getReplyToId() {
+        return replyToId;
     }
 
-    public void setCommentId(Long commentId) {
-        this.commentId = commentId;
+    public void setReplyToId(Long replyToId) {
+        this.replyToId = replyToId;
     }
 
     public Long getArticleId() {

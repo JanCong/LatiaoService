@@ -63,7 +63,6 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void like(Long id, Long userId) {
-
     }
 
     @Override
