@@ -31,10 +31,8 @@
                         <th style="width: 100px">评论</th>
                         <th>赞</th>
                         <th>踩</th>
-                        <th>hashId</th>
                         <th style="width: 50px">状态</th>
                         <th style="width: 150px">创建时间</th>
-                        <th style="width: 150px">修改时间</th>
                         <th style="width: 150px">操作</th>
                     </tr>
                     </thead>
@@ -88,10 +86,8 @@
                 {data: "commentCount"},
                 {data: "likeCount"},
                 {data: "hateCount"},
-                {data: "hashId"},
                 {data: "status"},
                 {data: "createTime"},
-                {data: "updateTime"},
                 {data: null}
             ],
             "columnDefs": [
