@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <button type="button" onclick="emailAccountInfoReload();" class="btn btn-primary">搜索</button>
+                        <button type="button" onclick="pictureReload();" class="btn btn-primary">搜索</button>
                     </div>
                 </div>
                 <table id="pictureList_tab" class="table table-bordered table-striped">
@@ -44,8 +44,17 @@
 <script type="text/javascript">
     var pictureList_tab;
     $(function () {
-        //初始化表格
+        loadPictureList();
+    });
 
+    function emailAccountInfoToListAjax() {
+        list_ajax = pictureList_tab;
+    }
+    function pictureReload() {
+        reloadTable(pictureList_tab, "#accountInfoTime", "#accountInfoPremise");
+    }
+
+    function loadPictureList() {
         var No = 0;
         pictureList_tab = $('#pictureList_tab').DataTable({
             "dom": "itflp",
@@ -127,12 +136,5 @@
         }).on('preXhr.dt', function (e, settings, data) {
             No = 0;
         });
-    });
-
-    function emailAccountInfoToListAjax() {
-        list_ajax = pictureList_tab;
-    }
-    function emailAccountInfoReload() {
-        reloadTable(pictureList_tab, "#accountInfoTime", "#accountInfoPremise");
     }
 </script>

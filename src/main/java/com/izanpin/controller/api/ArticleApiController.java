@@ -9,6 +9,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -28,8 +29,9 @@ public class ArticleApiController {
     @RequestMapping(value = "/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getArticles(@ApiParam(value = "页码") @PathVariable Integer page,
-                                @ApiParam(value = "页大小") @PathVariable Integer size) {
-        return articleService.getArticles(page, size);
+                                @ApiParam(value = "页大小") @PathVariable Integer size,
+                                @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
+        return articleService.getArticles(page, size, keyword);
     }
 
     @ApiOperation(value = "根据ID获取")
@@ -43,16 +45,18 @@ public class ArticleApiController {
     @RequestMapping(value = "/picture/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getPictures(@ApiParam(value = "页码") @PathVariable Integer page,
-                                @ApiParam(value = "页大小") @PathVariable Integer size) {
-        return articleService.getPictures(page, size);
+                                @ApiParam(value = "页大小") @PathVariable Integer size,
+                                @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
+        return articleService.getPictures(page, size, keyword);
     }
 
     @ApiOperation(value = "获取段子")
     @RequestMapping(value = "/joke/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getJokes(@ApiParam(value = "页码") @PathVariable Integer page,
-                             @ApiParam(value = "页大小") @PathVariable Integer size) {
-        return articleService.getJokes(page, size);
+                             @ApiParam(value = "页大小") @PathVariable Integer size,
+                             @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
+        return articleService.getJokes(page, size, keyword);
     }
 
     @ApiOperation(value = "赞")

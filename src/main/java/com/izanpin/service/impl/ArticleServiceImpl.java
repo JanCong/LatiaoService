@@ -21,9 +21,9 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleRepository articleRepository;
 
     @Override
-    public PageInfo getArticles(Integer page, Integer size) {
+    public PageInfo getArticles(Integer page, Integer size, String keyword) {
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.find());
+        return new PageInfo(articleRepository.find(keyword));
     }
 
     @Override
@@ -45,15 +45,15 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageInfo getPictures(Integer page, Integer size) {
+    public PageInfo getPictures(Integer page, Integer size, String keyword) {
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.findByType(ArticleType.PICTURE.getValue()));
+        return new PageInfo(articleRepository.findByType(ArticleType.PICTURE.getValue(), keyword));
     }
 
     @Override
-    public PageInfo getJokes(Integer page, Integer size) {
+    public PageInfo getJokes(Integer page, Integer size, String keyword) {
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.findByType(ArticleType.JOKE.getValue()));
+        return new PageInfo(articleRepository.findByType(ArticleType.JOKE.getValue(), keyword));
     }
 
     @Override

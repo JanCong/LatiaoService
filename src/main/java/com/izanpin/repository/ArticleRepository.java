@@ -1,13 +1,14 @@
 package com.izanpin.repository;
 
 import com.izanpin.entity.Article;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface ArticleRepository {
-    List<Article> find();
+    List<Article> find(@Param("keyword") String keyword);
 
     int insertSelective(Article record);
 
@@ -15,5 +16,5 @@ public interface ArticleRepository {
 
     Article get(Long id);
 
-    List<Article> findByType(Integer value);
+    List<Article> findByType(@Param("type") Integer value, @Param("keyword") String keyword);
 }
