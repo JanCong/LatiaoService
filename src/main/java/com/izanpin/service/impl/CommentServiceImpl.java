@@ -2,15 +2,11 @@ package com.izanpin.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.izanpin.entity.Article;
 import com.izanpin.entity.Comment;
-import com.izanpin.enums.ArticleType;
 import com.izanpin.enums.CommentStatus;
-import com.izanpin.repository.ArticleRepository;
 import com.izanpin.repository.CommentRepository;
-import com.izanpin.service.ArticleService;
 import com.izanpin.service.CommentService;
-import com.izanpin.utils.SnowFlake;
+import com.izanpin.common.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

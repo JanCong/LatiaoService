@@ -13,6 +13,9 @@
 
     <!-- 静态资源(js、image等)的访问 -->
     <mvc:default-servlet-handler/>
+    <!-- 允许对静态资源文件的访问 -->
+    <mvc:resources location="/static/" mapping="/static/**"/>
+    <mvc:resources location="/favicon.ico" mapping="/favicon.ico"/>
 
     <!-- 开启注解 -->
     <mvc:annotation-driven>
@@ -23,7 +26,7 @@
                     <bean class="com.fasterxml.jackson.databind.ObjectMapper">
                         <property name="dateFormat">
                             <bean class="java.text.SimpleDateFormat">
-                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
                             </bean>
                         </property>
                     </bean>
@@ -34,7 +37,7 @@
                     <bean class="com.fasterxml.jackson.databind.ObjectMapper">
                         <property name="dateFormat">
                             <bean class="java.text.SimpleDateFormat">
-                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+                                <constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
                             </bean>
                         </property>
                     </bean>
@@ -44,11 +47,11 @@
     </mvc:annotation-driven>
 
 
-    <bean class="com.izanpin.common.config.MySwaggerConfig" />
+    <bean class="com.izanpin.common.config.MySwaggerConfig"/>
 
     <!--加载本地的其他配置 -->
     <import resource="spring-base.xml"/>
     <import resource="spring-database.xml"/>
     <import resource="spring-quartz.xml"/>
-
+    <!--<import resource="classpath:/spring-shiro.xml"/>-->
 </beans>

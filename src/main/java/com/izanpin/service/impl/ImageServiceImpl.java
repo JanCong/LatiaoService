@@ -5,22 +5,16 @@ import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
 import com.baidubce.services.bos.model.PutObjectResponse;
 import com.izanpin.entity.Image;
-import com.izanpin.entity.User;
-import com.izanpin.enums.UserType;
 import com.izanpin.repository.ImageRepository;
-import com.izanpin.repository.UserRepository;
 import com.izanpin.service.ImageService;
-import com.izanpin.service.UserService;
-import com.izanpin.utils.SnowFlake;
+import com.izanpin.common.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.DataInputStream;
-import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Smart on 2017/1/30.

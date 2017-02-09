@@ -6,7 +6,7 @@ import com.izanpin.entity.Article;
 import com.izanpin.enums.ArticleType;
 import com.izanpin.repository.ArticleRepository;
 import com.izanpin.service.ArticleService;
-import com.izanpin.utils.SnowFlake;
+import com.izanpin.common.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
