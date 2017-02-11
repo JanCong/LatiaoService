@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/admin")
 @Controller
 public class IndexController extends BaseController {
+    /**
+     * 进入首页
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String root1() {
+        return "/admin/index";
+    }
 
     /**
      * 进入首页
