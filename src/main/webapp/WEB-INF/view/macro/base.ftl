@@ -40,7 +40,7 @@
 <header class="main-header">
     <a href="index2.html" class="logo">
         <span class="logo-mini"><b>R</b><b>C</b></span>
-        <span class="logo-lg"><b>RonCoo-admin </b>LTE</span>
+        <span class="logo-lg"><b>无聊啊 </b>后台</span>
     </a>
     <nav class="navbar navbar-static-top">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
@@ -64,13 +64,10 @@
                         <li class="user-body">
                             <div class="row">
                                 <div class="col-xs-4 text-center">
-                                    <a href="http://www.roncoo.com" target="_blank">龙果学院</a>
+                                    <a href="http://www.izanpin.com" target="_blank">赞品</a>
                                 </div>
                                 <div class="col-xs-4 text-center">
-                                    <a href="https://github.com/roncoo" target="_blank">GitHub</a>
-                                </div>
-                                <div class="col-xs-4 text-center">
-                                    <a href="http://git.oschina.net/roncoocom" target="_blank">码云</a>
+                                    <a href="https://github.com/smartcong" target="_blank">GitHub</a>
                                 </div>
                             </div>
                         </li>

@@ -73,7 +73,6 @@ public class ArticleApiController {
         articleService.hate(id, userId);
     }
 
-    @ApiIgnore
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/import", method = RequestMethod.POST)
     @ResponseBody
