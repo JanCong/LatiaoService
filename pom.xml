@@ -190,7 +190,7 @@
     </dependencies>
 
     <build>
-        <finalName>wuliaoaservice</finalName>
+        <finalName>wuliaoa</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

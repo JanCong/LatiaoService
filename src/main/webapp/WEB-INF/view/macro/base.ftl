@@ -39,7 +39,7 @@
 <#macro header>
 <header class="main-header">
     <a href="index2.html" class="logo">
-        <span class="logo-mini"><b>R</b><b>C</b></span>
+        <span class="logo-mini"><b>后台</b></span>
         <span class="logo-lg"><b>无聊啊 </b>后台</span>
     </a>
     <nav class="navbar navbar-static-top">
