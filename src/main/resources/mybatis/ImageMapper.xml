@@ -38,7 +38,7 @@
         select article.*,
         image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
         from article left join image on article.id = image.article_id
-        order by article.status desc, article.create_time desc
+        order by article.status desc, article.id desc
     </select>
     <insert id="add" parameterType="com.izanpin.entity.Image">
     insert into image (id, article_id, url,

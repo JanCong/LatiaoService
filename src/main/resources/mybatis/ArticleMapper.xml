@@ -62,20 +62,14 @@
         image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
         from article left join image on article.id = image.article_id
         where (1=1)
-        <if test="sinceId != null">
-            <if test="sinceId != 0">
-                and (article.id &gt; #{sinceId})
-            </if>
+        <if test="sinceId != null and sinceId != 0">
+            and (article.id &gt; #{sinceId})
         </if>
-        <if test="maxId != null">
-            <if test="maxId != 0">
-                and (article.id &lt; #{maxId})
-            </if>
+        <if test="maxId != null and maxId != 0">
+            and (article.id &lt; #{maxId})
         </if>
-        <if test="authorId != null">
-            <if test="authorId != 0">
-                and (article.author_id = #{authorId})
-            </if>
+        <if test="authorId != null and authorId != 0">
+            and (article.author_id = #{authorId})
         </if>
         <if test="type != null">
             and (article.type = #{type.value})
@@ -83,7 +77,7 @@
         <if test="keyword != null">
             and (article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%'))
         </if>
-        order by article.status desc, article.create_time desc
+        order by article.status desc, article.id desc
     </select>
     <select id="find" resultMap="ResultMap">
         select article.*,
@@ -92,7 +86,7 @@
         <if test="keyword != null">
             where article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%')
         </if>
-        order by article.status desc, article.create_time desc
+        order by article.status desc, article.id desc
     </select>
     <select id="findByType" resultMap="ResultMap">
         select article.*,
@@ -102,7 +96,7 @@
         <if test="keyword != null">
             and (article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%'))
         </if>
-        order by article.status desc, article.create_time desc
+        order by article.status desc, article.id desc
     </select>
     <select id="get" parameterType="java.lang.Long" resultMap="ResultMap">
         select article.*,
