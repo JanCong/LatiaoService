@@ -2,6 +2,7 @@ package com.izanpin.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.enums.ArticleType;
 import com.izanpin.repository.ArticleRepository;
@@ -68,5 +69,27 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void hate(Long id, Long userId) {
 
+    }
+
+    @Override
+    public PageInfo getArticlesByTimeline(Integer page, Integer size, RequestArticleTimelineDto dto) {
+        if (page == null || page == 0) {
+            page = 1;
+        }
+        if (size == null || size == 0) {
+            size = 20;
+        }
+        if (dto.getSinceId() == null) {
+            dto.setSinceId(0L);
+        }
+        if (dto.getMaxId() == null) {
+            dto.setMaxId(0L);
+        }
+        if (dto.getAuthorId() == null) {
+            dto.setAuthorId(0L);
+        }
+
+        PageHelper.startPage(page, size);
+        return new PageInfo(articleRepository.findByTimeline(dto));
     }
 }

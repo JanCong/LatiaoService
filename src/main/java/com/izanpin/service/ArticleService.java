@@ -1,6 +1,7 @@
 package com.izanpin.service;
 
 import com.github.pagehelper.PageInfo;
+import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 
 /**
@@ -22,4 +23,6 @@ public interface ArticleService {
     void like(Long id, Long userId);
 
     void hate(Long id, Long userId);
+
+    PageInfo getArticlesByTimeline(Integer page, Integer size, RequestArticleTimelineDto dto);
 }

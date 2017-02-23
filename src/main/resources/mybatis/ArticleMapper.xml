@@ -57,6 +57,34 @@
         create_time,
         update_time
   </sql>
+    <select id="findByTimeline" parameterType="com.izanpin.dto.RequestArticleTimelineDto" resultMap="ResultMap">
+        select article.*,
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        from article left join image on article.id = image.article_id
+        where (1=1)
+        <if test="sinceId != null">
+            <if test="sinceId != 0">
+                and (article.id &gt; #{sinceId})
+            </if>
+        </if>
+        <if test="maxId != null">
+            <if test="maxId != 0">
+                and (article.id &lt; #{maxId})
+            </if>
+        </if>
+        <if test="authorId != null">
+            <if test="authorId != 0">
+                and (article.author_id = #{authorId})
+            </if>
+        </if>
+        <if test="type != null">
+            and (article.type = #{type.value})
+        </if>
+        <if test="keyword != null">
+            and (article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%'))
+        </if>
+        order by article.status desc, article.create_time desc
+    </select>
     <select id="find" resultMap="ResultMap">
         select article.*,
         image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time

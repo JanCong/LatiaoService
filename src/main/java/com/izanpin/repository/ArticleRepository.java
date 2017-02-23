@@ -1,5 +1,6 @@
 package com.izanpin.repository;
 
+import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,4 +18,6 @@ public interface ArticleRepository {
     Article get(Long id);
 
     List<Article> findByType(@Param("type") Integer value, @Param("keyword") String keyword);
+
+    List<Article> findByTimeline(RequestArticleTimelineDto dto);
 }

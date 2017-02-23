@@ -2,6 +2,7 @@ package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
+import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
 import com.mangofactory.swagger.annotations.ApiIgnore;
@@ -32,6 +33,15 @@ public class ArticleApiController {
                                 @ApiParam(value = "页大小") @PathVariable Integer size,
                                 @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
         return articleService.getArticles(page, size, keyword);
+    }
+
+    @ApiOperation(value = "获取 无聊图/段子")
+    @RequestMapping(value = "/timeline/{page}/{size}", method = RequestMethod.GET)
+    @ResponseBody
+    public PageInfo getArticlesByTimeline(@ApiParam("页码") @PathVariable Integer page,
+                                          @ApiParam("页大小") @PathVariable Integer size,
+                                          @ModelAttribute RequestArticleTimelineDto dto) {
+        return articleService.getArticlesByTimeline(page, size, dto);
     }
 
     @ApiOperation(value = "根据ID获取")
