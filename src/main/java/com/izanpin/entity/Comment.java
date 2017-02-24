@@ -46,6 +46,7 @@ public class Comment {
 
     private Article article;
 
+
     public Long getId() {
         return id;
     }

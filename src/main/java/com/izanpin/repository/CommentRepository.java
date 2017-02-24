@@ -1,6 +1,5 @@
 package com.izanpin.repository;
 
-import com.izanpin.entity.Article;
 import com.izanpin.entity.Comment;
 import org.springframework.stereotype.Repository;
 

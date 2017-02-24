@@ -20,4 +20,6 @@ public interface ArticleRepository {
     List<Article> findByType(@Param("type") Integer value, @Param("keyword") String keyword);
 
     List<Article> findByTimeline(RequestArticleTimelineDto dto);
+
+    void increaseCommentCount(Long id, Integer count);
 }

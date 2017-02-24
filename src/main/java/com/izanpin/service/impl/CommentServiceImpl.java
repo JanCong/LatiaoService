@@ -4,11 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.entity.Comment;
 import com.izanpin.enums.CommentStatus;
+import com.izanpin.repository.ArticleRepository;
 import com.izanpin.repository.CommentRepository;
 import com.izanpin.service.CommentService;
 import com.izanpin.common.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -16,9 +18,13 @@ import java.util.Date;
  * Created by Smart on 2017/1/30.
  */
 @Service
+@Transactional
 public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    ArticleRepository articleRepository;
 
     @Override
     public PageInfo getComments(Long articleId, Integer page, Integer size) {
@@ -38,6 +44,8 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreateTime(new Date());
         comment.setUpdateTime(new Date());
         commentRepository.addComment(comment);
+
+        articleRepository.increaseCommentCount(articleId, 1);
     }
 
     @Override
