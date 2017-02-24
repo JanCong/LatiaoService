@@ -74,6 +74,9 @@
         <if test="type != null">
             and (article.type = #{type.value})
         </if>
+        <if test="type == com.izanpin.enums.ArticleType.PICTURE">
+            and (image.id is not null)
+        </if>
         <if test="keyword != null">
             and (article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%'))
         </if>
@@ -86,6 +89,9 @@
         <if test="keyword != null">
             where article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%')
         </if>
+        <if test="type == 0">
+            and (image.id is not null)
+        </if>
         order by article.status desc, article.id desc
     </select>
     <select id="findByType" resultMap="ResultMap">
@@ -93,6 +99,9 @@
         image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
         from article left join image on article.id = image.article_id
         where article.type = #{type,jdbcType=INTEGER}
+        <if test="type == 0">
+            and (image.id is not null)
+        </if>
         <if test="keyword != null">
             and (article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%'))
         </if>
