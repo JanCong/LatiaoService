@@ -10,6 +10,7 @@ import com.izanpin.service.ImageService;
 import com.izanpin.common.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.DataInputStream;
 import java.net.HttpURLConnection;
@@ -20,6 +21,7 @@ import java.util.Date;
  * Created by Smart on 2017/1/30.
  */
 @Service
+@Transactional
 public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;

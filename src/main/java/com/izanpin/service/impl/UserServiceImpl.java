@@ -6,6 +6,7 @@ import com.izanpin.repository.UserRepository;
 import com.izanpin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * Created by Smart on 2017/1/30.
  */
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;

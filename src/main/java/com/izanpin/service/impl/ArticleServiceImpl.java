@@ -20,6 +20,7 @@ import java.util.Date;
  * Created by Smart on 2017/1/30.
  */
 @Service
+@Transactional
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleRepository articleRepository;
@@ -47,7 +48,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    @Transactional
     public void addPicture(Article article, String imageUrl) throws Exception {
         addArticle(article);
         imageService.AddImage(imageUrl, article.getId());
