@@ -44,6 +44,13 @@ public class ArticleApiController {
         return articleService.getArticlesByTimeline(page, size, dto);
     }
 
+    @ApiOperation(value = "获取最新 无聊图/段子 （最多1000条）")
+    @RequestMapping(value = "/timeline", method = RequestMethod.GET)
+    @ResponseBody
+    public PageInfo getArticlesByTimeline(@ModelAttribute RequestArticleTimelineDto dto) {
+        return articleService.getArticlesByTimeline(1, 1000, dto);
+    }
+
     @ApiOperation(value = "根据ID获取")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody

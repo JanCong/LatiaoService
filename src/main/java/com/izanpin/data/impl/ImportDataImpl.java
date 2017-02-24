@@ -206,8 +206,7 @@ public class ImportDataImpl implements ImportData {
                         if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
                             Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
                             try {
-                                articleService.addArticle(article);
-                                imageService.AddImage(imgUrl, article.getId());
+                                articleService.addPicture(article, imgUrl);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

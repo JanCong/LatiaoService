@@ -4,12 +4,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
+import com.izanpin.entity.Image;
 import com.izanpin.enums.ArticleType;
 import com.izanpin.repository.ArticleRepository;
 import com.izanpin.service.ArticleService;
 import com.izanpin.common.util.SnowFlake;
+import com.izanpin.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -20,6 +23,9 @@ import java.util.Date;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleRepository articleRepository;
+
+    @Autowired
+    ImageService imageService;
 
     @Override
     public PageInfo getArticles(Integer page, Integer size, String keyword) {
@@ -38,6 +44,13 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCreateTime(new Date());
         article.setUpdateTime(new Date());
         articleRepository.insertSelective(article);
+    }
+
+    @Override
+    @Transactional
+    public void addPicture(Article article, String imageUrl) throws Exception {
+        addArticle(article);
+        imageService.AddImage(imageUrl, article.getId());
     }
 
     @Override
