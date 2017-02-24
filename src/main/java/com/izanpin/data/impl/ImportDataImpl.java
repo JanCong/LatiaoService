@@ -41,6 +41,7 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
+
     public void importData() throws Exception {
         Thread threadImportJokes = new Thread(() -> {
             try {
@@ -68,8 +69,6 @@ public class ImportDataImpl implements ImportData {
     }
 
     private void importJokesFromJuhe() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
         String jsonString = Http.get("http://japi.juhe.cn/joke/content/text.from?key=eb1e4987289b12958853c58aa68f29a7&page=1&pagesize=20");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
@@ -79,29 +78,24 @@ public class ImportDataImpl implements ImportData {
             if (jsonArray != null && !jsonArray.isEmpty()) {
                 List<User> robots = userService.getRobotUsers();
                 jsonArray.forEach(obj -> {
-                    executorService.submit(() -> {
-                        JSONObject jObj = (JSONObject) obj;
-                        String hashId = jObj.getString("hashId");
-                        String content = jObj.getString("content");
-                        if (!articleService.existHashId(hashId) && !content.trim().isEmpty()) {
-                            Article article = setArticle(content, hashId, ArticleType.JOKE, robots);
-                            try {
-                                articleService.addArticle(article);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                    JSONObject jObj = (JSONObject) obj;
+                    String hashId = jObj.getString("hashId");
+                    String content = jObj.getString("content");
+                    if (!articleService.existHashId(hashId) && !content.trim().isEmpty()) {
+                        Article article = setArticle(content, hashId, ArticleType.JOKE, robots);
+                        try {
+                            articleService.addArticle(article);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
+                    }
                 });
             }
         }
 
-        executorService.shutdown();
     }
 
     private void importJokesFromJisu() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
         String jsonString = Http.get("http://api.jisuapi.com/xiaohua/text?pagesize=20&appkey=e908f9037b24776f");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
@@ -111,32 +105,29 @@ public class ImportDataImpl implements ImportData {
             if (jsonArray != null && !jsonArray.isEmpty()) {
                 List<User> robots = userService.getRobotUsers();
                 jsonArray.forEach(obj -> {
-                    executorService.submit(() -> {
-                        JSONObject jObj = (JSONObject) obj;
-                        String content = jObj.getString("content");
-                        if (content == null) {
-                            content = "";
-                        }
-                        String hashId = null;
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = jObj.getString("content");
+                    if (content == null) {
+                        content = "";
+                    }
+                    String hashId = null;
+                    try {
+                        hashId = SHA.toSHAString(jObj.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+                    if (!content.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                        Article article = setArticle(content, hashId, ArticleType.JOKE, robots);
                         try {
-                            hashId = SHA.toSHAString(jObj.toString());
-                        } catch (NoSuchAlgorithmException e) {
+                            articleService.addArticle(article);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        if (!content.trim().isEmpty() && !articleService.existHashId(hashId)) {
-                            Article article = setArticle(content, hashId, ArticleType.JOKE, robots);
-                            try {
-                                articleService.addArticle(article);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    }
                 });
             }
         }
 
-        executorService.shutdown();
     }
 
     public void importPictures() throws Exception {
@@ -145,8 +136,6 @@ public class ImportDataImpl implements ImportData {
     }
 
     private void importPicturesFromJuhe() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
         String jsonString = Http.get("http://japi.juhe.cn/joke/img/text.from?key=eb1e4987289b12958853c58aa68f29a7&page=1&pagesize=20");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
@@ -156,30 +145,25 @@ public class ImportDataImpl implements ImportData {
             if (jsonArray != null && !jsonArray.isEmpty()) {
                 List<User> robots = userService.getRobotUsers();
                 jsonArray.forEach(obj -> {
-                    executorService.submit(() -> {
-                        JSONObject jObj = (JSONObject) obj;
-                        String hashId = jObj.getString("hashId");
-                        String imgUrl = jObj.getString("url");
-                        if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
-                            Article article = setArticle(jObj.getString("content"), hashId, ArticleType.PICTURE, robots);
-                            try {
-                                articleService.addArticle(article);
-                                imageService.AddImage(imgUrl, article.getId());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                    JSONObject jObj = (JSONObject) obj;
+                    String hashId = jObj.getString("hashId");
+                    String imgUrl = jObj.getString("url");
+                    if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                        Article article = setArticle(jObj.getString("content"), hashId, ArticleType.PICTURE, robots);
+                        try {
+                            articleService.addArticle(article);
+                            imageService.AddImage(imgUrl, article.getId());
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    });
+                    }
                 });
             }
         }
 
-        executorService.shutdown();
     }
 
     private void importPicturesFromJisu() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-
         String jsonString = Http.get("http://api.jisuapi.com/xiaohua/pic?pagesize=20&appkey=e908f9037b24776f");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
@@ -189,34 +173,31 @@ public class ImportDataImpl implements ImportData {
             if (jsonArray != null && !jsonArray.isEmpty()) {
                 List<User> robots = userService.getRobotUsers();
                 jsonArray.forEach(obj -> {
-                    executorService.submit(() -> {
-                        JSONObject jObj = (JSONObject) obj;
-                        String content = jObj.getString("content");
-                        if (content == null) {
-                            content = "";
-                        }
-                        String hashId = null;
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = jObj.getString("content");
+                    if (content == null) {
+                        content = "";
+                    }
+                    String hashId = null;
+                    try {
+                        hashId = SHA.toSHAString(jObj.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+
+                    String imgUrl = jObj.getString("pic");
+                    if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                        Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
                         try {
-                            hashId = SHA.toSHAString(jObj.toString());
-                        } catch (NoSuchAlgorithmException e) {
+                            articleService.addPicture(article, imgUrl);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                        String imgUrl = jObj.getString("pic");
-                        if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
-                            Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
-                            try {
-                                articleService.addPicture(article, imgUrl);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+                    }
                 });
             }
         }
 
-        executorService.shutdown();
     }
 
     private Article setArticle(String content, String hashId, ArticleType articleType, List<User> robots) {

@@ -74,7 +74,7 @@
         <if test="type != null">
             and (article.type = #{type.value})
         </if>
-        <if test="type == com.izanpin.enums.ArticleType.PICTURE">
+        <if test="type != null and type.value == 0">
             and (image.id is not null)
         </if>
         <if test="keyword != null">
