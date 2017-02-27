@@ -56,6 +56,7 @@ public class ImageServiceImpl implements ImageService {
             image.setThumbnailUrl(thumbnailUrl);
             image.setCreateTime(new Date());
 
+
             imageRepository.add(image);
 
         } catch (Exception e) {

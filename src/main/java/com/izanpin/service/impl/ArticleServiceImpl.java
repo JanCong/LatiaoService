@@ -2,7 +2,7 @@ package com.izanpin.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.izanpin.dto.AddPictureDto;
+import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.entity.User;
@@ -60,7 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void addPicture(AddPictureDto dto) throws Exception {
+    public void addArticle(AddArticleDto dto) throws Exception {
         User user = userService.getUser(dto.getUserId());
         if (user == null) {
             throw new Exception("用户不存在");
@@ -74,7 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCommentCount(0);
         article.setLikeCount(0);
         article.setHateCount(0);
-        article.setType(ArticleType.PICTURE.getValue());
+        article.setType(dto.getArticleType().getValue());
         article.setStatus(ArticleStatus.NORMAL.getValue());
 
         article.setAuthorId(user.getId());
@@ -83,9 +83,13 @@ public class ArticleServiceImpl implements ArticleService {
 
         addArticle(article);
 
-        dto.getImageUrls().forEach((url) -> {
-            imageService.AddImage(url, article.getId());
-        });
+        if (dto.getArticleType() == ArticleType.PICTURE
+                && dto.getImageUrls() != null
+                && !dto.getImageUrls().isEmpty()) {
+            dto.getImageUrls().forEach((url) -> {
+                imageService.AddImage(url, article.getId());
+            });
+        }
     }
 
 

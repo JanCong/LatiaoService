@@ -2,7 +2,7 @@ package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
-import com.izanpin.dto.AddPictureDto;
+import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
@@ -89,10 +89,10 @@ public class ArticleApiController {
         articleService.hate(id, userId);
     }
 
-    @ApiOperation("新增无聊图")
+    @ApiOperation("新增辣条")
     @RequestMapping(value = "/picture", method = RequestMethod.POST)
-    public void AddPicture(@RequestBody AddPictureDto dto) throws Exception {
-        articleService.addPicture(dto);
+    public void AddPicture(@RequestBody AddArticleDto dto) throws Exception {
+        articleService.addArticle(dto);
     }
 
     @ApiOperation(value = "导入数据")

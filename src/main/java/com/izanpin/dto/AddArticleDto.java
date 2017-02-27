@@ -1,14 +1,18 @@
 package com.izanpin.dto;
 
+import com.izanpin.common.util.Html;
+import com.izanpin.enums.ArticleType;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by St on 2017/2/27.
  */
-public class AddPictureDto {
+public class AddArticleDto {
     private Long userId;
     private String content;
+    private ArticleType articleType;
     private ArrayList<String> imageUrls;
 
     public Long getUserId() {
@@ -20,11 +24,19 @@ public class AddPictureDto {
     }
 
     public String getContent() {
-        return content;
+        return Html.htmlUnescape(content);
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.content = Html.htmlUnescape(content);
+    }
+
+    public ArticleType getArticleType() {
+        return articleType;
+    }
+
+    public void setArticleType(ArticleType articleType) {
+        this.articleType = articleType;
     }
 
     public ArrayList<String> getImageUrls() {
