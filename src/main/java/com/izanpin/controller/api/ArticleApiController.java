@@ -90,8 +90,10 @@ public class ArticleApiController {
     }
 
     @ApiOperation("新增辣条")
-    @RequestMapping(value = "/picture", method = RequestMethod.POST)
-    public void AddPicture(@RequestBody AddArticleDto dto) throws Exception {
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public void AddPicture(
+            @ApiParam("articleType:PICTURE/JOKE（选填，默认按有无imageUrls判断是无聊图还是段子）")
+            @RequestBody AddArticleDto dto) throws Exception {
         articleService.addArticle(dto);
     }
 

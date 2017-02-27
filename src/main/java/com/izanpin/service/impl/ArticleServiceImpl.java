@@ -74,7 +74,17 @@ public class ArticleServiceImpl implements ArticleService {
         article.setCommentCount(0);
         article.setLikeCount(0);
         article.setHateCount(0);
-        article.setType(dto.getArticleType().getValue());
+
+        if (dto.getArticleType() != null) {
+            article.setType(dto.getArticleType().getValue());
+        } else {
+            if (dto.getImageUrls() != null && !dto.getImageUrls().isEmpty()) {
+                article.setType(ArticleType.PICTURE.getValue());
+            } else {
+                article.setType(ArticleType.JOKE.getValue());
+            }
+        }
+
         article.setStatus(ArticleStatus.NORMAL.getValue());
 
         article.setAuthorId(user.getId());
@@ -83,9 +93,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         addArticle(article);
 
-        if (dto.getArticleType() == ArticleType.PICTURE
-                && dto.getImageUrls() != null
-                && !dto.getImageUrls().isEmpty()) {
+        if (article.getType() == ArticleType.PICTURE.getValue()) {
             dto.getImageUrls().forEach((url) -> {
                 imageService.AddImage(url, article.getId());
             });
