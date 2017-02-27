@@ -2,15 +2,14 @@ package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
+import com.izanpin.dto.AddPictureDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
-import com.mangofactory.swagger.annotations.ApiIgnore;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,7 +25,7 @@ public class ArticleApiController {
     ImportData importData;
 
 
-    @ApiOperation(value = "获取 无聊图/段子")
+    @ApiOperation(value = "获取 辣条")
     @RequestMapping(value = "/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getArticles(@ApiParam(value = "页码") @PathVariable Integer page,
@@ -35,7 +34,7 @@ public class ArticleApiController {
         return articleService.getArticles(page, size, keyword);
     }
 
-    @ApiOperation(value = "获取 无聊图/段子")
+    @ApiOperation(value = "获取 辣条")
     @RequestMapping(value = "/timeline/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getArticlesByTimeline(@ApiParam("页码") @PathVariable Integer page,
@@ -44,7 +43,7 @@ public class ArticleApiController {
         return articleService.getArticlesByTimeline(page, size, dto);
     }
 
-    @ApiOperation(value = "获取最新 无聊图/段子 （最多1000条）")
+    @ApiOperation(value = "获取最新 辣条 （最多1000条）")
     @RequestMapping(value = "/timeline", method = RequestMethod.GET)
     @ResponseBody
     public PageInfo getArticlesByTimeline(@ModelAttribute RequestArticleTimelineDto dto) {
@@ -88,6 +87,12 @@ public class ArticleApiController {
     @ResponseBody
     public void hate(@PathVariable Long id, @RequestBody(required = false) Long userId) {
         articleService.hate(id, userId);
+    }
+
+    @ApiOperation("新增无聊图")
+    @RequestMapping(value = "/picture", method = RequestMethod.POST)
+    public void AddPicture(@RequestBody AddPictureDto dto) throws Exception {
+        articleService.addPicture(dto);
     }
 
     @ApiOperation(value = "导入数据")

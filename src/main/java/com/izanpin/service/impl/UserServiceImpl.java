@@ -24,4 +24,9 @@ public class UserServiceImpl implements UserService {
     public List<User> getRobotUsers() {
         return userRepository.getUsersByType(UserType.ROBOT.getValue());
     }
+
+    @Override
+    public User getUser(Long id) {
+        return userRepository.selectByPrimaryKey(id);
+    }
 }

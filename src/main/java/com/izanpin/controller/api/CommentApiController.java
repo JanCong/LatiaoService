@@ -1,19 +1,14 @@
 package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
-import com.izanpin.data.ImportData;
 import com.izanpin.dto.AddCommentDto;
-import com.izanpin.entity.Article;
 import com.izanpin.entity.Comment;
-import com.izanpin.service.ArticleService;
 import com.izanpin.service.CommentService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.Console;
 
 /**
  * Created by pengyuancong on 2017/1/29.

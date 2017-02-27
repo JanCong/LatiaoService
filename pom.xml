@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.izanpin</groupId>
-    <artifactId>wuliaoaservice</artifactId>
+    <artifactId>latiaoservice</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>wuliaoaservice Maven Webapp</name>
+    <name>latiaoservice Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -190,7 +190,7 @@
     </dependencies>
 
     <build>
-        <finalName>wuliaoa</finalName>
+        <finalName>latiao</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

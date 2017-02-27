@@ -41,8 +41,8 @@ public class MySwaggerConfig {
     private ApiInfo apiInfo()
     {
         ApiInfo apiInfo = new ApiInfo(
-                "无聊啊",
-                "无聊啊 RESTful API",
+                "辣条",
+                "辣条 RESTful API",
                 "izanpin.com",
                 "smartcong@outlook.com",
                 "My Apps API Licence Type",

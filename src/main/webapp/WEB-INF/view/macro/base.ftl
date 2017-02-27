@@ -40,7 +40,7 @@
 <header class="main-header">
     <a href="index2.html" class="logo">
         <span class="logo-mini"><b>后台</b></span>
-        <span class="logo-lg"><b>无聊啊 </b>后台</span>
+        <span class="logo-lg"><b>辣条 </b>后台</span>
     </a>
     <nav class="navbar navbar-static-top">
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">

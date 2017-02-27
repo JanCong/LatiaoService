@@ -1,9 +1,9 @@
 package com.izanpin.service;
 
 import com.github.pagehelper.PageInfo;
+import com.izanpin.dto.AddPictureDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
-import com.izanpin.entity.Image;
 
 /**
  * Created by Smart on 2017/1/30.
@@ -14,6 +14,8 @@ public interface ArticleService {
     void addArticle(Article article) throws Exception;
 
     void addPicture(Article article, String imageUrl) throws Exception;
+
+    void addPicture(AddPictureDto dto) throws Exception;
 
     boolean existHashId(String hashId);
 
