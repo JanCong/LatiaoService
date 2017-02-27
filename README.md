@@ -1,4 +1,4 @@
-# WuliaoaService
+# LatiaoService
 "辣条"的服务端  
 基于Spring + SpringMVC + Mybatis + Quartz的RESTful接口  
 
