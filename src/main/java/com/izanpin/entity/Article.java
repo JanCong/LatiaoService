@@ -78,11 +78,14 @@ public class Article {
     }
 
     public String getContent() {
+        if (content == null) {
+            return "";
+        }
         return Html.htmlUnescape(content);
     }
 
     public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+        this.content = content == null ? "" : content.trim();
         this.content = Html.htmlUnescape(this.content);
     }
 
