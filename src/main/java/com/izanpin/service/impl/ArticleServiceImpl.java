@@ -66,14 +66,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new Exception("用户不存在");
         }
 
-        Article article = new Article();
-        SnowFlake snowFlake = new SnowFlake(0, 0);
-        article.setId(snowFlake.nextId());
-
-        article.setContent(dto.getContent());
-        article.setCommentCount(0);
-        article.setLikeCount(0);
-        article.setHateCount(0);
+        Article article = new Article(dto.getContent(), user.getId(), user.getNickname(), user.getAvatar());
 
         if (dto.getArticleType() != null) {
             article.setType(dto.getArticleType().getValue());
@@ -84,12 +77,6 @@ public class ArticleServiceImpl implements ArticleService {
                 article.setType(ArticleType.JOKE.getValue());
             }
         }
-
-        article.setStatus(ArticleStatus.NORMAL.getValue());
-
-        article.setAuthorId(user.getId());
-        article.setAuthorName(user.getNickname());
-        article.setAuthorAvatar(user.getAvatar());
 
         addArticle(article);
 

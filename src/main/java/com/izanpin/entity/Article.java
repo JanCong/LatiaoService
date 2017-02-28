@@ -6,6 +6,7 @@ import com.izanpin.common.util.Html;
 import com.izanpin.common.util.SnowFlake;
 import com.izanpin.enums.ArticleStatus;
 import com.izanpin.enums.ArticleType;
+import org.apache.ibatis.jdbc.Null;
 
 import java.util.Date;
 import java.util.List;
@@ -23,14 +24,13 @@ public class Article {
         this.setUpdateTime(new Date());
     }
 
-    public Article(String content, Long authorId, String authorName, String authorAvatar, ArticleType type) {
+    public Article(String content, Long authorId, String authorName, String authorAvatar) {
         SnowFlake snowFlake = new SnowFlake(0, 0);
         this.setId(snowFlake.nextId());
         this.setContent(content);
         this.setCommentCount(0);
         this.setLikeCount(0);
         this.setHateCount(0);
-        this.setType(type.getValue());
         this.setStatus(ArticleStatus.NORMAL.getValue());
         this.setAuthorId(authorId);
         this.setAuthorName(authorName);
