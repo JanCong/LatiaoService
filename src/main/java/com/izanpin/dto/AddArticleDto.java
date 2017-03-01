@@ -1,20 +1,25 @@
 package com.izanpin.dto;
 
 import com.izanpin.common.util.Html;
-import com.izanpin.enums.ArticleType;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by St on 2017/2/27.
  */
 public class AddArticleDto {
+    public AddArticleDto(Long userId, String content, List<String> imageUrls, List<MultipartFile> images) {
+        this.setUserId(userId);
+        this.setContent(content);
+        this.setImageUrls(imageUrls);
+        this.setImages(images);
+    }
+
     private Long userId;
     private String content;
     private List<String> imageUrls;
+    private List<MultipartFile> images;
 
     public Long getUserId() {
         return userId;
@@ -38,5 +43,13 @@ public class AddArticleDto {
 
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    public List<MultipartFile> getImages() {
+        return images;
+    }
+
+    public void setImages(List<MultipartFile> images) {
+        this.images = images;
     }
 }

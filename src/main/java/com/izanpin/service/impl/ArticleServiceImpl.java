@@ -61,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void addArticle(AddArticleDto dto, List<MultipartFile> images) throws Exception {
+    public void addArticle(AddArticleDto dto) throws Exception {
         if (dto == null) {
             throw new Exception("参数错误");
         }
@@ -75,7 +75,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         String content = dto.getContent();
         List<String> imageUrls = dto.getImageUrls();
-
+        List<MultipartFile> images = dto.getImages();
 
         boolean hasImages = (imageUrls != null && !images.isEmpty()) || (images != null && !images.isEmpty());
         if ((content == null || content.isEmpty()) && (!hasImages)) {

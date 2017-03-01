@@ -14,11 +14,11 @@ import java.util.List;
 public interface ArticleService {
     PageInfo getArticles(Integer page, Integer size, String keyword);
 
+    void addArticle(AddArticleDto article) throws Exception;
+
     void addArticle(Article article) throws Exception;
 
     void addPicture(Article article, String imageUrl) throws Exception;
-
-    void addArticle(AddArticleDto dto, List<MultipartFile> images) throws Exception;
 
     boolean existHashId(String hashId);
 

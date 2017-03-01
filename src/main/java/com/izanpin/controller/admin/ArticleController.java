@@ -32,14 +32,4 @@ public class ArticleController extends BaseController {
     public String add() {
         return "/admin/article/add";
     }
-
-    @RequestMapping(value = "/addPicture", method = RequestMethod.GET)
-    public String addPicture() {
-        return "/admin/article/addPicture";
-    }
-
-    @RequestMapping(value = "/addJoke", method = RequestMethod.GET)
-    public String addJoke() {
-        return "/admin/article/addJoke";
-    }
 }

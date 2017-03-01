@@ -3,6 +3,7 @@ package com.izanpin.controller.api;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
 import com.izanpin.dto.AddArticleDto;
+import com.izanpin.dto.AddCommentDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
@@ -94,12 +95,27 @@ public class ArticleApiController {
     @ApiOperation(value = "新增辣条", notes = "imageUrls为图片网络地址数组，images为上传图片数组，可以同时使用")
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void addPicture(
-            @ApiParam("imageUrls为图片网络地址数组")
-            @RequestBody AddArticleDto dto,
+            @ApiParam("用户ID")
+            @RequestParam Long userId,
+            @ApiParam("内容")
+            @RequestParam(required = false) String content,
+            @ApiParam("图片网络地址数组")
+            @RequestParam(required = false) List<String> imageUrls,
             @ApiParam("上传图片数组")
             @RequestParam(required = false) List<MultipartFile> images) throws Exception {
-        articleService.addArticle(dto, images);
+        AddArticleDto dto = new AddArticleDto(userId, content, imageUrls, images);
+        articleService.addArticle(dto);
     }
+
+//    @ApiOperation(value = "新增辣条", notes = "imageUrls为图片网络地址数组，images为上传图片数组，可以同时使用")
+//    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public void addPicture(
+//            @ApiParam("imageUrls为图片网络地址数组")
+//            @RequestBody AddArticleDto dto,
+//            @ApiParam("上传图片数组")
+//            @RequestParam(required = false) List<MultipartFile> images) throws Exception {
+//        articleService.addArticle(dto, images);
+//    }
 
     @ApiOperation(value = "导入数据")
     @RequestMapping(value = "/import", method = RequestMethod.POST)
