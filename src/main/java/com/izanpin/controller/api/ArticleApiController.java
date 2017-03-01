@@ -6,11 +6,13 @@ import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
-import com.wordnik.swagger.annotations.Api;
-import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
+import com.wordnik.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * Created by pengyuancong on 2017/1/29.
@@ -89,12 +91,14 @@ public class ArticleApiController {
         articleService.hate(id, userId);
     }
 
-    @ApiOperation("新增辣条")
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public void AddPicture(
-            @ApiParam("articleType:PICTURE/JOKE（选填，默认按有无imageUrls判断是无聊图还是段子）")
-            @RequestBody AddArticleDto dto) throws Exception {
-        articleService.addArticle(dto);
+    @ApiOperation(value = "新增辣条", notes = "imageUrls为图片网络地址数组，images为上传图片数组，可以同时使用")
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void addPicture(
+            @ApiParam("imageUrls为图片网络地址数组")
+            @RequestBody AddArticleDto dto,
+            @ApiParam("上传图片数组")
+            @RequestParam(required = false) List<MultipartFile> images) throws Exception {
+        articleService.addArticle(dto, images);
     }
 
     @ApiOperation(value = "导入数据")

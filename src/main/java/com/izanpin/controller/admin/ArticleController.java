@@ -28,6 +28,11 @@ public class ArticleController extends BaseController {
         return "/admin/article/jokeList";
     }
 
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add() {
+        return "/admin/article/add";
+    }
+
     @RequestMapping(value = "/addPicture", method = RequestMethod.GET)
     public String addPicture() {
         return "/admin/article/addPicture";

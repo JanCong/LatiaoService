@@ -11,8 +11,11 @@ import com.izanpin.common.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -63,5 +66,37 @@ public class ImageServiceImpl implements ImageService {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void AddImage(MultipartFile image, long articalId) throws Exception {
+        if (image == null) {
+            throw new Exception("图片为空");
+        }
+
+        String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
+        String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
+        String bucketName = "wuliaoa";
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId());
+
+        // 初始化一个BosClient
+        BosClientConfiguration config = new BosClientConfiguration();
+        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+        BosClient client = new BosClient(config);
+
+        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, image.getBytes());
+        putObjectFromFileResponse.getETag();
+
+        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
+        String thumbnailUrl = url.toString() + "@!thumbnail";
+
+        Image img = new Image();
+        SnowFlake snowFlake = new SnowFlake(0, 0);
+        img.setId(snowFlake.nextId());
+        img.setArticleId(articalId);
+        img.setUrl(url.toString());
+        img.setThumbnailUrl(thumbnailUrl);
+        img.setCreateTime(new Date());
+        imageRepository.add(img);
     }
 }

@@ -6,7 +6,6 @@ import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.entity.User;
-import com.izanpin.enums.ArticleStatus;
 import com.izanpin.enums.ArticleType;
 import com.izanpin.repository.ArticleRepository;
 import com.izanpin.service.ArticleService;
@@ -16,8 +15,10 @@ import com.izanpin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Smart on 2017/1/30.
@@ -60,30 +61,52 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void addArticle(AddArticleDto dto) throws Exception {
+    public void addArticle(AddArticleDto dto, List<MultipartFile> images) throws Exception {
+        if (dto == null) {
+            throw new Exception("参数错误");
+        }
+        if (dto.getUserId() == null) {
+            throw new Exception("用户ID为空");
+        }
         User user = userService.getUser(dto.getUserId());
         if (user == null) {
             throw new Exception("用户不存在");
         }
 
-        Article article = new Article(dto.getContent(), user.getId(), user.getNickname(), user.getAvatar());
+        String content = dto.getContent();
+        List<String> imageUrls = dto.getImageUrls();
 
-        if (dto.getArticleType() != null) {
-            article.setType(dto.getArticleType().getValue());
+
+        boolean hasImages = (imageUrls != null && !images.isEmpty()) || (images != null && !images.isEmpty());
+        if ((content == null || content.isEmpty()) && (!hasImages)) {
+            throw new Exception("内容为空且没有图片");
+        }
+
+        Article article = new Article(content, user.getId(), user.getNickname(), user.getAvatar());
+
+        if (hasImages) {
+            article.setType(ArticleType.PICTURE.getValue());
         } else {
-            if (dto.getImageUrls() != null && !dto.getImageUrls().isEmpty()) {
-                article.setType(ArticleType.PICTURE.getValue());
-            } else {
-                article.setType(ArticleType.JOKE.getValue());
-            }
+            article.setType(ArticleType.JOKE.getValue());
         }
 
         addArticle(article);
 
-        if (article.getType() == ArticleType.PICTURE.getValue()) {
-            dto.getImageUrls().forEach((url) -> {
-                imageService.AddImage(url, article.getId());
-            });
+        if (hasImages) {
+            if (imageUrls != null) {
+                imageUrls.forEach((url) -> {
+                    imageService.AddImage(url, article.getId());
+                });
+            }
+            if (images != null) {
+                images.forEach((image) -> {
+                    try {
+                        imageService.AddImage(image, article.getId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
         }
     }
 

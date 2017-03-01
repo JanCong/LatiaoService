@@ -4,8 +4,8 @@
             <div class="box-header">
                 <h3 class="box-title">无聊图管理</h3>
                 <div class="box-tools pull-right">
-                    <a onclick="emailAccountInfoToListAjax();" class="btn btn-sm btn-primary" target="modal" modal="lg"
-                       href="${ctx}/admin/article/addPicture">添加</a>
+                    <a class="btn btn-sm btn-primary" target="modal" modal="lg"
+                       href="${ctx}/admin/article/add">添加</a>
                 </div>
             </div>
             <div class="box-body">

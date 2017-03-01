@@ -2,9 +2,11 @@ package com.izanpin.dto;
 
 import com.izanpin.common.util.Html;
 import com.izanpin.enums.ArticleType;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by St on 2017/2/27.
@@ -12,8 +14,7 @@ import java.util.ArrayList;
 public class AddArticleDto {
     private Long userId;
     private String content;
-    private ArticleType articleType;
-    private ArrayList<String> imageUrls;
+    private List<String> imageUrls;
 
     public Long getUserId() {
         return userId;
@@ -31,19 +32,11 @@ public class AddArticleDto {
         this.content = Html.htmlUnescape(content);
     }
 
-    public ArticleType getArticleType() {
-        return articleType;
-    }
-
-    public void setArticleType(ArticleType articleType) {
-        this.articleType = articleType;
-    }
-
-    public ArrayList<String> getImageUrls() {
+    public List<String> getImageUrls() {
         return imageUrls;
     }
 
-    public void setImageUrls(ArrayList<String> imageUrls) {
+    public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
 }
