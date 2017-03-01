@@ -30,12 +30,6 @@
 
 <script type="text/javascript">
     $('#addArticleForm').submit(function () {
-        var myFormData = {
-            userId: 3,
-            content: $('textarea[name="content"]').val(),
-            images: $('input[name="images"]')[0].files[0]
-        };
-
         var formData = new FormData();
         formData.append('userId', 3);
         formData.append('content', $('textarea[name="content"]').val());
@@ -44,11 +38,6 @@
         $(files).each(function () {
             formData.append('images', this);
         })
-
-//        var files = $('input[name="images"]')[0].files;
-//        for (var i = 0; i < files.length; i++) {
-//            formData.append('images', files[i]);
-//        }
 
         console.log(formData);
         $.ajax({
@@ -66,6 +55,5 @@
         });
 
         return false;
-
     });
 </script>
