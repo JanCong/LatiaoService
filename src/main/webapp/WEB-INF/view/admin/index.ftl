@@ -5,7 +5,7 @@
     <base href="${ctx}/static/admin/">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>无聊啊管理后台</title>
+    <title>辣条管理后台</title>
 <@style/>
 </head>
 <body class="sidebar-mini ajax-template skin-blue fixed">
@@ -36,7 +36,7 @@
         <!-- Main content -->
         <section class="content" id="content">
             <div class="tabs-panel">
-                <h1>欢迎使用无聊啊管理后台</h1>
+                <h1>欢迎使用辣条管理后台</h1>
             </div>
         </section>
     </div>
