@@ -41,9 +41,14 @@
         formData.append('content', $('textarea[name="content"]').val());
 
         var files = $('input[name="images"]')[0].files;
-        for (var i = 0; i < files.length; i++) {
-            formData.append('images', files[i]);
-        }
+        $(files).each(function () {
+            formData.append('images', this);
+        })
+
+//        var files = $('input[name="images"]')[0].files;
+//        for (var i = 0; i < files.length; i++) {
+//            formData.append('images', files[i]);
+//        }
 
         console.log(formData);
         $.ajax({
