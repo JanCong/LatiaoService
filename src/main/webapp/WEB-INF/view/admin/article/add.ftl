@@ -37,9 +37,8 @@
         var files = $('input[name="images"]')[0].files;
         $(files).each(function () {
             formData.append('images', this);
-        })
+        });
 
-        console.log(formData);
         $.ajax({
             url: '${ctx}/api/article',
             type: 'POST',
@@ -47,10 +46,12 @@
             processData: false, // Tell jquery to don't process the data
             contentType: false, // If you do not set it as false, most probably you would get 400 or 415 error
             success: function (data, status) {
-                alert('success');
+                $("#lgModal").modal('hide');
+                alertMsg("添加成功", "success");
+                reloadTable(list_ajax, "#dictionary-time", "#dictionary-premise");
             },
             failure: function (data) {
-
+                alert(data);
             }
         });
 
