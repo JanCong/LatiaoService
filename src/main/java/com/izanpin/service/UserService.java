@@ -1,5 +1,6 @@
 package com.izanpin.service;
 
+import com.izanpin.dto.LoginDto;
 import com.izanpin.entity.User;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface UserService {
     List<User> getRobotUsers();
 
     User getUser(Long id);
+
+    User login(LoginDto dto) throws Exception;
 }

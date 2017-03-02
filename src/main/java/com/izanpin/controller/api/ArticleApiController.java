@@ -3,13 +3,11 @@ package com.izanpin.controller.api;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
 import com.izanpin.dto.AddArticleDto;
-import com.izanpin.dto.AddCommentDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,7 +16,7 @@ import java.util.List;
 /**
  * Created by pengyuancong on 2017/1/29.
  */
-@Api(value = "无聊图/段子")
+@Api(value = "辣条")
 @RestController
 @RequestMapping(value = "/api/article")
 public class ArticleApiController {

@@ -20,4 +20,6 @@ public interface UserRepository {
     int updateByPrimaryKey(User record);
 
     List<User> getUsersByType(Integer type);
+
+    User getUserByPhone(String phone);
 }
