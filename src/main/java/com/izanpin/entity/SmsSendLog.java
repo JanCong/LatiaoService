@@ -10,6 +10,9 @@ import java.util.Date;
  * Created by St on 2017/3/3.
  */
 public class SmsSendLog {
+    public SmsSendLog() {
+    }
+
     public SmsSendLog(String phone, String templateCode, String paramString) {
         this.phone = phone;
         this.templateCode = templateCode;

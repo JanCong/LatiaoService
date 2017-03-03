@@ -22,6 +22,9 @@ public class SmsSecurityCode {
     private Date updateTime;
     private Date dueTime;
 
+    public SmsSecurityCode() {
+    }
+
     public SmsSecurityCode(String phone, String code, Integer type) {
         this.phone = phone;
         this.code = code;
