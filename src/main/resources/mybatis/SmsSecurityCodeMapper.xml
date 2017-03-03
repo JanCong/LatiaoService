@@ -15,7 +15,7 @@
     <sql id="Base_Column_List">
     `id`, `phone`, `code`, `type`, `status`, `create_time`, `update_time`, `due_time`
   </sql>
-    <select id="getByPhoneAndType" resultMap="ResultMap">
+    <select id="getLastByPhoneAndType" resultMap="ResultMap">
         select
         <include refid="Base_Column_List"/>
         from sms_security_code
@@ -24,7 +24,7 @@
         limit 1
     </select>
     <insert id="add" parameterType="com.izanpin.entity.SmsSecurityCode">
-        INSERT INTO `wuliaoa`.`sms_security_code`
+        INSERT INTO `sms_security_code`
         (`id`,
         `phone`,
         `code`,
