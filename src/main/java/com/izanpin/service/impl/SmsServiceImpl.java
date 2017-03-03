@@ -7,7 +7,6 @@ import com.izanpin.enums.SmsSecurityCodeType;
 import com.izanpin.repository.SmsSecurityCodeRepository;
 import com.izanpin.repository.SmsSendLogRepository;
 import com.izanpin.service.SmsService;
-import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
@@ -57,10 +56,9 @@ public class SmsServiceImpl implements SmsService {
         SmsSecurityCode lastSmsSecurityCode = smsSecurityCodeRepository.getLastByPhoneAndType(number, SmsSecurityCodeType.LOGIN.getValue());
         SmsSendLog lastSmsSendLog = smsSendLogRepository.getLastByPhone(number);
 
-        //todo 重复发送验证
         if (lastSmsSecurityCode != null && lastSmsSendLog != null
                 && lastSmsSecurityCode.getStatus().equals(SmsSecurityCodeStatus.NORMAL.getValue())
-                && lastSmsSendLog.getCreateTime().before(new Date(lastSmsSendLog.getCreateTime().getTime() + 60000))) {
+                && new Date().before(new Date(lastSmsSendLog.getCreateTime().getTime() + 60000))) {
             throw new Exception("已发送验证码，1分钟内请勿重复发送");
         }
 

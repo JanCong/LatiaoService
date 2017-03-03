@@ -15,8 +15,8 @@
     <select id="getLastByPhone" resultMap="ResultMap">
         select
         <include refid="Base_Column_List"/>
-        from sms_security_code
-        where phone = #{phone} and type = #{type}
+        from sms_send_log
+        where phone = #{phone}
         order by id desc
         limit 1
     </select>
@@ -30,9 +30,9 @@
         VALUES
         (#{id},
         #{phone},
-        #{template_code},
-        #{param_string},
-        #{create_time});
+        #{templateCode},
+        #{paramString},
+        #{createTime});
 
     </insert>
 </mapper>
