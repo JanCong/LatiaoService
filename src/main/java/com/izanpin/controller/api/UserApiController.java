@@ -2,6 +2,7 @@ package com.izanpin.controller.api;
 
 import com.izanpin.dto.LoginDto;
 import com.izanpin.dto.ResultDto;
+import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
 import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.UserService;
@@ -29,6 +30,21 @@ public class UserApiController {
         ResultDto<User> result;
         try {
             User user = userService.login(dto);
+            result = new ResultDto(ResultStatus.SUCCESSFUL, ResultStatus.SUCCESSFUL.name(), user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED, e.getMessage(), null);
+        }
+        return result;
+    }
+
+    @ApiOperation("短信验证码登录")
+    @RequestMapping(value = "/smsLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultDto<User> smsLogin(@RequestBody SmsLoginDto dto) {
+        ResultDto<User> result;
+        try {
+            User user = userService.smsLogin(dto);
             result = new ResultDto(ResultStatus.SUCCESSFUL, ResultStatus.SUCCESSFUL.name(), user);
         } catch (Exception e) {
             e.printStackTrace();

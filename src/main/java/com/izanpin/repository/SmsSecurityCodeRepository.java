@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SmsSecurityCodeRepository {
-    int add(SmsSecurityCode record);
+    void add(SmsSecurityCode record);
 
     SmsSecurityCode getLastByPhoneAndType(@Param("phone") String phone, @Param("type") Integer type);
+
+    void updateStatus(@Param("id") Long id, @Param("status") Integer status);
 }

@@ -64,9 +64,25 @@ public class SmsServiceImpl implements SmsService {
 
         String securityCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
 
+        send(number, String.format("{\"number\":\"%s\"}", securityCode), "SMS_51055100");
+
         SmsSecurityCode smsSecurityCode = new SmsSecurityCode(number, securityCode, SmsSecurityCodeType.LOGIN.getValue());
         smsSecurityCodeRepository.add(smsSecurityCode);
+    }
 
-        send(number, String.format("{\"number\":\"%s\"}", securityCode), "SMS_51055100");
+    @Override
+    public boolean verifyLoginSecurityCode(String number, String code) {
+        SmsSecurityCode lastSmsSecurityCode = smsSecurityCodeRepository.getLastByPhoneAndType(number, SmsSecurityCodeType.LOGIN.getValue());
+
+        if (lastSmsSecurityCode != null
+                && lastSmsSecurityCode.getStatus().equals(SmsSecurityCodeStatus.NORMAL.getValue())
+                && lastSmsSecurityCode.getDueTime().after(new Date())
+                && lastSmsSecurityCode.getCode().equalsIgnoreCase(code)) {
+            smsSecurityCodeRepository.updateStatus(lastSmsSecurityCode.getId(), SmsSecurityCodeStatus.DISABLED.getValue());
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

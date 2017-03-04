@@ -9,4 +9,6 @@ public interface SmsService {
     void send(String number, String paramString, String templateCode) throws Exception;
 
     void sendLoginSecurityCode(String number) throws Exception;
+
+    boolean verifyLoginSecurityCode(String number, String code);
 }
