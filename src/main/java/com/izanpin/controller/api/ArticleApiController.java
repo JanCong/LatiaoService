@@ -97,11 +97,13 @@ public class ArticleApiController {
             @RequestParam Long userId,
             @ApiParam("内容")
             @RequestParam(required = false) String content,
+            @ApiParam("设备")
+            @RequestParam(required = false) String device,
             @ApiParam("图片网络地址数组")
             @RequestParam(required = false) List<String> imageUrls,
             @ApiParam("上传图片数组")
             @RequestParam(required = false) List<MultipartFile> images) throws Exception {
-        AddArticleDto dto = new AddArticleDto(userId, content, imageUrls, images);
+        AddArticleDto dto = new AddArticleDto(userId, content, device, imageUrls, images);
         articleService.addArticle(dto);
     }
 

@@ -9,15 +9,17 @@ import java.util.List;
  * Created by St on 2017/2/27.
  */
 public class AddArticleDto {
-    public AddArticleDto(Long userId, String content, List<String> imageUrls, List<MultipartFile> images) {
+    public AddArticleDto(Long userId, String content, String device, List<String> imageUrls, List<MultipartFile> images) {
         this.setUserId(userId);
         this.setContent(content);
+        this.setDevice(device);
         this.setImageUrls(imageUrls);
         this.setImages(images);
     }
 
     private Long userId;
     private String content;
+    private String device;
     private List<String> imageUrls;
     private List<MultipartFile> images;
 
@@ -35,6 +37,14 @@ public class AddArticleDto {
 
     public void setContent(String content) {
         this.content = Html.htmlUnescape(content);
+    }
+
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
     }
 
     public List<String> getImageUrls() {

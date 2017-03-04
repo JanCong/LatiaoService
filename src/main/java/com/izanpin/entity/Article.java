@@ -24,19 +24,13 @@ public class Article {
         this.setUpdateTime(new Date());
     }
 
-    public Article(String content, Long authorId, String authorName, String authorAvatar) {
-        SnowFlake snowFlake = new SnowFlake(0, 0);
-        this.setId(snowFlake.nextId());
+    public Article(String content, Long authorId, String authorName, String authorAvatar, String device) {
+        this();
         this.setContent(content);
-        this.setCommentCount(0);
-        this.setLikeCount(0);
-        this.setHateCount(0);
-        this.setStatus(ArticleStatus.NORMAL.getValue());
         this.setAuthorId(authorId);
         this.setAuthorName(authorName);
         this.setAuthorAvatar(authorAvatar);
-        this.setCreateTime(new Date());
-        this.setUpdateTime(new Date());
+        this.setDevice(device);
     }
 
     @JsonSerialize(using = ToStringSerializer.class)
@@ -53,6 +47,8 @@ public class Article {
 
     private String hashId;
 
+    private String device;
+
     private Integer commentCount;
 
     private Integer likeCount;
@@ -62,6 +58,8 @@ public class Article {
     private Integer type;
 
     private Integer status;
+
+    private String ip;
 
     private Date createTime;
 
@@ -121,6 +119,14 @@ public class Article {
         this.hashId = hashId == null ? null : hashId.trim();
     }
 
+    public String getDevice() {
+        return device;
+    }
+
+    public void setDevice(String device) {
+        this.device = device;
+    }
+
     public Integer getCommentCount() {
         return commentCount;
     }
@@ -159,6 +165,14 @@ public class Article {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public Date getCreateTime() {

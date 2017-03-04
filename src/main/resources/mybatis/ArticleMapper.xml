@@ -8,11 +8,13 @@
         <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
         <result column="author_avatar" jdbcType="VARCHAR" property="authorAvatar"/>
         <result column="hash_id" jdbcType="VARCHAR" property="hashId"/>
+        <result column="device" jdbcType="VARCHAR" property="device"/>
         <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
         <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
         <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -24,11 +26,13 @@
         <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
         <result column="author_avatar" jdbcType="VARCHAR" property="authorAvatar"/>
         <result column="hash_id" jdbcType="VARCHAR" property="hashId"/>
+        <result column="device" jdbcType="VARCHAR" property="device"/>
         <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
         <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
         <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
 
@@ -49,11 +53,13 @@
         author_name,
         author_avatar,
         hash_id,
+        device,
         comment_count,
         like_count,
         hate_count,
         type,
         status,
+        ip,
         create_time,
         update_time
   </sql>
@@ -143,6 +149,9 @@
             <if test="hashId != null">
                 hash_id,
             </if>
+            <if test="device != null">
+                device,
+            </if>
             <if test="commentCount != null">
                 comment_count,
             </if>
@@ -157,6 +166,9 @@
             </if>
             <if test="status != null">
                 status,
+            </if>
+            <if test="ip != null">
+                ip,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -182,6 +194,9 @@
             <if test="hashId != null">
                 #{hashId,jdbcType=VARCHAR},
             </if>
+            <if test="device != null">
+                #{device,jdbcType=VARCHAR},
+            </if>
             <if test="commentCount != null">
                 #{commentCount,jdbcType=INTEGER},
             </if>
@@ -196,6 +211,9 @@
             </if>
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},

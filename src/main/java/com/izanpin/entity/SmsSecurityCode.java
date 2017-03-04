@@ -23,13 +23,6 @@ public class SmsSecurityCode {
     private Date dueTime;
 
     public SmsSecurityCode() {
-    }
-
-    public SmsSecurityCode(String phone, String code, Integer type) {
-        this.phone = phone;
-        this.code = code;
-        this.type = type;
-
         SnowFlake snowFlake = new SnowFlake(0, 0);
         this.setId(snowFlake.nextId());
 
@@ -37,6 +30,13 @@ public class SmsSecurityCode {
         this.createTime = new Date();
         this.updateTime = new Date();
         this.dueTime = new Date(this.createTime.getTime() + 600000);
+    }
+
+    public SmsSecurityCode(String phone, String code, Integer type) {
+        this();
+        this.phone = phone;
+        this.code = code;
+        this.type = type;
     }
 
     public Long getId() {

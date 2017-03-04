@@ -82,7 +82,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new Exception("内容为空且没有图片");
         }
 
-        Article article = new Article(content, user.getId(), user.getNickname(), user.getAvatar());
+        Article article = new Article(content, user.getId(), user.getNickname(), user.getAvatar(), dto.getDevice());
 
         if (hasImages) {
             article.setType(ArticleType.PICTURE.getValue());
