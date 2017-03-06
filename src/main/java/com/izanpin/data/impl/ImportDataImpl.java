@@ -60,29 +60,9 @@ public class ImportDataImpl implements ImportData {
     }
 
     public void importJokes() throws Exception {
-        new Thread(() -> {
-            try {
-                importJokesFromJuhe();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                importJokesFromJisu();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                importJokesFromShowapi();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+        importJokesFromJuhe();
+        importJokesFromJisu();
+        importJokesFromShowapi();
     }
 
     private void importJokesFromJuhe() throws Exception {
@@ -182,37 +162,10 @@ public class ImportDataImpl implements ImportData {
     }
 
     public void importPictures() throws Exception {
-        new Thread(() -> {
-            try {
-                importPicturesFromJuhe();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                importPicturesFromShowapi();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                importPicturesFromShowapi2();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                importPicturesFromShowapi3();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }).start();
+        importPicturesFromJuhe();
+        importPicturesFromShowapi();
+        importPicturesFromShowapi2();
+        importPicturesFromShowapi3();
     }
 
     private void importPicturesFromJuhe() throws Exception {
