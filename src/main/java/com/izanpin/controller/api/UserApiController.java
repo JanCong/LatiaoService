@@ -30,10 +30,10 @@ public class UserApiController {
         ResultDto<User> result;
         try {
             User user = userService.login(dto);
-            result = new ResultDto(ResultStatus.SUCCESSFUL, ResultStatus.SUCCESSFUL.name(), user);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), user);
         } catch (Exception e) {
             e.printStackTrace();
-            result = new ResultDto(ResultStatus.FAILED, e.getMessage(), null);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
     }
@@ -45,10 +45,10 @@ public class UserApiController {
         ResultDto<User> result;
         try {
             User user = userService.smsLogin(dto);
-            result = new ResultDto(ResultStatus.SUCCESSFUL, ResultStatus.SUCCESSFUL.name(), user);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), user);
         } catch (Exception e) {
             e.printStackTrace();
-            result = new ResultDto(ResultStatus.FAILED, e.getMessage(), null);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
     }

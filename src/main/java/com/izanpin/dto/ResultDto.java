@@ -6,21 +6,21 @@ import com.izanpin.enums.ResultStatus;
  * Created by St on 2017/3/2.
  */
 public class ResultDto<T> {
-    public ResultDto(ResultStatus status, String msg, T result) {
+    public ResultDto(Integer status, String msg, T result) {
         this.setStatus(status);
         this.setMsg(msg);
         this.setResult(result);
     }
 
-    private ResultStatus status;
+    private Integer status;
     private String msg;
     private T result;
 
-    public ResultStatus getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(ResultStatus status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

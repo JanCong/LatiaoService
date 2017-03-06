@@ -30,10 +30,10 @@ public class SmsApiController {
         ResultDto result;
         try {
             smsService.sendLoginSecurityCode(number);
-            result = new ResultDto(ResultStatus.SUCCESSFUL, ResultStatus.SUCCESSFUL.name(), null);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
         } catch (Exception e) {
             e.printStackTrace();
-            result = new ResultDto(ResultStatus.FAILED, e.getMessage(), null);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
     }

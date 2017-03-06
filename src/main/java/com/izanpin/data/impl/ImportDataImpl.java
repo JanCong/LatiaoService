@@ -60,8 +60,29 @@ public class ImportDataImpl implements ImportData {
     }
 
     public void importJokes() throws Exception {
-        importJokesFromJuhe();
-        importJokesFromJisu();
+        new Thread(() -> {
+            try {
+                importJokesFromJuhe();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importJokesFromJisu();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importJokesFromShowapi();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void importJokesFromJuhe() throws Exception {
@@ -126,9 +147,72 @@ public class ImportDataImpl implements ImportData {
 
     }
 
+    private void importJokesFromShowapi() throws Exception {
+        String jsonString = Http.get("https://route.showapi.com/341-1?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        JSONObject jsonObject = JSON.parseObject(jsonString);
+
+        if (jsonObject.getInteger("showapi_res_code").equals(0)) {
+            JSONArray jsonArray = jsonObject.getJSONObject("showapi_res_body").getJSONArray("contentlist");
+
+            if (jsonArray != null && !jsonArray.isEmpty()) {
+                List<User> robots = userService.getRobotUsers();
+                jsonArray.forEach(obj -> {
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = jObj.getString("text");
+                    if (content != null && !content.isEmpty()) {
+                        String hashId = null;
+                        try {
+                            hashId = SHA.toSHAString(jObj.toString());
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!articleService.existHashId(hashId)) {
+                            Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                            try {
+                                articleService.addArticle(article);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     public void importPictures() throws Exception {
-        importPicturesFromJuhe();
-        importPicturesFromJisu();
+        new Thread(() -> {
+            try {
+                importPicturesFromJuhe();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importPicturesFromShowapi();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importPicturesFromShowapi2();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importPicturesFromShowapi3();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void importPicturesFromJuhe() throws Exception {
@@ -194,6 +278,116 @@ public class ImportDataImpl implements ImportData {
             }
         }
 
+    }
+
+    private void importPicturesFromShowapi() throws Exception {
+        String jsonString = Http.get("https://route.showapi.com/197-1?num=50&rand=1&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        JSONObject jsonObject = JSON.parseObject(jsonString);
+
+        if (jsonObject.getInteger("showapi_res_code").equals(0)) {
+            JSONArray jsonArray = jsonObject.getJSONObject("showapi_res_body").getJSONArray("newslist");
+
+            if (jsonArray != null && !jsonArray.isEmpty()) {
+                List<User> robots = userService.getRobotUsers();
+                jsonArray.forEach(obj -> {
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = "";
+
+                    String hashId = null;
+                    try {
+                        hashId = SHA.toSHAString(jObj.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+
+                    String imgUrl = jObj.getString("picUrl");
+
+                    if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                        Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                        try {
+                            articleService.addPicture(article, imgUrl);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
+
+    }
+
+    private void importPicturesFromShowapi2() throws Exception {
+        String jsonString = Http.get("https://route.showapi.com/341-3?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        JSONObject jsonObject = JSON.parseObject(jsonString);
+
+        if (jsonObject.getInteger("showapi_res_code").equals(0)) {
+            JSONArray jsonArray = jsonObject.getJSONObject("showapi_res_body").getJSONArray("contentlist");
+
+            if (jsonArray != null && !jsonArray.isEmpty()) {
+                List<User> robots = userService.getRobotUsers();
+                jsonArray.forEach(obj -> {
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = jObj.getString("title");
+                    if (content == null) {
+                        content = "";
+                    }
+                    String hashId = null;
+                    try {
+                        hashId = SHA.toSHAString(jObj.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+
+                    String imgUrl = jObj.getString("img");
+
+                    if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                        Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                        try {
+                            articleService.addPicture(article, imgUrl);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private void importPicturesFromShowapi3() throws Exception {
+        String jsonString = Http.get("https://route.showapi.com/341-2?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        JSONObject jsonObject = JSON.parseObject(jsonString);
+
+        if (jsonObject.getInteger("showapi_res_code").equals(0)) {
+            JSONArray jsonArray = jsonObject.getJSONObject("showapi_res_body").getJSONArray("contentlist");
+
+            if (jsonArray != null && !jsonArray.isEmpty()) {
+                List<User> robots = userService.getRobotUsers();
+                jsonArray.forEach(obj -> {
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = jObj.getString("title");
+                    if (content == null) {
+                        content = "";
+                    }
+                    String hashId = null;
+                    try {
+                        hashId = SHA.toSHAString(jObj.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
+
+                    String imgUrl = jObj.getString("img");
+
+                    if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                        Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                        try {
+                            articleService.addPicture(article, imgUrl);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        }
     }
 
     private Article setArticle(String content, String hashId, ArticleType articleType, List<User> robots) {
