@@ -21,5 +21,5 @@ public interface ArticleRepository {
 
     List<Article> findByTimeline(RequestArticleTimelineDto dto);
 
-    void increaseCommentCount(Long id, Integer count);
+    void increaseCommentCount(@Param("id") Long id, @Param("count") Integer count);
 }
