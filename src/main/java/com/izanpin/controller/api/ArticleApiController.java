@@ -108,9 +108,9 @@ public class ArticleApiController {
     }
 
     @ApiOperation(value = "导入数据")
-    @RequestMapping(value = "/import", method = RequestMethod.POST)
+    @RequestMapping(value = "/importDataAsync", method = RequestMethod.POST)
     @ResponseBody
-    public void importData() throws Exception {
-        importData.importData();
+    public void importDataAsync() throws Exception {
+        importData.importDataAsync();
     }
 }

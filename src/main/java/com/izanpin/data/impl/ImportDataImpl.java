@@ -41,6 +41,25 @@ public class ImportDataImpl implements ImportData {
 
     ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
+    public void importDataAsync() throws Exception {
+        cachedThreadPool.submit(() -> {
+            try {
+                importJokes();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        cachedThreadPool.submit(() -> {
+            try {
+                importPictures();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void importData() throws Exception {
         cachedThreadPool.submit(() -> {
             try {
@@ -57,6 +76,11 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
+
+        cachedThreadPool.shutdown();
+        while (!cachedThreadPool.isTerminated()) {
+            // 等待所有子线程结束，才退出主线程
+        }
     }
 
     public void importJokes() throws Exception {
