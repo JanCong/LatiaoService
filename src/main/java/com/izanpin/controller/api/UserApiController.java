@@ -52,4 +52,19 @@ public class UserApiController {
         }
         return result;
     }
+
+    @ApiOperation("获取用户")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDto<User> get(@PathVariable Long id) {
+        ResultDto<User> result;
+        try {
+            User user = userService.getUser(id);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
+    }
 }

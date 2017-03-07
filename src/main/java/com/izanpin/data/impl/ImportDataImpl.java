@@ -21,6 +21,8 @@ import org.springframework.stereotype.Component;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Smart on 2017/1/31.
@@ -37,9 +39,10 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
+    ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
     public void importData() throws Exception {
-        Thread threadImportJokes = new Thread(() -> {
+        cachedThreadPool.submit(() -> {
             try {
                 importJokes();
             } catch (Exception e) {
@@ -47,22 +50,37 @@ public class ImportDataImpl implements ImportData {
             }
         });
 
-        Thread threadImportPictures = new Thread(() -> {
+        cachedThreadPool.submit(() -> {
             try {
                 importPictures();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-
-        threadImportJokes.start();
-        threadImportPictures.start();
     }
 
     public void importJokes() throws Exception {
-        importJokesFromJuhe();
-        importJokesFromJisu();
-        importJokesFromShowapi();
+        cachedThreadPool.submit(() -> {
+            try {
+                importJokesFromJuhe();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        cachedThreadPool.submit(() -> {
+            try {
+                importJokesFromJisu();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        cachedThreadPool.submit(() -> {
+            try {
+                importJokesFromShowapi();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void importJokesFromJuhe() throws Exception {
@@ -162,10 +180,34 @@ public class ImportDataImpl implements ImportData {
     }
 
     public void importPictures() throws Exception {
-        importPicturesFromJuhe();
-        importPicturesFromShowapi();
-        importPicturesFromShowapi2();
-        importPicturesFromShowapi3();
+        cachedThreadPool.submit(() -> {
+            try {
+                importPicturesFromJuhe();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        cachedThreadPool.submit(() -> {
+            try {
+                importPicturesFromShowapi();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        cachedThreadPool.submit(() -> {
+            try {
+                importPicturesFromShowapi2();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        cachedThreadPool.submit(() -> {
+            try {
+                importPicturesFromShowapi3();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private void importPicturesFromJuhe() throws Exception {
