@@ -192,13 +192,6 @@ public class ImportDataImpl implements ImportData {
         });
         executorService.submit(() -> {
             try {
-                importPicturesFromShowapi();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            try {
                 importPicturesFromShowapi2();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -207,6 +200,13 @@ public class ImportDataImpl implements ImportData {
         executorService.submit(() -> {
             try {
                 importPicturesFromShowapi3();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        executorService.submit(() -> {
+            try {
+                importPicturesFromShowapi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
