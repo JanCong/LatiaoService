@@ -57,8 +57,6 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
-
-        cachedThreadPool.shutdown();
     }
 
     @Override
@@ -78,11 +76,6 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
-
-        cachedThreadPool.shutdown();
-        while (!cachedThreadPool.isTerminated()) {
-            // 等待所有子线程结束，才退出主线程
-        }
     }
 
     public void importJokes() throws Exception {
