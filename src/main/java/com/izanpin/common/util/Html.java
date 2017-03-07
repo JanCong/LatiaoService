@@ -39,6 +39,8 @@ public class Html {
         input = input.replaceAll("<br/>", "\n");
         input = input.replaceAll("<br />", "\n");
 
+        input = input.replaceAll("<p>", "");
+        input = input.replaceAll("</p>", "");
         input = input.replaceAll("<img.*>", "");
         return input;
     }
