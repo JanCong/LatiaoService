@@ -57,6 +57,8 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
+
+        cachedThreadPool.shutdown();
     }
 
     @Override
