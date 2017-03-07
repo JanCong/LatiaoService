@@ -113,4 +113,11 @@ public class ArticleApiController {
     public void importDataAsync() throws Exception {
         importData.importDataAsync();
     }
+
+    @ApiOperation(value = "导入数据")
+    @RequestMapping(value = "/importData", method = RequestMethod.POST)
+    @ResponseBody
+    public void importData() throws Exception {
+        importData.importData();
+    }
 }
