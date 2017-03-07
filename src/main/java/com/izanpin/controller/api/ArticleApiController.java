@@ -107,10 +107,11 @@ public class ArticleApiController {
         articleService.addArticle(dto);
     }
 
+
     @ApiOperation(value = "导入数据")
-    @RequestMapping(value = "/importDataAsync", method = RequestMethod.POST)
+    @RequestMapping(value = "/importData", method = RequestMethod.POST)
     @ResponseBody
-    public void importDataAsync() throws Exception {
-        importData.importDataAsync();
+    public void importData() throws Exception {
+        importData.importData();
     }
 }

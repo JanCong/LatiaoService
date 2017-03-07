@@ -39,10 +39,11 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
-    ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    ExecutorService executorService = Executors.newFixedThreadPool(10);
 
-    public void importDataAsync() throws Exception {
-        cachedThreadPool.submit(() -> {
+    @Override
+    public void importData() throws Exception {
+        executorService.submit(() -> {
             try {
                 importJokes();
             } catch (Exception e) {
@@ -50,7 +51,7 @@ public class ImportDataImpl implements ImportData {
             }
         });
 
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importPictures();
             } catch (Exception e) {
@@ -60,40 +61,22 @@ public class ImportDataImpl implements ImportData {
     }
 
     @Override
-    public void importData() throws Exception {
-        cachedThreadPool.submit(() -> {
-            try {
-                importJokes();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        cachedThreadPool.submit(() -> {
-            try {
-                importPictures();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
     public void importJokes() throws Exception {
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importJokesFromJuhe();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importJokesFromJisu();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importJokesFromShowapi();
             } catch (Exception e) {
@@ -198,29 +181,30 @@ public class ImportDataImpl implements ImportData {
         }
     }
 
+    @Override
     public void importPictures() throws Exception {
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importPicturesFromJuhe();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importPicturesFromShowapi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importPicturesFromShowapi2();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        cachedThreadPool.submit(() -> {
+        executorService.submit(() -> {
             try {
                 importPicturesFromShowapi3();
             } catch (Exception e) {
