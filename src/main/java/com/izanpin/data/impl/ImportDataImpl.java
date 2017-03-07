@@ -166,7 +166,7 @@ public class ImportDataImpl implements ImportData {
                         }
 
                         if (!articleService.existHashId(hashId)) {
-                            Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                            Article article = setArticle(content, hashId, ArticleType.JOKE, robots);
                             try {
                                 articleService.addArticle(article);
                             } catch (Exception e) {
