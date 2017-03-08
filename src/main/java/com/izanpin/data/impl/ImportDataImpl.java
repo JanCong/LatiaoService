@@ -39,10 +39,11 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
-    ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Override
     public void importData() throws Exception {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
         executorService.submit(() -> {
             try {
                 importJokes();
@@ -64,6 +65,8 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importJokes() throws Exception {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
         executorService.submit(() -> {
             try {
                 importJokesFromJuhe();
@@ -85,6 +88,8 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
+
+        executorService.shutdown();
     }
 
     private void importJokesFromJuhe() throws Exception {
@@ -185,6 +190,8 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importPictures() throws Exception {
+        ExecutorService executorService = Executors.newCachedThreadPool();
+
         executorService.submit(() -> {
             try {
                 importPicturesFromJuhe();
@@ -213,6 +220,8 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
+
+        executorService.shutdown();
     }
 
     private void importPicturesFromJuhe() throws Exception {
