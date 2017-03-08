@@ -208,14 +208,14 @@ public class ImportDataImpl implements ImportData {
         });
         executorService.submit(() -> {
             try {
-                importPicturesFromShowapi3();
+                importPicturesFromShowapi();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
         executorService.submit(() -> {
             try {
-                importPicturesFromShowapi();
+                importPicturesFromShowapi3();
             } catch (Exception e) {
                 e.printStackTrace();
             }
