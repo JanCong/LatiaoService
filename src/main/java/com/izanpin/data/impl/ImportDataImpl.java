@@ -39,7 +39,7 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
-    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Override
     public void importData() throws Exception {
@@ -58,6 +58,8 @@ public class ImportDataImpl implements ImportData {
                 e.printStackTrace();
             }
         });
+
+        executorService.shutdown();
     }
 
     @Override
