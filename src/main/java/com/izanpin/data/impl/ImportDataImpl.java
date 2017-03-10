@@ -15,6 +15,8 @@ import com.izanpin.service.ImageService;
 import com.izanpin.service.UserService;
 import com.izanpin.common.util.Http;
 import com.izanpin.common.util.SnowFlake;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,9 +41,12 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
+    private static final Logger logger = LogManager.getLogger(ImportDataImpl.class.getName());
 
     @Override
     public void importData() throws Exception {
+        logger.error("importData start");
+
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         executorService.submit(() -> {
@@ -61,6 +66,8 @@ public class ImportDataImpl implements ImportData {
         });
 
         executorService.shutdown();
+
+        logger.error("importData end");
     }
 
     @Override
