@@ -297,7 +297,7 @@ public class ImportDataImpl implements ImportData {
     }
 
     private void importPicturesFromShowapi() throws Exception {
-        String jsonString = Http.get("https://route.showapi.com/197-1?num=50&rand=1&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        String jsonString = Http.get("https://route.showapi.com/197-1?num=5&rand=1&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
         if (jsonObject.getInteger("showapi_res_code").equals(0)) {

@@ -8,10 +8,10 @@ private static final Logger logger = LogManager.getLogger(实际类名.class.get
 （2）需要注意日志文件备份数和日志文件大小，注意预留目录空间
 （3）实际部署的时候backupFilePatch变量需要修改成linux目录
  -->
-<configuration status="error">
+<configuration status="trace">
     <Properties>
         <Property name="fileName">latiao.log</Property>
-        <Property name="backupFilePatch">/usr/latiao/log/</Property>
+        <Property name="backupFilePatch">/usr/latiao/logs/</Property>
     </Properties>
     <!--先定义所有的appender-->
     <appenders>
