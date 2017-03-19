@@ -2,6 +2,8 @@ package com.izanpin.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.izanpin.common.util.SnowFlake;
+import com.izanpin.enums.CommentStatus;
 
 import java.util.Date;
 import java.util.List;
@@ -10,11 +12,37 @@ import java.util.List;
  * Created by St on 2017/2/6.
  */
 public class Comment {
+    public Comment() {
+    }
+
+    public Comment(String content, Long userId, String userName, String userAvatar, Long articleId, Long replyToId, Integer number) {
+        SnowFlake snowFlake = new SnowFlake(0, 0);
+        this.id = snowFlake.nextId();
+        this.userId = userId;
+        this.userName = userName;
+        this.userAvatar = userAvatar;
+        this.replyToId = replyToId;
+        this.articleId = articleId;
+        this.number = number;
+        this.content = content;
+        this.commentCount = 0;
+        this.likeCount = 0;
+        this.hateCount = 0;
+        this.status = CommentStatus.NORMAL.getValue();
+        this.createTime = new Date();
+        this.updateTime = new Date();
+    }
+
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long userId;
+
+    private String userName;
+
+    private String userAvatar;
+
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long replyToId;
@@ -30,7 +58,7 @@ public class Comment {
 
     private Integer likeCount;
 
-    private Integer HateCount;
+    private Integer hateCount;
 
     private Integer status;
 
@@ -43,6 +71,8 @@ public class Comment {
     private Comment replyTo;
 
     private List<Comment> replies;
+
+    private List<Image> images;
 
     private Article article;
 
@@ -61,6 +91,22 @@ public class Comment {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserAvatar() {
+        return userAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.userAvatar = userAvatar;
     }
 
     public Long getReplyToId() {
@@ -112,11 +158,11 @@ public class Comment {
     }
 
     public Integer getHateCount() {
-        return HateCount;
+        return hateCount;
     }
 
     public void setHateCount(Integer hateCount) {
-        HateCount = hateCount;
+        this.hateCount = hateCount;
     }
 
     public Integer getStatus() {
@@ -165,6 +211,14 @@ public class Comment {
 
     public void setReplies(List<Comment> replies) {
         this.replies = replies;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     public Article getArticle() {

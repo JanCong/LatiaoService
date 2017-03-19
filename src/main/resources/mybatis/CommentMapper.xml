@@ -2,43 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.izanpin.repository.CommentRepository">
     <resultMap id="BaseResultMap" type="com.izanpin.entity.Comment">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="author_id" jdbcType="BIGINT" property="authorId"/>
-        <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
-        <result column="author_avatar" jdbcType="VARCHAR" property="authorAvatar"/>
-        <result column="hash_id" jdbcType="VARCHAR" property="hashId"/>
-        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
-        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
-        <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_avatar" property="userAvatar"/>
+        <result column="reply_to_id" property="replyToId"/>
+        <result column="article_id" property="articleId"/>
+        <result column="number" property="number"/>
+        <result column="content" property="content"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="hate_count" property="hateCount"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <resultMap id="ResultMap" type="com.izanpin.entity.Comment">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="author_id" jdbcType="BIGINT" property="authorId"/>
-        <result column="author_name" jdbcType="VARCHAR" property="authorName"/>
-        <result column="author_avatar" jdbcType="VARCHAR" property="authorAvatar"/>
-        <result column="hash_id" jdbcType="VARCHAR" property="hashId"/>
-        <result column="comment_count" jdbcType="INTEGER" property="commentCount"/>
-        <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
-        <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-
-        <collection property="images" ofType="com.izanpin.entity.Image">
-            <id column="image_id" jdbcType="BIGINT" property="id"/>
-            <result column="article_id" jdbcType="BIGINT" property="articleId"/>
-            <result column="url" jdbcType="VARCHAR" property="url"/>
-            <result column="thumbnail_url" jdbcType="VARCHAR" property="thumbnailUrl"/>
-            <result column="image_create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        </collection>
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_name" property="userName"/>
+        <result column="user_avatar" property="userAvatar"/>
+        <result column="reply_to_id" property="replyToId"/>
+        <result column="article_id" property="articleId"/>
+        <result column="number" property="number"/>
+        <result column="content" property="content"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="like_count" property="likeCount"/>
+        <result column="hate_count" property="hateCount"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
 
@@ -128,6 +122,8 @@
         INSERT INTO `comment`
         (`id`
         ,`user_id`
+        ,`user_name`
+        ,`user_avatar`
         ,`reply_to_id`
         ,`article_id`
         ,`number`
@@ -141,6 +137,8 @@
         VALUES
         (#{id}
         ,#{userId}
+        ,#{userName}
+        ,#{userAvatar}
         ,#{replyToId}
         ,#{articleId}
         ,#{number}
@@ -153,7 +151,12 @@
         ,#{updateTime})
     </insert>
     <update id="increaseCommentCount">
-        update article set comment_count = comment_count + #{count}
+        update comment set comment_count = comment_count + #{count}
         where id = #{id}
     </update>
+    <select id="findByArticleId" resultMap="ResultMap">
+        SELECT * FROM comment
+        WHERE article_id=#{articleId}
+        ORDER BY id DESC
+    </select>
 </mapper>

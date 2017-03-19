@@ -2,7 +2,9 @@ package com.izanpin.controller.api;
 
 import com.github.pagehelper.PageInfo;
 import com.izanpin.dto.AddCommentDto;
+import com.izanpin.dto.ResultDto;
 import com.izanpin.entity.Comment;
+import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.CommentService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
@@ -23,10 +25,20 @@ public class CommentApiController {
     @ApiOperation(value = "获取评论")
     @RequestMapping(value = "/{articleId}/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
-    public PageInfo getComments(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId,
-                                @ApiParam(value = "页码") @PathVariable Integer page,
-                                @ApiParam(value = "页大小") @PathVariable Integer size) {
-        return commentService.getComments(articleId, page, size);
+    public ResultDto<PageInfo<Comment>> getComments(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId,
+                                                    @ApiParam(value = "页码") @PathVariable Integer page,
+                                                    @ApiParam(value = "页大小") @PathVariable Integer size) {
+        ResultDto<PageInfo<Comment>> result;
+        try {
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(),
+                    ResultStatus.SUCCESSFUL.name(),
+                    commentService.getComments(articleId, page, size));
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+
+        return result;
     }
 
     @ApiOperation(value = "根据ID获取")
