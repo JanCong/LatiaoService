@@ -7,8 +7,6 @@ import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
 import com.wordnik.swagger.annotations.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/article")
 public class ArticleApiController {
-    private static final Logger logger = LogManager.getLogger(ArticleApiController.class.getName());
-
     @Autowired
     ArticleService articleService;
     @Autowired
@@ -116,16 +112,5 @@ public class ArticleApiController {
     @ResponseBody
     public void importData() throws Exception {
         importData.importData();
-    }
-
-    @ApiOperation(value = "测试日志")
-    @RequestMapping(value = "/logtest", method = RequestMethod.POST)
-    @ResponseBody
-    public void logtest() throws Exception {
-        logger.trace("trace");
-        logger.error("error");
-        logger.debug("debug");
-        logger.info("info");
-        logger.fatal("fatal");
     }
 }

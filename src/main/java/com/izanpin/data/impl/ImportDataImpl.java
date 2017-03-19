@@ -41,62 +41,18 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
-    private static final Logger logger = LogManager.getLogger(ImportDataImpl.class.getName());
 
     @Override
     public void importData() throws Exception {
-        logger.error("importData start");
-
-        ExecutorService executorService = Executors.newCachedThreadPool();
-
-        executorService.submit(() -> {
-            try {
-                importJokes();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        executorService.submit(() -> {
-            try {
-                importPictures();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        executorService.shutdown();
-
-        logger.error("importData end");
+        importJokes();
+        importPictures();
     }
 
     @Override
     public void importJokes() throws Exception {
-        ExecutorService executorService = Executors.newCachedThreadPool();
-
-        executorService.submit(() -> {
-            try {
-                importJokesFromJuhe();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                importJokesFromJisu();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                importJokesFromShowapi();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        executorService.shutdown();
+        importJokesFromJuhe();
+        importJokesFromJisu();
+        importJokesFromShowapi();
     }
 
     private void importJokesFromJuhe() throws Exception {
@@ -197,38 +153,10 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importPictures() throws Exception {
-        ExecutorService executorService = Executors.newCachedThreadPool();
-
-        executorService.submit(() -> {
-            try {
-                importPicturesFromJuhe();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                importPicturesFromShowapi2();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                importPicturesFromShowapi();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        executorService.submit(() -> {
-            try {
-                importPicturesFromShowapi3();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        executorService.shutdown();
+        importPicturesFromJuhe();
+        importPicturesFromShowapi2();
+        importPicturesFromShowapi();
+        importPicturesFromShowapi3();
     }
 
     private void importPicturesFromJuhe() throws Exception {
