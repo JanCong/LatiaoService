@@ -11,6 +11,8 @@
     <properties>
         <spring.version>4.3.6.RELEASE</spring.version>
         <mybatis.version>3.4.2</mybatis.version>
+        <spring-security.version>3.2.10.RELEASE</spring-security.version>
+        <spring-security-oauth2.version>2.1.0.RELEASE</spring-security-oauth2.version>
     </properties>
 
     <dependencies>
@@ -57,6 +59,23 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
             <version>1.10.1.RELEASE</version>
+        </dependency>
+
+        <!-- spring-security -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>${spring-security-oauth2.version}</version>
         </dependency>
 
         <!-- mybatis核心包 -->

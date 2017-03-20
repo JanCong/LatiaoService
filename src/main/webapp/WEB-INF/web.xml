@@ -55,6 +55,16 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- Oauth2 -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <!-- 激活Tomcat的defaultServlet来处理静态文件 -->
     <servlet-mapping>
         <servlet-name>default</servlet-name>
