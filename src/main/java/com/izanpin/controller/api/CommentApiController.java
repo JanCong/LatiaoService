@@ -51,9 +51,17 @@ public class CommentApiController {
     @ApiOperation(value = "添加评论")
     @RequestMapping(value = "/{articleId}", method = RequestMethod.POST)
     @ResponseBody
-    public void addComment(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId,
-                           @ApiParam(value = "评论内容") @RequestBody AddCommentDto dto) {
-        commentService.addComment(articleId, dto.getUserId(), dto.getContent());
+    public ResultDto addComment(@ApiParam(value = "无聊图/段子 ID") @PathVariable Long articleId,
+                                @ApiParam(value = "评论内容") @RequestBody AddCommentDto dto) {
+        ResultDto result;
+        try {
+            commentService.addComment(articleId, dto.getUserId(), dto.getContent());
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
     }
 
     @ApiOperation(value = "回复评论")
