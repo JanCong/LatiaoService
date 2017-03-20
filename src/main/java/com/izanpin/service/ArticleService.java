@@ -28,7 +28,7 @@ public interface ArticleService {
 
     Article getById(Long id);
 
-    void like(Long id, Long userId);
+    void like(Long id, Long userId) throws Exception;
 
     void hate(Long id, Long userId);
 

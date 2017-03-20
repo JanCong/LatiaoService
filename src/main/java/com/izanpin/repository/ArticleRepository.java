@@ -22,4 +22,8 @@ public interface ArticleRepository {
     List<Article> findByTimeline(RequestArticleTimelineDto dto);
 
     void increaseCommentCount(@Param("id") Long id, @Param("count") Integer count);
+
+    void increaseLikeCount(@Param("id") Long id, @Param("count") Integer count);
+
+    void increaseHateCount(@Param("id") Long id, @Param("count") Integer count);
 }

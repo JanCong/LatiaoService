@@ -1,6 +1,7 @@
 package com.izanpin.repository;
 
 import com.izanpin.entity.Comment;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,8 +16,7 @@ public interface CommentRepository {
 
     Comment get(Long id);
 
-    void increaseLikeCount(Long id, Long userId, Integer count);
+    void increaseLikeCount(@Param("id") Long id, @Param("count") Integer count);
 
-    void increaseHateCount(Long id, Long userId, Integer count);
-
+    void increaseHateCount(@Param("id") Long id, @Param("count") Integer count);
 }

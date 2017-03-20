@@ -5,9 +5,11 @@ import com.github.pagehelper.PageInfo;
 import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.entity.Article;
+import com.izanpin.entity.Like;
 import com.izanpin.entity.User;
 import com.izanpin.enums.ArticleType;
 import com.izanpin.repository.ArticleRepository;
+import com.izanpin.repository.LikeRepository;
 import com.izanpin.service.ArticleService;
 import com.izanpin.common.util.SnowFlake;
 import com.izanpin.service.ImageService;
@@ -28,6 +30,8 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     ArticleRepository articleRepository;
+    @Autowired
+    LikeRepository likeRepository;
 
     @Autowired
     ImageService imageService;
@@ -134,7 +138,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void like(Long id, Long userId) {
+    public void like(Long id, Long userId) throws Exception {
+        Like like = likeRepository.getByArticleIdAndUserId(id, userId);
+        if (like != null) {
+            throw new Exception("不能重复点赞哦！");
+        }
+
+        articleRepository.increaseLikeCount(id, 1);
+        likeRepository.add(new Like(userId, id, null));
     }
 
     @Override

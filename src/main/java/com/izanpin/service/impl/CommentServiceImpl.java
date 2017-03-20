@@ -3,10 +3,12 @@ package com.izanpin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.entity.Comment;
+import com.izanpin.entity.Like;
 import com.izanpin.entity.User;
 import com.izanpin.enums.CommentStatus;
 import com.izanpin.repository.ArticleRepository;
 import com.izanpin.repository.CommentRepository;
+import com.izanpin.repository.LikeRepository;
 import com.izanpin.service.CommentService;
 import com.izanpin.common.util.SnowFlake;
 import com.izanpin.service.UserService;
@@ -24,12 +26,12 @@ import java.util.Date;
 public class CommentServiceImpl implements CommentService {
     @Autowired
     UserService userService;
-
     @Autowired
     CommentRepository commentRepository;
-
     @Autowired
     ArticleRepository articleRepository;
+    @Autowired
+    LikeRepository likeRepository;
 
     @Override
     public PageInfo<Comment> getComments(Long articleId, Integer page, Integer size) {
@@ -80,11 +82,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void like(Long id, Long userId) {
-        commentRepository.increaseLikeCount(id, userId, 1);
+        commentRepository.increaseLikeCount(id, 1);
+        likeRepository.add(new Like(userId, null, id));
     }
 
     @Override
     public void hate(Long id, Long userId) {
-        commentRepository.increaseHateCount(id, userId, 1);
+        commentRepository.increaseHateCount(id, 1);
     }
 }

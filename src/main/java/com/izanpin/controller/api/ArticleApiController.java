@@ -4,7 +4,9 @@ import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
 import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
+import com.izanpin.dto.ResultDto;
 import com.izanpin.entity.Article;
+import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.ArticleService;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,14 +80,22 @@ public class ArticleApiController {
     @ApiOperation(value = "赞")
     @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public void like(@PathVariable Long id, @RequestBody(required = false) Long userId) {
-        articleService.like(id, userId);
+    public ResultDto like(@PathVariable Long id, @RequestParam(required = false) Long userId) {
+        ResultDto result;
+        try {
+            articleService.like(id, userId);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
     }
 
     @ApiOperation(value = "踩")
     @RequestMapping(value = "/hate/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public void hate(@PathVariable Long id, @RequestBody(required = false) Long userId) {
+    public void hate(@PathVariable Long id, @RequestParam(required = false) Long userId) {
         articleService.hate(id, userId);
     }
 
