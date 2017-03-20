@@ -29,6 +29,14 @@
         <custom-filter ref="mobileResourceServer" before="PRE_AUTH_FILTER"/>
         <access-denied-handler ref="oauth2AccessDeniedHandler"/>
     </http>
+    <http pattern="/api**" create-session="never"
+          entry-point-ref="oauth2AuthenticationEntryPoint"
+          access-decision-manager-ref="oauth2AccessDecisionManager">
+        <anonymous enabled="false"/>
+        <intercept-url pattern="/api**" access="ROLE_USER"/>
+        <custom-filter ref="mobileResourceServer" before="PRE_AUTH_FILTER"/>
+        <access-denied-handler ref="oauth2AccessDeniedHandler"/>
+    </http>
     <http pattern="/admin**" create-session="never"
           entry-point-ref="oauth2AuthenticationEntryPoint"
           access-decision-manager-ref="oauth2AccessDecisionManager">
@@ -38,8 +46,9 @@
         <access-denied-handler ref="oauth2AccessDeniedHandler"/>
     </http>
     <http auto-config="true">
-        <!-- <intercept-url pattern="/json**" access="ROLE_ADMIN,ROLE_USER" />
-            <intercept-url pattern="/admin**" access="ROLE_ADMIN" /> -->
+        <intercept-url pattern="/api**" access="ROLE_ADMIN,ROLE_USER"/>
+        <intercept-url pattern="/json**" access="ROLE_ADMIN,ROLE_USER"/>
+        <intercept-url pattern="/admin**" access="ROLE_ADMIN"/>
         <form-login login-page="/" default-target-url="/"
                     authentication-failure-url="/?login=error"/>
 
