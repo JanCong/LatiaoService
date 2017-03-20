@@ -50,7 +50,7 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importJokes() throws Exception {
-        importJokesFromJuhe();
+//        importJokesFromJuhe();
         importJokesFromJisu();
         importJokesFromShowapi();
     }
@@ -153,9 +153,9 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importPictures() throws Exception {
-        importPicturesFromJuhe();
+//        importPicturesFromJuhe();
         importPicturesFromShowapi2();
-        importPicturesFromShowapi();
+//        importPicturesFromShowapi();
         importPicturesFromShowapi3();
     }
 
