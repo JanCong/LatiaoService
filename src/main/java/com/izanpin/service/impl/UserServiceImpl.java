@@ -4,10 +4,13 @@ import com.izanpin.common.util.StringEncrypt;
 import com.izanpin.dto.LoginDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
+import com.izanpin.entity.UserToken;
 import com.izanpin.enums.UserType;
 import com.izanpin.repository.UserRepository;
+import com.izanpin.repository.UserTokenRepository;
 import com.izanpin.service.SmsService;
 import com.izanpin.service.UserService;
+import com.izanpin.service.UserTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    UserTokenService userTokenService;
+    @Autowired
     SmsService smsService;
 
 
@@ -37,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User login(LoginDto dto) throws Exception {
+    public UserToken login(LoginDto dto) throws Exception {
         if (dto == null) {
             throw new Exception("参数错误");
         }
@@ -59,14 +64,14 @@ public class UserServiceImpl implements UserService {
         }
 
         if (encryptedPassword.equalsIgnoreCase(user.getPassword())) {
-            return user;
+            return userTokenService.getUserTokenByUserId(user.getId());
         } else {
             throw new Exception("手机号或密码错误");
         }
     }
 
     @Override
-    public User smsLogin(SmsLoginDto dto) throws Exception {
+    public UserToken smsLogin(SmsLoginDto dto) throws Exception {
         if (dto == null) {
             throw new Exception("参数错误");
         }
@@ -84,9 +89,8 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 throw new Exception("用户不存在");
             } else {
-                return user;
+                return userTokenService.getUserTokenByUserId(user.getId());
             }
         }
-
     }
 }

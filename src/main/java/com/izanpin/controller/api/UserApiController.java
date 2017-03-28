@@ -4,14 +4,13 @@ import com.izanpin.dto.LoginDto;
 import com.izanpin.dto.ResultDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
+import com.izanpin.entity.UserToken;
 import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.UserService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.transform.Result;
 
 /**
  * Created by St on 2017/3/2.
@@ -26,11 +25,11 @@ public class UserApiController {
     @ApiOperation(value = "登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDto<User> login(@RequestBody LoginDto dto) {
-        ResultDto<User> result;
+    public ResultDto<UserToken> login(@RequestBody LoginDto dto) {
+        ResultDto<UserToken> result;
         try {
-            User user = userService.login(dto);
-            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), user);
+            UserToken userToken = userService.login(dto);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), userToken);
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
@@ -41,11 +40,11 @@ public class UserApiController {
     @ApiOperation("短信验证码登录")
     @RequestMapping(value = "/smsLogin", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDto<User> smsLogin(@RequestBody SmsLoginDto dto) {
-        ResultDto<User> result;
+    public ResultDto<UserToken> smsLogin(@RequestBody SmsLoginDto dto) {
+        ResultDto<UserToken> result;
         try {
-            User user = userService.smsLogin(dto);
-            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), user);
+            UserToken userToken = userService.smsLogin(dto);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), userToken);
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);

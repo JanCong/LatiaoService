@@ -6,8 +6,10 @@ import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.dto.ResultDto;
 import com.izanpin.entity.Article;
+import com.izanpin.entity.UserToken;
 import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.ArticleService;
+import com.izanpin.service.UserTokenService;
 import com.wordnik.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,8 @@ import java.util.List;
 public class ArticleApiController {
     @Autowired
     ArticleService articleService;
+    @Autowired
+    UserTokenService userTokenService;
     @Autowired
     ImportData importData;
 
@@ -80,11 +84,16 @@ public class ArticleApiController {
     @ApiOperation(value = "赞")
     @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDto like(@PathVariable Long id, @RequestParam(required = false) Long userId) {
+    public ResultDto like(@PathVariable Long id, @RequestParam Long userId, @RequestHeader("token") String token) {
         ResultDto result;
         try {
-            articleService.like(id, userId);
-            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(userId)) {
+                articleService.like(id, userToken.getUserId());
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
@@ -95,13 +104,14 @@ public class ArticleApiController {
     @ApiOperation(value = "踩")
     @RequestMapping(value = "/hate/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public void hate(@PathVariable Long id, @RequestParam(required = false) Long userId) {
+    public void hate(@PathVariable Long id, @RequestParam Long userId) {
         articleService.hate(id, userId);
     }
 
     @ApiOperation(value = "新增辣条", notes = "imageUrls为图片网络地址数组，images为上传图片数组，可以同时使用")
     @RequestMapping(method = RequestMethod.POST)
-    public void add(
+    public ResultDto add(
+            @RequestHeader("token") String token,
             @ApiParam("用户ID")
             @RequestParam Long userId,
             @ApiParam("内容")
@@ -112,8 +122,21 @@ public class ArticleApiController {
             @RequestParam(required = false) List<String> imageUrls,
             @ApiParam("上传图片数组")
             @RequestParam(required = false) List<MultipartFile> images) throws Exception {
-        AddArticleDto dto = new AddArticleDto(userId, content, device, imageUrls, images);
-        articleService.addArticle(dto);
+        ResultDto result;
+        try {
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(userId)) {
+                AddArticleDto dto = new AddArticleDto(userId, content, device, imageUrls, images);
+                articleService.addArticle(dto);
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
     }
 
 
