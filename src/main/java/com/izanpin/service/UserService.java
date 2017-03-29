@@ -4,7 +4,7 @@ import com.izanpin.dto.LoginDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
 import com.izanpin.entity.UserToken;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,6 +15,14 @@ public interface UserService {
     List<User> getRobotUsers();
 
     User getUser(Long id);
+
+    void addUser(User user) throws Exception;
+
+    void updateNickNmae(Long id, String nickname) throws Exception;
+
+    void updatePassword(Long id, String password) throws Exception;
+
+    void updateAvatar(Long id, MultipartFile avatar) throws Exception;
 
     UserToken login(LoginDto dto) throws Exception;
 

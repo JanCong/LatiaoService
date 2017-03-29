@@ -61,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void addPicture(Article article, String imageUrl) throws Exception {
         addArticle(article);
-        imageService.AddImage(imageUrl, article.getId());
+        imageService.addImage(imageUrl, article.getId());
     }
 
     @Override
@@ -99,18 +99,24 @@ public class ArticleServiceImpl implements ArticleService {
         if (hasImages) {
             if (imageUrls != null) {
                 imageUrls.forEach((url) -> {
-                    imageService.AddImage(url, article.getId());
-                });
-            }
-            if (images != null) {
-                images.forEach((image) -> {
                     try {
-                        imageService.AddImage(image, article.getId());
+                        imageService.addImage(url, article.getId());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
             }
+            if (images != null) {
+                images.forEach((image) -> {
+                    try {
+                        imageService.addImage(image, article.getId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+
+
         }
     }
 

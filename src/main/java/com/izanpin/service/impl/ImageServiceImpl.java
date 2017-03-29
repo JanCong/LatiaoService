@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
@@ -30,7 +28,7 @@ public class ImageServiceImpl implements ImageService {
     ImageRepository imageRepository;
 
     @Override
-    public void AddImage(String strUrl, long articalId) {
+    public void addImage(String strUrl, long articleId) {
         String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
         String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
         String bucketName = "wuliaoa";
@@ -54,7 +52,7 @@ public class ImageServiceImpl implements ImageService {
             Image image = new Image();
             SnowFlake snowFlake = new SnowFlake(0, 0);
             image.setId(snowFlake.nextId());
-            image.setArticleId(articalId);
+            image.setArticleId(articleId);
             image.setUrl(url.toString());
             image.setThumbnailUrl(thumbnailUrl);
             image.setCreateTime(new Date());
@@ -69,7 +67,40 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void AddImage(MultipartFile image, long articalId) throws Exception {
+    public Image addImage(MultipartFile file) throws Exception {
+        if (file == null) {
+            throw new Exception("图片为空");
+        }
+
+        String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
+        String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
+        String bucketName = "wuliaoa";
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId());
+
+        // 初始化一个BosClient
+        BosClientConfiguration config = new BosClientConfiguration();
+        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+        BosClient client = new BosClient(config);
+
+        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
+        putObjectFromFileResponse.getETag();
+
+        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
+        String thumbnailUrl = url.toString() + "@!thumbnail";
+
+        Image img = new Image();
+        SnowFlake snowFlake = new SnowFlake(0, 0);
+        img.setId(snowFlake.nextId());
+        img.setUrl(url.toString());
+        img.setThumbnailUrl(thumbnailUrl);
+        img.setCreateTime(new Date());
+        imageRepository.add(img);
+
+        return img;
+    }
+
+    @Override
+    public void addImage(MultipartFile image, long articleId) throws Exception {
         if (image == null) {
             throw new Exception("图片为空");
         }
@@ -93,7 +124,7 @@ public class ImageServiceImpl implements ImageService {
         Image img = new Image();
         SnowFlake snowFlake = new SnowFlake(0, 0);
         img.setId(snowFlake.nextId());
-        img.setArticleId(articalId);
+        img.setArticleId(articleId);
         img.setUrl(url.toString());
         img.setThumbnailUrl(thumbnailUrl);
         img.setCreateTime(new Date());

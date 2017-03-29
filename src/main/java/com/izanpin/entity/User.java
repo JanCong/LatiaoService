@@ -3,10 +3,31 @@ package com.izanpin.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.izanpin.common.util.SnowFlake;
+import com.izanpin.enums.UserStatus;
 
 import java.util.Date;
 
 public class User {
+    public User() {
+    }
+
+    public User(String nickname, String phone, String email, String password,
+                Integer sex, String avatar, Integer type) {
+        SnowFlake snowFlake = new SnowFlake(0, 0);
+        this.id = snowFlake.nextId();
+        this.nickname = nickname;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.sex = sex;
+        this.avatar = avatar;
+        this.type = type;
+        this.status = UserStatus.NORMAL.getValue();
+        this.createTime = new Date();
+        this.updateTime = new Date();
+    }
+
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 

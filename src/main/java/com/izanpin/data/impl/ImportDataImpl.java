@@ -15,16 +15,12 @@ import com.izanpin.service.ImageService;
 import com.izanpin.service.UserService;
 import com.izanpin.common.util.Http;
 import com.izanpin.common.util.SnowFlake;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Created by Smart on 2017/1/31.
@@ -176,7 +172,7 @@ public class ImportDataImpl implements ImportData {
                         Article article = setArticle(jObj.getString("content"), hashId, ArticleType.PICTURE, robots);
                         try {
                             articleService.addArticle(article);
-                            imageService.AddImage(imgUrl, article.getId());
+                            imageService.addImage(imgUrl, article.getId());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
