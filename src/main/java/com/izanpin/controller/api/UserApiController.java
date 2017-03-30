@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.StringJoiner;
+
 /**
  * Created by St on 2017/3/2.
  */
@@ -29,11 +33,16 @@ public class UserApiController {
     @ApiOperation(value = "登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDto<UserToken> login(@RequestBody LoginDto dto) {
-        ResultDto<UserToken> result;
+    public ResultDto login(@RequestBody LoginDto dto) {
+        ResultDto result;
         try {
             UserToken userToken = userService.login(dto);
-            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), userToken);
+            User user = userService.getUser(userToken.getUserId());
+
+            HashMap map = new HashMap();
+            map.put("token", userToken);
+            map.put("user", user);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), map);
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
@@ -44,11 +53,16 @@ public class UserApiController {
     @ApiOperation("短信验证码登录")
     @RequestMapping(value = "/smsLogin", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDto<UserToken> smsLogin(@RequestBody SmsLoginDto dto) {
-        ResultDto<UserToken> result;
+    public ResultDto smsLogin(@RequestBody SmsLoginDto dto) {
+        ResultDto result;
         try {
             UserToken userToken = userService.smsLogin(dto);
-            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), userToken);
+            User user = userService.getUser(userToken.getUserId());
+
+            HashMap map = new HashMap();
+            map.put("token", userToken);
+            map.put("user", user);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), map);
         } catch (Exception e) {
             e.printStackTrace();
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
