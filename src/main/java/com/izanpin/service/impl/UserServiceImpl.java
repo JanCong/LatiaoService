@@ -149,8 +149,8 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.getUserByPhone(dto.getPhone());
             if (user == null) {
                 user = new User("辣油" + dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length()),
-                        dto.getPhone(), "", StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
-                        "", UserType.NORMAL.getValue());
+                    dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
+                    "", UserType.NORMAL.getValue());
                 this.addUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             } else {
