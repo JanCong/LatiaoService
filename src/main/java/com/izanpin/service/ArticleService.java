@@ -30,7 +30,7 @@ public interface ArticleService {
 
     void like(Long id, Long userId) throws Exception;
 
-    void hate(Long id, Long userId);
+    void hate(Long id, Long userId) throws Exception;
 
     PageInfo getArticlesByTimeline(Integer page, Integer size, RequestArticleTimelineDto dto);
 }

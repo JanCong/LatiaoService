@@ -84,12 +84,15 @@ public class ArticleApiController {
     @ApiOperation(value = "赞")
     @RequestMapping(value = "/like/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public ResultDto like(@PathVariable Long id, @RequestParam Long userId, @RequestHeader("token") String token) {
+    public ResultDto like(
+            @RequestHeader("token") String token,
+            @PathVariable Long id,
+            @RequestParam Long userId) {
         ResultDto result;
         try {
             UserToken userToken = userTokenService.getUserTokenByToken(token);
             if (userToken != null && userToken.getUserId().equals(userId)) {
-                articleService.like(id, userToken.getUserId());
+                articleService.like(id, userId);
                 result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
             } else {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
@@ -104,8 +107,24 @@ public class ArticleApiController {
     @ApiOperation(value = "踩")
     @RequestMapping(value = "/hate/{id}", method = RequestMethod.POST)
     @ResponseBody
-    public void hate(@PathVariable Long id, @RequestParam Long userId) {
-        articleService.hate(id, userId);
+    public ResultDto hate(
+            @RequestHeader("token") String token,
+            @PathVariable Long id,
+            @RequestParam Long userId) {
+        ResultDto result;
+        try {
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(userId)) {
+                articleService.hate(id, userId);
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
     }
 
     @ApiOperation(value = "新增辣条", notes = "imageUrls为图片网络地址数组，images为上传图片数组，可以同时使用")
