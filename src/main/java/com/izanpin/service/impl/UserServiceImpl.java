@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
             if (user == null) {
                 user = new User("辣油" + dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length()),
                     dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
-                    "", UserType.NORMAL.getValue());
+                        "http://wuliaoa.bj.bcebos.com/1024.png", UserType.NORMAL.getValue());
                 this.addUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             } else {
