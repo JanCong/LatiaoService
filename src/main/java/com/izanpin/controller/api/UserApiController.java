@@ -1,6 +1,7 @@
 package com.izanpin.controller.api;
 
 import com.izanpin.dto.LoginDto;
+import com.izanpin.dto.OAuthLoginDto;
 import com.izanpin.dto.ResultDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
@@ -57,6 +58,26 @@ public class UserApiController {
         ResultDto result;
         try {
             UserToken userToken = userService.smsLogin(dto);
+            User user = userService.getUser(userToken.getUserId());
+
+            HashMap map = new HashMap();
+            map.put("token", userToken);
+            map.put("user", user);
+            result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
+    }
+
+    @ApiOperation("第三方OAuth登录")
+    @RequestMapping(value = "/oauthLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultDto oauthLogin(@RequestBody OAuthLoginDto dto) {
+        ResultDto result;
+        try {
+            UserToken userToken = userService.oauthLogin(dto);
             User user = userService.getUser(userToken.getUserId());
 
             HashMap map = new HashMap();

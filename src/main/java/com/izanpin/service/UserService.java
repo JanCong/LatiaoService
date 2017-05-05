@@ -1,6 +1,7 @@
 package com.izanpin.service;
 
 import com.izanpin.dto.LoginDto;
+import com.izanpin.dto.OAuthLoginDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
 import com.izanpin.entity.UserToken;
@@ -27,4 +28,6 @@ public interface UserService {
     UserToken login(LoginDto dto) throws Exception;
 
     UserToken smsLogin(SmsLoginDto dto) throws Exception;
+
+    UserToken oauthLogin(OAuthLoginDto dto) throws Exception;
 }

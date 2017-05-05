@@ -2,6 +2,7 @@ package com.izanpin.service.impl;
 
 import com.izanpin.common.util.StringEncrypt;
 import com.izanpin.dto.LoginDto;
+import com.izanpin.dto.OAuthLoginDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.Image;
 import com.izanpin.entity.User;
@@ -149,13 +150,37 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.getUserByPhone(dto.getPhone());
             if (user == null) {
                 user = new User("辣油" + dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length()),
-                    dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
+                        dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
                         "http://wuliaoa.bj.bcebos.com/1024.png", UserType.NORMAL.getValue());
                 this.addUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             } else {
                 return userTokenService.getUserTokenByUserId(user.getId());
             }
+        }
+    }
+
+    @Override
+    public UserToken oauthLogin(OAuthLoginDto dto) throws Exception {
+        if (dto == null) {
+            throw new Exception("参数错误");
+        }
+        if (dto.getOpenId() == null || dto.getOpenId().isEmpty()) {
+            throw new Exception("openId不能为空");
+        }
+        if (dto.getPlatformType() == null) {
+            throw new Exception("平台类型不能为空");
+        }
+
+        User user = userRepository.getUserByPhone(dto.getPhone());
+        if (user == null) {
+            user = new User("辣油" + dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length()),
+                    dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
+                    "http://wuliaoa.bj.bcebos.com/1024.png", UserType.NORMAL.getValue());
+            this.addUser(user);
+            return userTokenService.getUserTokenByUserId(user.getId());
+        } else {
+            return userTokenService.getUserTokenByUserId(user.getId());
         }
     }
 }
