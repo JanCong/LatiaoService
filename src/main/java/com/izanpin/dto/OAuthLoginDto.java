@@ -1,6 +1,8 @@
 package com.izanpin.dto;
 
+import com.izanpin.enums.Gender;
 import com.izanpin.enums.OAuthPlatformType;
+import com.sun.deploy.services.PlatformType;
 
 /**
  * Created by St on 2017/3/2.
@@ -10,7 +12,7 @@ public class OAuthLoginDto {
     private OAuthPlatformType platformType;
     private String nickname;
     private String iconUrl;
-    private String gender;
+    private Gender gender;
     private String device;
 
     public String getOpenId() {
@@ -25,8 +27,8 @@ public class OAuthLoginDto {
         return platformType;
     }
 
-    public void setPlatformType(OAuthPlatformType platformType) {
-        this.platformType = platformType;
+    public void setPlatformType(Integer platformType) {
+        this.platformType = OAuthPlatformType.valueOf(platformType);
     }
 
     public String getNickname() {
@@ -45,12 +47,12 @@ public class OAuthLoginDto {
         this.iconUrl = iconUrl;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setGender(Integer gender) {
+        this.gender = Gender.valueOf(gender);
     }
 
     public String getDevice() {

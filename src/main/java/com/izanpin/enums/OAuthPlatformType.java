@@ -20,4 +20,13 @@ public enum OAuthPlatformType {
     public Integer getValue() {
         return value;
     }
+
+    public static OAuthPlatformType valueOf(int value) {
+        for (OAuthPlatformType oauthPlatformType : OAuthPlatformType.values()) {
+            if (oauthPlatformType.getValue() == value) {
+                return oauthPlatformType;
+            }
+        }
+        return null;
+    }
 }

@@ -6,9 +6,11 @@ import com.izanpin.dto.OAuthLoginDto;
 import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.Image;
 import com.izanpin.entity.User;
+import com.izanpin.entity.UserOAuth;
 import com.izanpin.entity.UserToken;
-import com.izanpin.enums.Sex;
+import com.izanpin.enums.Gender;
 import com.izanpin.enums.UserType;
+import com.izanpin.repository.UserOAuthRepository;
 import com.izanpin.repository.UserRepository;
 import com.izanpin.service.ImageService;
 import com.izanpin.service.SmsService;
@@ -36,6 +38,8 @@ public class UserServiceImpl implements UserService {
     SmsService smsService;
     @Autowired
     ImageService imageService;
+    @Autowired
+    UserOAuthRepository userOAuthRepository;
 
     @Override
     public List<User> getRobotUsers() {
@@ -52,10 +56,6 @@ public class UserServiceImpl implements UserService {
         if (user.getId() == null) {
             throw new Exception("userId为空哦");
         }
-        if (user.getPhone() == null) {
-            throw new Exception("手机号为空哦");
-        }
-
         userRepository.insert(user);
     }
 
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
             User user = userRepository.getUserByPhone(dto.getPhone());
             if (user == null) {
                 user = new User("辣油" + dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length()),
-                        dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
+                        dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Gender.UNKNOWN.getValue(),
                         "http://wuliaoa.bj.bcebos.com/1024.png", UserType.NORMAL.getValue());
                 this.addUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
@@ -172,15 +172,17 @@ public class UserServiceImpl implements UserService {
             throw new Exception("平台类型不能为空");
         }
 
-        User user = userRepository.getUserByPhone(dto.getPhone());
-        if (user == null) {
-            user = new User("辣油" + dto.getPhone().substring(dto.getPhone().length() - 4, dto.getPhone().length()),
-                    dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Sex.UNKNOWN.getValue(),
-                    "http://wuliaoa.bj.bcebos.com/1024.png", UserType.NORMAL.getValue());
+        UserOAuth userOAuth = userOAuthRepository.getByOpenId(dto.getOpenId());
+
+        if (userOAuth == null) {
+            User user = new User(dto.getNickname(), null, null, StringEncrypt.Encrypt(new Date().toString()),
+                    dto.getGender().getValue(), dto.getIconUrl(), UserType.NORMAL.getValue());
             this.addUser(user);
+            userOAuth = new UserOAuth(user.getId(), dto.getOpenId(), dto.getPlatformType().getValue());
+            userOAuthRepository.add(userOAuth);
             return userTokenService.getUserTokenByUserId(user.getId());
         } else {
-            return userTokenService.getUserTokenByUserId(user.getId());
+            return userTokenService.getUserTokenByUserId(userOAuth.getUserId());
         }
     }
 }
