@@ -10,7 +10,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserOAuthRepository {
-    @Select("select * from user_oauth where open_id=#{openId};")
+    @Select("select id, user_id as userId, open_id as openId, platform_type as platformType, create_time as createTime " +
+            "from user_oauth where open_id=#{openId};")
     UserOAuth getByOpenId(String openId);
 
     @Insert("INSERT INTO `user_oauth` (`id`,`user_id`,`open_id`,`platform_type`,`create_time`)" +
