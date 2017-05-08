@@ -2,7 +2,6 @@ package com.izanpin.dto;
 
 import com.izanpin.enums.Gender;
 import com.izanpin.enums.OAuthPlatformType;
-import com.sun.deploy.services.PlatformType;
 
 /**
  * Created by St on 2017/3/2.
