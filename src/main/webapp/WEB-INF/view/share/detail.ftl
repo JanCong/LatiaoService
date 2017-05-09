@@ -70,11 +70,12 @@
         </ul>
     </section>
     <section class="comments">
-        <div id="articleHotComments" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
-            <div class="item-divider ui-border-tb">
-            </div>
-            <div class="item-title">最新评论</div>
-            <ul id="ulHotComments" class="ui-list ui-list-pure hot-comment">
+    <#if article.getCommentCount() gt 0>
+    <div id="articleHotComments" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+        <div class="item-divider ui-border-tb">
+        </div>
+        <div class="item-title">最新评论</div>
+        <ul id="ulHotComments" class="ui-list ui-list-pure hot-comment">
             <#list comments.getList() as comment>
                 <li class="ui-border-b">
                     <div class="comment-user-header">
@@ -101,14 +102,18 @@
                     </div>
                 </li>
             </#list>
-            </ul>
-            <div style="padding: 15px;">
-                <a class="download-app j-ga" data-ga_category="引导下载点击" data-ga_action="下载点击-更多评论" data-ga_tag=""
-                   href="http://t.cn/RaZ38kL"
-                   style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">下载辣条
-                    查看<span id="more-comments">${article.getCommentCount()}</span>条精彩评论</a>
-            </div>
+        </ul>
+    </#if>
+        <div style="padding: 15px;">
+            <a class="download-app j-ga" data-ga_category="引导下载点击" data-ga_action="下载点击-更多评论" data-ga_tag=""
+               href="http://t.cn/RaZ38kL"
+               style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">下载辣条
+            <#if article.getCommentCount() gt 0>
+                查看<span id="more-comments">${article.getCommentCount()}</span>条精彩评论
+            </#if>
+            </a>
         </div>
+    </div>
     </section>
 </div>
 <script>
