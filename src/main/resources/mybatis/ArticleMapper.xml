@@ -121,14 +121,12 @@
         image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
         from article left join image on article.id = image.article_id
         where article.id = #{id,jdbcType=BIGINT}
-        limit 1
     </select>
     <select id="getByHashId" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from article
         where hash_id=#{hashId,jdbcType=VARCHAR}
-        limit 1
     </select>
     <insert id="insertSelective" parameterType="com.izanpin.entity.Article">
         insert into article
