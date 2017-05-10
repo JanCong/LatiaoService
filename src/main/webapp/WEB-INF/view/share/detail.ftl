@@ -40,7 +40,7 @@
     <div id="topContentHeader" class="land">
         <section class="ui-row-flex">
             <p>
-            ${article.getContent()}
+            ${article.getContent()?replace("\n","<br />")}
             </p>
         </section>
         <section class=" ui-placehold ui-placehold-img topic-img">
@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="comment">
-                            ${comment.getContent()}
+                            ${comment.getContent()?replace("\n","<br />")}
                             </div>
                         </div>
                     </div>
