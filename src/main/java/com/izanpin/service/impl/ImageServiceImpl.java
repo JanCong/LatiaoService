@@ -1,5 +1,6 @@
 package com.izanpin.service.impl;
 
+import com.baidubce.Protocol;
 import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
@@ -29,6 +30,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void addImage(String strUrl, long articleId) {
+        String endpoint = "https://bj.bcebos.com";
         String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
         String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
         String bucketName = "wuliaoa";
@@ -37,6 +39,7 @@ public class ImageServiceImpl implements ImageService {
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+        config.setEndpoint(endpoint);
         BosClient client = new BosClient(config);
 
         try {
@@ -71,7 +74,7 @@ public class ImageServiceImpl implements ImageService {
         if (file == null) {
             throw new Exception("图片为空");
         }
-
+        String endpoint = "https://bj.bcebos.com";
         String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
         String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
         String bucketName = "wuliaoa";
@@ -80,6 +83,7 @@ public class ImageServiceImpl implements ImageService {
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+        config.setEndpoint(endpoint);
         BosClient client = new BosClient(config);
 
         PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
@@ -105,6 +109,7 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
+        String endpoint = "https://bj.bcebos.com";
         String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
         String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
         String bucketName = "wuliaoa";
@@ -113,6 +118,7 @@ public class ImageServiceImpl implements ImageService {
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+        config.setEndpoint(endpoint);
         BosClient client = new BosClient(config);
 
         PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, image.getBytes());
