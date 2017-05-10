@@ -78,7 +78,7 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(file.getName());
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(file.getOriginalFilename());
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
@@ -109,7 +109,7 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(image.getName());
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(image.getOriginalFilename());
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
