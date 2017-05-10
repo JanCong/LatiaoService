@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -78,7 +79,7 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(file.getOriginalFilename());
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(((CommonsMultipartFile) file).getFileItem().getName());
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
@@ -109,7 +110,7 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(image.getOriginalFilename());
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(((CommonsMultipartFile) image).getFileItem().getName());
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
