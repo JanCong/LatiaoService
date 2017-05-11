@@ -38,6 +38,7 @@ public class ImageServiceImpl implements ImageService {
     public void addImage(String strUrl, long articleId) {
         String[] urls = strUrl.split("/");
         String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(urls[urls.length - 1]);
+        objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
@@ -79,7 +80,8 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(((CommonsMultipartFile) file).getFileItem().getName());
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(file.getOriginalFilename());
+        objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
@@ -110,7 +112,8 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(((CommonsMultipartFile) image).getFileItem().getName());
+        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(image.getOriginalFilename());
+        objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
         BosClientConfiguration config = new BosClientConfiguration();
