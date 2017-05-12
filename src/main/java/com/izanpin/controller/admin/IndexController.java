@@ -27,7 +27,6 @@ public class IndexController extends BaseController {
         return "/admin/index";
     }
 
-
     /**
      * 进入首页
      */
