@@ -1,10 +1,13 @@
 package com.izanpin.service.impl;
 
-import com.baidubce.Protocol;
+import com.baidubce.BceClientConfiguration;
 import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.services.bos.BosClient;
 import com.baidubce.services.bos.BosClientConfiguration;
 import com.baidubce.services.bos.model.PutObjectResponse;
+import com.baidubce.services.media.MediaClient;
+import com.baidubce.services.media.model.GetThumbnailJobResponse;
+import com.izanpin.common.util.ThumbnailJob;
 import com.izanpin.entity.Image;
 import com.izanpin.repository.ImageRepository;
 import com.izanpin.service.ImageService;
@@ -13,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -80,7 +82,9 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(file.getOriginalFilename());
+        String objectKeyId = String.valueOf(new SnowFlake(0, 0).nextId());
+        String extName = getExtensionName(file.getOriginalFilename());
+        String objectKey = objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
@@ -92,15 +96,26 @@ public class ImageServiceImpl implements ImageService {
         PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
         putObjectFromFileResponse.getETag();
 
-        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
-        String thumbnailUrl = url.toString().replace(objectKey, objectKey + "@!thumbnail");
+//        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
+        String url = String.format("%s/%s/%s", endpoint, bucketName, objectKey);
 
         Image img = new Image();
         SnowFlake snowFlake = new SnowFlake(0, 0);
         img.setId(snowFlake.nextId());
         img.setUrl(url.toString());
         img.setIsVideo(file.getContentType().toLowerCase().contains("video"));
-        img.setThumbnailUrl(thumbnailUrl);
+
+        if (img.getIsVideo()) {
+            BceClientConfiguration bceClientConfig = new BceClientConfiguration();
+            bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+            MediaClient mediaClient = new MediaClient(bceClientConfig);
+            ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
+            img.setThumbnailUrl(url.replace(extName, "jpg"));
+            img.setIsVideo(true);
+        } else {
+            img.setThumbnailUrl(url.replace(objectKey, objectKey + "@!thumbnail"));
+            img.setIsVideo(false);
+        }
         img.setCreateTime(new Date());
         imageRepository.add(img);
 
@@ -108,12 +123,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void addImage(MultipartFile image, long articleId) throws Exception {
-        if (image == null) {
+    public void addImage(MultipartFile file, long articleId) throws Exception {
+        if (file == null) {
             throw new Exception("图片为空");
         }
 
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(image.getOriginalFilename());
+        String objectKeyId = String.valueOf(new SnowFlake(0, 0).nextId());
+        String extName = getExtensionName(file.getOriginalFilename());
+        String objectKey = objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
@@ -122,18 +139,31 @@ public class ImageServiceImpl implements ImageService {
         config.setEndpoint(endpoint);
         BosClient client = new BosClient(config);
 
-        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, image.getBytes());
+        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
         putObjectFromFileResponse.getETag();
 
-        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
-        String thumbnailUrl = url.toString().replace(objectKey, objectKey + "@!thumbnail");
+        //        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
+        String url = String.format("%s/%s/%s", endpoint, bucketName, objectKey);
 
         Image img = new Image();
         SnowFlake snowFlake = new SnowFlake(0, 0);
         img.setId(snowFlake.nextId());
         img.setArticleId(articleId);
         img.setUrl(url.toString());
-        img.setThumbnailUrl(thumbnailUrl);
+        img.setIsVideo(file.getContentType().toLowerCase().contains("video"));
+
+        if (img.getIsVideo()) {
+            BceClientConfiguration bceClientConfig = new BceClientConfiguration();
+            bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+            MediaClient mediaClient = new MediaClient(bceClientConfig);
+            ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
+            img.setThumbnailUrl(url.replace(extName, "jpg"));
+            img.setIsVideo(true);
+        } else {
+            img.setThumbnailUrl(url.replace(objectKey, objectKey + "@!thumbnail"));
+            img.setIsVideo(false);
+        }
+
         img.setCreateTime(new Date());
         imageRepository.add(img);
     }
