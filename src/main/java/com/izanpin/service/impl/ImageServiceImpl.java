@@ -99,6 +99,7 @@ public class ImageServiceImpl implements ImageService {
         SnowFlake snowFlake = new SnowFlake(0, 0);
         img.setId(snowFlake.nextId());
         img.setUrl(url.toString());
+        img.setIsVideo(file.getContentType().toLowerCase().contains("video"));
         img.setThumbnailUrl(thumbnailUrl);
         img.setCreateTime(new Date());
         imageRepository.add(img);

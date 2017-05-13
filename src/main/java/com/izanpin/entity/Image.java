@@ -17,6 +17,8 @@ public class Image {
 
     private String thumbnailUrl;
 
+    private Boolean isVideo;
+
     private Date createTime;
 
     @JsonIgnore
@@ -53,6 +55,14 @@ public class Image {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl == null ? null : thumbnailUrl.trim();
+    }
+
+    public Boolean getIsVideo() {
+        return isVideo;
+    }
+
+    public void setIsVideo(Boolean isVideo) {
+        this.isVideo = isVideo;
     }
 
     public Date getCreateTime() {

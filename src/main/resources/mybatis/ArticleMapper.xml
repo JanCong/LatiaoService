@@ -40,6 +40,7 @@
             <id column="image_id" jdbcType="BIGINT" property="id"/>
             <result column="article_id" jdbcType="BIGINT" property="articleId"/>
             <result column="url" jdbcType="VARCHAR" property="url"/>
+            <result column="is_video" jdbcType="BIT" property="isVideo"/>
             <result column="thumbnail_url" jdbcType="VARCHAR" property="thumbnailUrl"/>
             <result column="image_create_time" jdbcType="TIMESTAMP" property="createTime"/>
         </collection>
@@ -65,7 +66,8 @@
   </sql>
     <select id="findByTimeline" parameterType="com.izanpin.dto.RequestArticleTimelineDto" resultMap="ResultMap">
         select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        image.id as image_id, image.article_id, image.url, image.is_video, image.thumbnail_url, image.create_time as
+        image_create_time
         from article left join image on article.id = image.article_id
         where (1=1)
         <if test="sinceId != null and sinceId != 0">
