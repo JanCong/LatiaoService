@@ -45,7 +45,21 @@
         </section>
         <section class=" ui-placehold ui-placehold-img topic-img">
         <#list article.getImages()! as image>
-            <img src="${image.getUrl()!}" class="j-imglazyload"/>
+            <#if image.getIsVideo()>
+                <div class="x-video-container j-video">
+                    <div class="x-video-p" style="padding-top:56.25%">
+                        <video class="topic-xx-video x-video j-player"
+                               width="100%" webkit-playsinline="" playsinline="" x-webkit-airplay="true" controls=""
+                               preload="none"
+                               poster="${image.getThumbnailUrl()}">
+                            <source src="${image.getUrl()!}"
+                                    type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            <#else>
+                <img src="${image.getUrl()!}" class="j-imglazyload"/>
+            </#if>
         </#list>
         </section>
     </div>

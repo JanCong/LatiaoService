@@ -95,7 +95,8 @@
     </select>
     <select id="find" resultMap="ResultMap">
         select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.is_video, image.create_time as
+        image_create_time
         from article left join image on article.id = image.article_id
         <if test="keyword != null">
             where article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%')
@@ -107,7 +108,8 @@
     </select>
     <select id="findByType" resultMap="ResultMap">
         select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.is_video, image.create_time as
+        image_create_time
         from article left join image on article.id = image.article_id
         where article.type = #{type,jdbcType=INTEGER}
         <if test="type == 0">
@@ -120,7 +122,8 @@
     </select>
     <select id="get" parameterType="java.lang.Long" resultMap="ResultMap">
         select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.create_time as image_create_time
+        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.is_video, image.create_time as
+        image_create_time
         from article left join image on article.id = image.article_id
         where article.id = #{id,jdbcType=BIGINT}
     </select>

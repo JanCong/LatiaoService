@@ -2151,6 +2151,6 @@ body {
     padding-bottom: 0;
 }
 
-.topic-img img {
+.topic-img img, topic-img .j-video {
     margin-bottom: 10px;
 }
