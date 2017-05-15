@@ -64,6 +64,7 @@ public class ImageServiceImpl implements ImageService {
             image.setArticleId(articleId);
             image.setUrl(url.toString());
             image.setThumbnailUrl(thumbnailUrl);
+            image.setIsVideo(Boolean.FALSE);
             image.setCreateTime(new Date());
 
 
