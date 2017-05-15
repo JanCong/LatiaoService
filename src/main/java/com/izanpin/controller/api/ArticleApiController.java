@@ -165,4 +165,11 @@ public class ArticleApiController {
     public void importData() throws Exception {
         importData.importData();
     }
+
+    @ApiOperation(value = "导入图片数据")
+    @RequestMapping(value = "/importPictureData", method = RequestMethod.POST)
+    @ResponseBody
+    public void importPictureData() throws Exception {
+        importData.importPictures();
+    }
 }
