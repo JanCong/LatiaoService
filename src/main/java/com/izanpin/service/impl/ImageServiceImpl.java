@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -34,17 +35,21 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    String endpoint = "https://bj.bcebos.com";
-    String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
-    String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
-    String bucketName = "wuliaoa";
+    String endpoint = "https://gz.bcebos.com";
+    //    String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
+    String ACCESS_KEY_ID = "563a853a0b394b67b10bcb82a301b867";                   // 用户的Access Key ID
+    //    String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
+    String SECRET_ACCESS_KEY = "dc1365f93fe94ab8bad3d8883ae1e0b8";           // 用户的Secret Access Key
+    String bucketName = "latiao1";
 
     static Logger logger = LogManager.getLogger();
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
     public void addImage(String strUrl, long articleId) {
         String[] urls = strUrl.split("/");
-        String objectKey = String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(urls[urls.length - 1]);
+        String objectKey = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(urls[urls.length - 1]);
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
@@ -92,7 +97,7 @@ public class ImageServiceImpl implements ImageService {
 
         String objectKeyId = String.valueOf(new SnowFlake(0, 0).nextId());
         String extName = getExtensionName(file.getOriginalFilename());
-        String objectKey = objectKeyId + "." + extName;
+        String objectKey = sdf.format(new Date()) + "/" + objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
@@ -140,7 +145,7 @@ public class ImageServiceImpl implements ImageService {
 
         String objectKeyId = String.valueOf(new SnowFlake(0, 0).nextId());
         String extName = getExtensionName(file.getOriginalFilename());
-        String objectKey = objectKeyId + "." + extName;
+        String objectKey = sdf.format(new Date()) + "/" + objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
