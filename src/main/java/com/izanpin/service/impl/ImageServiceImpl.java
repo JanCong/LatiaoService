@@ -46,6 +46,8 @@ public class ImageServiceImpl implements ImageService {
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
         config.setEndpoint(endpoint);
+        config.setConnectionTimeoutInMillis(0);
+        config.setSocketTimeoutInMillis(0);
         BosClient client = new BosClient(config);
 
         try {
@@ -92,6 +94,8 @@ public class ImageServiceImpl implements ImageService {
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
         config.setEndpoint(endpoint);
+        config.setConnectionTimeoutInMillis(0);
+        config.setSocketTimeoutInMillis(0);
         BosClient client = new BosClient(config);
 
         PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
@@ -138,6 +142,8 @@ public class ImageServiceImpl implements ImageService {
         BosClientConfiguration config = new BosClientConfiguration();
         config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
         config.setEndpoint(endpoint);
+        config.setConnectionTimeoutInMillis(0);
+        config.setSocketTimeoutInMillis(0);
         BosClient client = new BosClient(config);
 
         PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
