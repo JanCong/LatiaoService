@@ -11,6 +11,8 @@ import com.izanpin.service.UserService;
 import com.izanpin.service.UserTokenService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +33,8 @@ public class UserApiController {
     @Autowired
     UserTokenService userTokenService;
 
+    static Logger logger = LogManager.getLogger();
+
     @ApiOperation(value = "登录")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -45,7 +49,7 @@ public class UserApiController {
             map.put("user", user);
             result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), map);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -65,7 +69,7 @@ public class UserApiController {
             map.put("user", user);
             result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), map);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -85,7 +89,7 @@ public class UserApiController {
             map.put("user", user);
             result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), map);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -100,7 +104,7 @@ public class UserApiController {
             User user = userService.getUser(id);
             result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), user);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -123,7 +127,7 @@ public class UserApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -146,7 +150,7 @@ public class UserApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -170,7 +174,7 @@ public class UserApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;

@@ -11,6 +11,8 @@ import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.ArticleService;
 import com.izanpin.service.UserTokenService;
 import com.wordnik.swagger.annotations.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,6 +32,8 @@ public class ArticleApiController {
     UserTokenService userTokenService;
     @Autowired
     ImportData importData;
+
+    static Logger logger = LogManager.getLogger();
 
     @ApiOperation(value = "获取 辣条")
     @RequestMapping(value = "/{page}/{size}", method = RequestMethod.GET)
@@ -98,7 +102,7 @@ public class ArticleApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -121,7 +125,7 @@ public class ArticleApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -152,7 +156,7 @@ public class ArticleApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;

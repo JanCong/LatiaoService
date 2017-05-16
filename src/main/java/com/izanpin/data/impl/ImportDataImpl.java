@@ -15,6 +15,8 @@ import com.izanpin.service.ImageService;
 import com.izanpin.service.UserService;
 import com.izanpin.common.util.Http;
 import com.izanpin.common.util.SnowFlake;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +39,7 @@ public class ImportDataImpl implements ImportData {
     @Autowired
     ArticleRepository articleRepository;
 
+    static Logger logger = LogManager.getLogger();
 
     @Override
     public void importData() throws Exception {
@@ -69,7 +72,7 @@ public class ImportDataImpl implements ImportData {
                         try {
                             articleService.addArticle(article);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });
@@ -97,14 +100,14 @@ public class ImportDataImpl implements ImportData {
                     try {
                         hashId = SHA.toSHAString(jObj.toString());
                     } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
                     if (!content.trim().isEmpty() && !articleService.existHashId(hashId)) {
                         Article article = setArticle(content, hashId, ArticleType.JOKE, robots);
                         try {
                             articleService.addArticle(article);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });
@@ -130,7 +133,7 @@ public class ImportDataImpl implements ImportData {
                         try {
                             hashId = SHA.toSHAString(jObj.toString());
                         } catch (NoSuchAlgorithmException e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
 
                         if (!articleService.existHashId(hashId)) {
@@ -138,7 +141,7 @@ public class ImportDataImpl implements ImportData {
                             try {
                                 articleService.addArticle(article);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                logger.error("", e);
                             }
                         }
                     }
@@ -174,7 +177,7 @@ public class ImportDataImpl implements ImportData {
                             articleService.addArticle(article);
                             imageService.addImage(imgUrl, article.getId());
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });
@@ -202,7 +205,7 @@ public class ImportDataImpl implements ImportData {
                     try {
                         hashId = SHA.toSHAString(jObj.toString());
                     } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
 
                     String imgUrl = jObj.getString("pic");
@@ -211,7 +214,7 @@ public class ImportDataImpl implements ImportData {
                         try {
                             articleService.addPicture(article, imgUrl);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });
@@ -237,7 +240,7 @@ public class ImportDataImpl implements ImportData {
                     try {
                         hashId = SHA.toSHAString(jObj.toString());
                     } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
 
                     String imgUrl = jObj.getString("picUrl");
@@ -247,7 +250,7 @@ public class ImportDataImpl implements ImportData {
                         try {
                             articleService.addPicture(article, imgUrl);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });
@@ -275,7 +278,7 @@ public class ImportDataImpl implements ImportData {
                     try {
                         hashId = SHA.toSHAString(jObj.toString());
                     } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
 
                     String imgUrl = jObj.getString("img");
@@ -285,7 +288,7 @@ public class ImportDataImpl implements ImportData {
                         try {
                             articleService.addPicture(article, imgUrl);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });
@@ -312,7 +315,7 @@ public class ImportDataImpl implements ImportData {
                     try {
                         hashId = SHA.toSHAString(jObj.toString());
                     } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
 
                     String imgUrl = jObj.getString("img");
@@ -322,7 +325,7 @@ public class ImportDataImpl implements ImportData {
                         try {
                             articleService.addPicture(article, imgUrl);
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            logger.error("", e);
                         }
                     }
                 });

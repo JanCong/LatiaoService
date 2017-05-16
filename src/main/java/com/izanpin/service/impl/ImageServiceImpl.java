@@ -13,6 +13,8 @@ import com.izanpin.entity.Image;
 import com.izanpin.repository.ImageRepository;
 import com.izanpin.service.ImageService;
 import com.izanpin.common.util.SnowFlake;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,8 @@ public class ImageServiceImpl implements ImageService {
     String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
     String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
     String bucketName = "wuliaoa";
+
+    static Logger logger = LogManager.getLogger();
 
     @Override
     public void addImage(String strUrl, long articleId) {
@@ -74,7 +78,7 @@ public class ImageServiceImpl implements ImageService {
             imageRepository.add(image);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
         }
 
     }

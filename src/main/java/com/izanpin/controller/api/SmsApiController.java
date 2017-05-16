@@ -8,6 +8,8 @@ import com.izanpin.service.SmsService;
 import com.izanpin.service.UserService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,8 @@ public class SmsApiController {
     @Autowired
     SmsService smsService;
 
+    static Logger logger = LogManager.getLogger();
+
     @ApiOperation(value = "发送登录验证码")
     @RequestMapping(value = "/sendLoginSecurityCode/{number}", method = RequestMethod.POST)
     @ResponseBody
@@ -32,7 +36,7 @@ public class SmsApiController {
             smsService.sendLoginSecurityCode(number);
             result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;

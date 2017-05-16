@@ -16,6 +16,8 @@ import com.izanpin.service.ArticleService;
 import com.izanpin.common.util.SnowFlake;
 import com.izanpin.service.ImageService;
 import com.izanpin.service.UserService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +44,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     UserService userService;
 
+    static Logger logger = LogManager.getLogger();
 
     @Override
     public PageInfo getArticles(Integer page, Integer size, String keyword) {
@@ -106,7 +109,7 @@ public class ArticleServiceImpl implements ArticleService {
                     try {
                         imageService.addImage(url, article.getId());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
                 });
             }
@@ -115,7 +118,7 @@ public class ArticleServiceImpl implements ArticleService {
                     try {
                         imageService.addImage(image, article.getId());
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        logger.error("", e);
                     }
                 });
             }

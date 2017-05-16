@@ -10,6 +10,8 @@ import com.izanpin.service.UserTokenService;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import com.wordnik.swagger.annotations.ApiParam;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,8 @@ public class CommentApiController {
     @Autowired
     UserTokenService userTokenService;
 
+    static Logger logger = LogManager.getLogger();
+
     @ApiOperation(value = "获取评论")
     @RequestMapping(value = "/{articleId}/{page}/{size}", method = RequestMethod.GET)
     @ResponseBody
@@ -37,7 +41,7 @@ public class CommentApiController {
                     ResultStatus.SUCCESSFUL.name(),
                     commentService.getComments(articleId, page, size));
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
 
@@ -55,10 +59,10 @@ public class CommentApiController {
     @RequestMapping(value = "/{articleId}", method = RequestMethod.POST)
     @ResponseBody
     public ResultDto addComment(
-        @RequestHeader("token") String token,
-        @ApiParam("无聊图/段子 ID") @PathVariable Long articleId,
-        @ApiParam("用户id") @RequestParam Long userId,
-        @ApiParam("评论内容") @RequestParam String content) {
+            @RequestHeader("token") String token,
+            @ApiParam("无聊图/段子 ID") @PathVariable Long articleId,
+            @ApiParam("用户id") @RequestParam Long userId,
+            @ApiParam("评论内容") @RequestParam String content) {
         ResultDto result;
         try {
             UserToken userToken = userTokenService.getUserTokenByToken(token);
@@ -69,7 +73,7 @@ public class CommentApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
@@ -79,10 +83,10 @@ public class CommentApiController {
     @RequestMapping(value = "/reply/{replyToId}", method = RequestMethod.POST)
     @ResponseBody
     public ResultDto reply(
-        @RequestHeader("token") String token,
-        @ApiParam(value = "评论ID") @PathVariable Long replyToId,
-        @ApiParam("用户id") @RequestParam Long userId,
-        @ApiParam("评论内容") @RequestParam String content) {
+            @RequestHeader("token") String token,
+            @ApiParam(value = "评论ID") @PathVariable Long replyToId,
+            @ApiParam("用户id") @RequestParam Long userId,
+            @ApiParam("评论内容") @RequestParam String content) {
         ResultDto result;
         try {
             UserToken userToken = userTokenService.getUserTokenByToken(token);
@@ -93,7 +97,7 @@ public class CommentApiController {
                 result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("", e);
             result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
         }
         return result;
