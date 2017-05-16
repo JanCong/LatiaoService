@@ -27,8 +27,5 @@ public class TestApiController {
         logger.debug("我是debug信息");
         logger.warn("我是warn信息");
         logger.fatal("我是fatal信息");
-
-        Exception e = new Exception("错误错误错误");
-        logger.error("", e);
     }
 }

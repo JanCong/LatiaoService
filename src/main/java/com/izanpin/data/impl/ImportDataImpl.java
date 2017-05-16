@@ -77,6 +77,8 @@ public class ImportDataImpl implements ImportData {
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
 
     }
@@ -112,6 +114,8 @@ public class ImportDataImpl implements ImportData {
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
 
     }
@@ -147,15 +151,22 @@ public class ImportDataImpl implements ImportData {
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
     }
 
     @Override
     public void importPictures() throws Exception {
+        try {
 //        importPicturesFromJuhe();
-        importPicturesFromShowapi2();
+            importPicturesFromShowapi2();
 //        importPicturesFromShowapi();
-        importPicturesFromShowapi3();
+            importPicturesFromShowapi3();
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+
     }
 
     private void importPicturesFromJuhe() throws Exception {
@@ -171,17 +182,19 @@ public class ImportDataImpl implements ImportData {
                     JSONObject jObj = (JSONObject) obj;
                     String hashId = jObj.getString("hashId");
                     String imgUrl = jObj.getString("url");
-                    if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
-                        Article article = setArticle(jObj.getString("content"), hashId, ArticleType.PICTURE, robots);
-                        try {
+                    try {
+                        if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                            Article article = setArticle(jObj.getString("content"), hashId, ArticleType.PICTURE, robots);
                             articleService.addArticle(article);
                             imageService.addImage(imgUrl, article.getId());
-                        } catch (Exception e) {
-                            logger.error("", e);
                         }
+                    } catch (Exception e) {
+                        logger.error("", e);
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
 
     }
@@ -219,6 +232,8 @@ public class ImportDataImpl implements ImportData {
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
 
     }
@@ -255,11 +270,15 @@ public class ImportDataImpl implements ImportData {
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
 
     }
 
     private void importPicturesFromShowapi2() throws Exception {
+        logger.trace("importPicturesFromShowapi2()");
+
         String jsonString = Http.get("https://route.showapi.com/341-3?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
@@ -290,13 +309,19 @@ public class ImportDataImpl implements ImportData {
                         } catch (Exception e) {
                             logger.error("", e);
                         }
+                    } else {
+                        logger.warn("hashId existed");
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
     }
 
     private void importPicturesFromShowapi3() throws Exception {
+        logger.trace("importPicturesFromShowapi3()");
+
         String jsonString = Http.get("https://route.showapi.com/341-2?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
@@ -327,9 +352,13 @@ public class ImportDataImpl implements ImportData {
                         } catch (Exception e) {
                             logger.error("", e);
                         }
+                    } else {
+                        logger.warn("hashId existed");
                     }
                 });
             }
+        } else {
+            logger.warn(jsonString);
         }
     }
 
