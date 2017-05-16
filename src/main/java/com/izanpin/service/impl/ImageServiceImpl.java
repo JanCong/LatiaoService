@@ -123,6 +123,7 @@ public class ImageServiceImpl implements ImageService {
         if (img.getIsVideo()) {
             BceClientConfiguration bceClientConfig = new BceClientConfiguration();
             bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+            bceClientConfig.setEndpoint("http://media.gz.baidubce.com");
             MediaClient mediaClient = new MediaClient(bceClientConfig);
             ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
             img.setThumbnailUrl(url.replace(extName, "jpg"));
@@ -172,6 +173,7 @@ public class ImageServiceImpl implements ImageService {
         if (img.getIsVideo()) {
             BceClientConfiguration bceClientConfig = new BceClientConfiguration();
             bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+            bceClientConfig.setEndpoint("http://media.gz.baidubce.com");
             MediaClient mediaClient = new MediaClient(bceClientConfig);
             ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
             img.setThumbnailUrl(url.replace(extName, "jpg"));
