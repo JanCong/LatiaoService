@@ -13,6 +13,14 @@ import com.izanpin.entity.Image;
 import com.izanpin.repository.ImageRepository;
 import com.izanpin.service.ImageService;
 import com.izanpin.common.util.SnowFlake;
+import com.qiniu.common.Zone;
+import com.qiniu.http.Response;
+import com.qiniu.processing.OperationManager;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import com.qiniu.util.StringUtils;
+import com.qiniu.util.UrlSafeBase64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,12 +44,17 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
 
-    String endpoint = "https://gz.bcebos.com";
-    //    String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
-    String ACCESS_KEY_ID = "563a853a0b394b67b10bcb82a301b867";                   // 用户的Access Key ID
-    //    String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
-    String SECRET_ACCESS_KEY = "dc1365f93fe94ab8bad3d8883ae1e0b8";           // 用户的Secret Access Key
-    String bucketName = "latiao1";
+//    String endpoint = "https://gz.bcebos.com";
+//    //    String ACCESS_KEY_ID = "6c82105cbe4e485788564c32aed7831a";                   // 用户的Access Key ID
+//    String ACCESS_KEY_ID = "563a853a0b394b67b10bcb82a301b867";                   // 用户的Access Key ID
+//    //    String SECRET_ACCESS_KEY = "6f3c21dcbbf947eeb7a65ea9e6194913";           // 用户的Secret Access Key
+//    String SECRET_ACCESS_KEY = "dc1365f93fe94ab8bad3d8883ae1e0b8";           // 用户的Secret Access Key
+//    String bucketName = "latiao1";
+
+    String ACCESS_KEY = "c_dDAms5xIs12Vs9_uWK651hk4aJiXOs_MkZULUo";
+    String SECRET_KEY = "JEA2Q5_cUfX_JGNN9ft_ft8apmMiOeVg7-j7fhSn";
+    String BUCKET = "latiao";
+    String DOMAIN = "http://storage.izanpin.com";
 
     static Logger logger = LogManager.getLogger();
 
@@ -53,28 +67,38 @@ public class ImageServiceImpl implements ImageService {
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
-        BosClientConfiguration config = new BosClientConfiguration();
-        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
-        config.setEndpoint(endpoint);
-        config.setConnectionTimeoutInMillis(0);
-        config.setSocketTimeoutInMillis(0);
-        BosClient client = new BosClient(config);
+//        BosClientConfiguration config = new BosClientConfiguration();
+//        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+//        config.setEndpoint(endpoint);
+//        config.setConnectionTimeoutInMillis(0);
+//        config.setSocketTimeoutInMillis(0);
+//        BosClient client = new BosClient(config);
+
+
+        Configuration cfg = new Configuration(Zone.zone2());
+        UploadManager uploadManager = new UploadManager(cfg);
+
+        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        String upToken = auth.uploadToken(BUCKET);
 
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(strUrl).openConnection();
             DataInputStream stream = new DataInputStream(connection.getInputStream());
 
-            PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, stream);
-            putObjectFromFileResponse.getETag();
+//            PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, stream);
+//            putObjectFromFileResponse.getETag();
+            Response response = uploadManager.put(stream, objectKey, upToken, null, null);
 
-            URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
-            String thumbnailUrl = url.toString().replace(objectKey, objectKey + "@!thumbnail");
+//            URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
+            String finalUrl = String.format("%s/%s", DOMAIN, objectKey);
+
+            String thumbnailUrl = finalUrl.replace(objectKey, objectKey + "-thumbnail");
 
             Image image = new Image();
             SnowFlake snowFlake = new SnowFlake(0, 0);
             image.setId(snowFlake.nextId());
             image.setArticleId(articleId);
-            image.setUrl(url.toString());
+            image.setUrl(finalUrl);
             image.setThumbnailUrl(thumbnailUrl);
             image.setIsVideo(Boolean.FALSE);
             image.setCreateTime(new Date());
@@ -95,41 +119,60 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKeyId = String.valueOf(new SnowFlake(0, 0).nextId());
+        String objectKeyId = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId());
         String extName = getExtensionName(file.getOriginalFilename());
-        String objectKey = sdf.format(new Date()) + "/" + objectKeyId + "." + extName;
+        String objectKey = objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
-        BosClientConfiguration config = new BosClientConfiguration();
-        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
-        config.setEndpoint(endpoint);
-        config.setConnectionTimeoutInMillis(0);
-        config.setSocketTimeoutInMillis(0);
-        BosClient client = new BosClient(config);
+//        BosClientConfiguration config = new BosClientConfiguration();
+//        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+//        config.setEndpoint(endpoint);
+//        config.setConnectionTimeoutInMillis(0);
+//        config.setSocketTimeoutInMillis(0);
+//        BosClient client = new BosClient(config);
+//
+//        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
+//        putObjectFromFileResponse.getETag();
 
-        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
-        putObjectFromFileResponse.getETag();
+        Configuration cfg = new Configuration(Zone.zone2());
+        UploadManager uploadManager = new UploadManager(cfg);
+
+        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        String upToken = auth.uploadToken(BUCKET);
+
+        Response response = uploadManager.put(file.getInputStream(), objectKey, upToken, null, null);
 
 //        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
-        String url = String.format("%s/%s/%s", endpoint, bucketName, objectKey);
+//        String url = String.format("%s/%s/%s", endpoint, bucketName, objectKey);
+
+        String finalUrl = String.format("%s/%s", DOMAIN, objectKey);
 
         Image img = new Image();
         SnowFlake snowFlake = new SnowFlake(0, 0);
         img.setId(snowFlake.nextId());
-        img.setUrl(url.toString());
+        img.setUrl(finalUrl);
         img.setIsVideo(file.getContentType().toLowerCase().contains("video"));
 
         if (img.getIsVideo()) {
-            BceClientConfiguration bceClientConfig = new BceClientConfiguration();
-            bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
-            bceClientConfig.setEndpoint("http://media.gz.baidubce.com");
-            MediaClient mediaClient = new MediaClient(bceClientConfig);
-            ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
-            img.setThumbnailUrl(url.replace(extName, "jpg"));
+//            BceClientConfiguration bceClientConfig = new BceClientConfiguration();
+//            bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+//            bceClientConfig.setEndpoint("http://media.gz.baidubce.com");
+//            MediaClient mediaClient = new MediaClient(bceClientConfig);
+//            ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
+
+            //数据处理指令，支持多个指令
+            String saveJpgEntry = String.format("%s:%s.jpg", BUCKET, objectKeyId);
+            String vframeJpgFop = String.format("vframe/jpg/offset/1|saveas/%s", UrlSafeBase64.encodeToString(saveJpgEntry));
+
+            //String vframeJpgFop = String.format("vframe/jpg/offset/1|saveas/%s", objectKeyId + ".jpg");
+            OperationManager operationManager = new OperationManager(auth, cfg);
+            operationManager.pfop(BUCKET, objectKey, vframeJpgFop, "latiao", true);
+
+            img.setThumbnailUrl(finalUrl.replace(extName, "jpg-thumbnail"));
             img.setIsVideo(true);
         } else {
-            img.setThumbnailUrl(url.replace(objectKey, objectKey + "@!thumbnail"));
+            img.setThumbnailUrl(finalUrl.replace(objectKey, objectKey + "-thumbnail"));
             img.setIsVideo(false);
         }
         img.setCreateTime(new Date());
@@ -144,42 +187,59 @@ public class ImageServiceImpl implements ImageService {
             throw new Exception("图片为空");
         }
 
-        String objectKeyId = String.valueOf(new SnowFlake(0, 0).nextId());
+        String objectKeyId = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId());
         String extName = getExtensionName(file.getOriginalFilename());
-        String objectKey = sdf.format(new Date()) + "/" + objectKeyId + "." + extName;
+        String objectKey = objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
 
         // 初始化一个BosClient
-        BosClientConfiguration config = new BosClientConfiguration();
-        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
-        config.setEndpoint(endpoint);
-        config.setConnectionTimeoutInMillis(0);
-        config.setSocketTimeoutInMillis(0);
-        BosClient client = new BosClient(config);
+//        BosClientConfiguration config = new BosClientConfiguration();
+//        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+//        config.setEndpoint(endpoint);
+//        config.setConnectionTimeoutInMillis(0);
+//        config.setSocketTimeoutInMillis(0);
+//        BosClient client = new BosClient(config);
+//
+//        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
+//        putObjectFromFileResponse.getETag();
 
-        PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, file.getBytes());
-        putObjectFromFileResponse.getETag();
+        Configuration cfg = new Configuration(Zone.zone2());
+        UploadManager uploadManager = new UploadManager(cfg);
+
+        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        String upToken = auth.uploadToken(BUCKET);
+
+        Response response = uploadManager.put(file.getInputStream(), objectKey, upToken, null, null);
 
         //        URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
-        String url = String.format("%s/%s/%s", endpoint, bucketName, objectKey);
+//        String url = String.format("%s/%s/%s", endpoint, bucketName, objectKey);
+
+        String finalUrl = String.format("%s/%s", DOMAIN, objectKey);
 
         Image img = new Image();
         SnowFlake snowFlake = new SnowFlake(0, 0);
         img.setId(snowFlake.nextId());
         img.setArticleId(articleId);
-        img.setUrl(url.toString());
+        img.setUrl(finalUrl);
         img.setIsVideo(file.getContentType().toLowerCase().contains("video"));
 
         if (img.getIsVideo()) {
-            BceClientConfiguration bceClientConfig = new BceClientConfiguration();
-            bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
-            bceClientConfig.setEndpoint("http://media.gz.baidubce.com");
-            MediaClient mediaClient = new MediaClient(bceClientConfig);
-            ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
-            img.setThumbnailUrl(url.replace(extName, "jpg"));
+//            BceClientConfiguration bceClientConfig = new BceClientConfiguration();
+//            bceClientConfig.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
+//            bceClientConfig.setEndpoint("http://media.gz.baidubce.com");
+//            MediaClient mediaClient = new MediaClient(bceClientConfig);
+//            ThumbnailJob.createThumbnailJob(mediaClient, "latiao_video", objectKey);
+
+            String saveJpgEntry = String.format("%s:%s.jpg", BUCKET, objectKeyId);
+            String vframeJpgFop = String.format("vframe/jpg/offset/1|saveas/%s", UrlSafeBase64.encodeToString(saveJpgEntry));
+
+            OperationManager operationManager = new OperationManager(auth, cfg);
+            operationManager.pfop(BUCKET, objectKey, vframeJpgFop, "latiao", true);
+
+            img.setThumbnailUrl(finalUrl.replace(extName, "jpg-thumbnail"));
             img.setIsVideo(true);
         } else {
-            img.setThumbnailUrl(url.replace(objectKey, objectKey + "@!thumbnail"));
+            img.setThumbnailUrl(finalUrl.replace(objectKey, objectKey + "-thumbnail"));
             img.setIsVideo(false);
         }
 
