@@ -24,11 +24,11 @@
     </bean>
     <bean id="startWorkTriggerImportJokes" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="startWorkTaskImportJokes"></property>
-        <property name="cronExpression" value="0 45 * * * ?"></property>
+        <property name="cronExpression" value="0 5 0/2 * * ?"></property>
     </bean>
     <bean id="startWorkTriggerImportPictures" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="startWorkTaskImportPictures"></property>
-        <property name="cronExpression" value="0 0/30 * * * ?"></property>
+        <property name="cronExpression" value="0 20 * * * ?"></property>
     </bean>
     <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
