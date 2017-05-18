@@ -60,6 +60,13 @@ public class ArticleApiController {
         return articleService.getArticlesByTimeline(1, 1000, dto);
     }
 
+    @ApiOperation(value = "获取一周内随机 辣条")
+    @RequestMapping(value = "/random/week", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDto getArticlesByRandomInWeek(@ApiParam("取几条") @RequestParam(required = false) Integer size) {
+        return new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getArticlesByRandomInWeek(size));
+    }
+
     @ApiOperation(value = "根据ID获取")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody

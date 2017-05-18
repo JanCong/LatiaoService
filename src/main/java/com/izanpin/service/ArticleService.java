@@ -33,4 +33,6 @@ public interface ArticleService {
     void hate(Long id, Long userId) throws Exception;
 
     PageInfo getArticlesByTimeline(Integer page, Integer size, RequestArticleTimelineDto dto);
+
+    List<Article> getArticlesByRandomInWeek(Integer size);
 }

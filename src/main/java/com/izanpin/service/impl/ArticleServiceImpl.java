@@ -191,4 +191,14 @@ public class ArticleServiceImpl implements ArticleService {
         PageHelper.startPage(page, size);
         return new PageInfo(articleRepository.findByTimeline(dto));
     }
+
+    @Override
+    public List<Article> getArticlesByRandomInWeek(Integer size) {
+        if (size == null || size == 0) {
+            size = 20;
+        }
+
+        PageHelper.startPage(1, size);
+        return new PageInfo(articleRepository.findByRandomInWeek()).getList();
+    }
 }
