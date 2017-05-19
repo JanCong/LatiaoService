@@ -67,6 +67,10 @@ public class Article {
 
     private List<Image> images;
 
+    private List<Like> likes;
+
+    private Boolean Liked;
+
     public Long getId() {
         return id;
     }
@@ -197,5 +201,25 @@ public class Article {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public Boolean getLiked() {
+        return Liked;
+    }
+
+    public void setLiked(Long userId) {
+        if (userId == null) {
+            this.Liked = false;
+        } else {
+            this.Liked = this.likes.stream().anyMatch(l -> userId.equals(l.getUserId()));
+        }
     }
 }

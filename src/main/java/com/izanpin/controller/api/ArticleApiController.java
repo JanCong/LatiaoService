@@ -40,8 +40,9 @@ public class ArticleApiController {
     @ResponseBody
     public PageInfo getArticles(@ApiParam(value = "页码") @PathVariable Integer page,
                                 @ApiParam(value = "页大小") @PathVariable Integer size,
-                                @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
-        return articleService.getArticles(page, size, keyword);
+                                @ApiParam(value = "关键词") @RequestParam(required = false) String keyword,
+                                @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
+        return articleService.getArticles(page, size, keyword, userId);
     }
 
     @ApiOperation(value = "获取 辣条")
@@ -63,8 +64,9 @@ public class ArticleApiController {
     @ApiOperation(value = "获取一周内随机 辣条")
     @RequestMapping(value = "/random/week", method = RequestMethod.GET)
     @ResponseBody
-    public ResultDto getArticlesByRandomInWeek(@ApiParam("取几条") @RequestParam(required = false) Integer size) {
-        return new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getArticlesByRandomInWeek(size));
+    public ResultDto getArticlesByRandomInWeek(@ApiParam("取几条") @RequestParam(required = false) Integer size,
+                                               @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
+        return new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getArticlesByRandomInWeek(size, userId));
     }
 
     @ApiOperation(value = "根据ID获取")
@@ -79,8 +81,9 @@ public class ArticleApiController {
     @ResponseBody
     public PageInfo getPictures(@ApiParam(value = "页码") @PathVariable Integer page,
                                 @ApiParam(value = "页大小") @PathVariable Integer size,
-                                @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
-        return articleService.getPictures(page, size, keyword);
+                                @ApiParam(value = "关键词") @RequestParam(required = false) String keyword,
+                                @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
+        return articleService.getPictures(page, size, keyword, userId);
     }
 
     @ApiOperation(value = "获取段子")
@@ -88,8 +91,9 @@ public class ArticleApiController {
     @ResponseBody
     public PageInfo getJokes(@ApiParam(value = "页码") @PathVariable Integer page,
                              @ApiParam(value = "页大小") @PathVariable Integer size,
-                             @ApiParam(value = "关键词") @RequestParam(required = false) String keyword) {
-        return articleService.getJokes(page, size, keyword);
+                             @ApiParam(value = "关键词") @RequestParam(required = false) String keyword,
+                             @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
+        return articleService.getJokes(page, size, keyword, userId);
     }
 
     @ApiOperation(value = "赞")

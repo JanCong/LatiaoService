@@ -36,6 +36,8 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
 
+        <collection property="likes" resultMap="likeResult"/>
+
         <collection property="images" ofType="com.izanpin.entity.Image">
             <id column="image_id" jdbcType="BIGINT" property="id"/>
             <result column="article_id" jdbcType="BIGINT" property="articleId"/>
@@ -46,6 +48,9 @@
         </collection>
     </resultMap>
 
+    <resultMap type="com.izanpin.entity.Like" id="likeResult">
+        <result column="user_id" property="userId"/>
+    </resultMap>
 
     <sql id="Base_Column_List">
         id,
@@ -64,11 +69,19 @@
         create_time,
         update_time
   </sql>
-    <select id="findByTimeline" parameterType="com.izanpin.dto.RequestArticleTimelineDto" resultMap="ResultMap">
+
+    <sql id="select_join">
         select article.*,
         image.id as image_id, image.article_id, image.url, image.is_video, image.thumbnail_url, image.create_time as
-        image_create_time
-        from article left join image on article.id = image.article_id
+        image_create_time,
+        `like`.user_id
+        from article
+        left join image on article.id = image.article_id
+        left join `like` on article.id = `like`.article_id
+    </sql>
+
+    <select id="findByTimeline" parameterType="com.izanpin.dto.RequestArticleTimelineDto" resultMap="ResultMap">
+        <include refid="select_join"></include>
         where (1=1)
         <if test="sinceId != null and sinceId != 0">
             and (article.id &gt; #{sinceId})
@@ -94,10 +107,7 @@
         order by article.status desc, article.id desc
     </select>
     <select id="find" resultMap="ResultMap">
-        select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.is_video, image.create_time as
-        image_create_time
-        from article left join image on article.id = image.article_id
+        <include refid="select_join"></include>
         <if test="keyword != null">
             where article.id = '${keyword}' or article.content like CONCAT('%','${keyword}','%')
         </if>
@@ -107,10 +117,7 @@
         order by article.status desc, article.id desc
     </select>
     <select id="findByType" resultMap="ResultMap">
-        select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.is_video, image.create_time as
-        image_create_time
-        from article left join image on article.id = image.article_id
+        <include refid="select_join"></include>
         where article.type = #{type,jdbcType=INTEGER}
         <if test="type == 0">
             and (image.id is not null)
@@ -121,10 +128,7 @@
         order by article.status desc, article.id desc
     </select>
     <select id="get" parameterType="java.lang.Long" resultMap="ResultMap">
-        select article.*,
-        image.id as image_id, image.article_id, image.url, image.thumbnail_url, image.is_video, image.create_time as
-        image_create_time
-        from article left join image on article.id = image.article_id
+        <include refid="select_join"></include>
         where article.id = #{id,jdbcType=BIGINT}
     </select>
     <select id="getByHashId" parameterType="java.lang.String" resultMap="BaseResultMap">

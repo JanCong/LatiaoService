@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Smart on 2017/1/30.
  */
 public interface ArticleService {
-    PageInfo getArticles(Integer page, Integer size, String keyword);
+    PageInfo getArticles(Integer page, Integer size, String keyword, Long userId);
 
     void addArticle(AddArticleDto dto) throws Exception;
 
@@ -22,9 +22,9 @@ public interface ArticleService {
 
     boolean existHashId(String hashId);
 
-    PageInfo getPictures(Integer page, Integer size, String keyword);
+    PageInfo getPictures(Integer page, Integer size, String keyword, Long userId);
 
-    PageInfo getJokes(Integer page, Integer size, String keyword);
+    PageInfo getJokes(Integer page, Integer size, String keyword, Long userId);
 
     Article getById(Long id);
 
@@ -34,5 +34,5 @@ public interface ArticleService {
 
     PageInfo getArticlesByTimeline(Integer page, Integer size, RequestArticleTimelineDto dto);
 
-    List<Article> getArticlesByRandomInWeek(Integer size);
+    List<Article> getArticlesByRandomInWeek(Integer size, Long userId);
 }

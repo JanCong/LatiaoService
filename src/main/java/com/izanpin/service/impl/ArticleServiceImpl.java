@@ -47,9 +47,15 @@ public class ArticleServiceImpl implements ArticleService {
     static Logger logger = LogManager.getLogger();
 
     @Override
-    public PageInfo getArticles(Integer page, Integer size, String keyword) {
+    public PageInfo getArticles(Integer page, Integer size, String keyword, Long userId) {
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.find(keyword));
+        PageInfo<Article> pageInfo = new PageInfo(articleRepository.find(keyword));
+
+        if (pageInfo.getList() != null) {
+            pageInfo.getList().forEach(article -> article.setLiked(userId));
+        }
+
+        return pageInfo;
     }
 
     @Override
@@ -132,15 +138,27 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageInfo getPictures(Integer page, Integer size, String keyword) {
+    public PageInfo getPictures(Integer page, Integer size, String keyword, Long userId) {
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.findByType(ArticleType.PICTURE.getValue(), keyword));
+        PageInfo<Article> pageInfo = new PageInfo(articleRepository.findByType(ArticleType.PICTURE.getValue(), keyword));
+
+        if (pageInfo.getList() != null) {
+            pageInfo.getList().forEach(article -> article.setLiked(userId));
+        }
+
+        return pageInfo;
     }
 
     @Override
-    public PageInfo getJokes(Integer page, Integer size, String keyword) {
+    public PageInfo getJokes(Integer page, Integer size, String keyword, Long userId) {
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.findByType(ArticleType.JOKE.getValue(), keyword));
+        PageInfo<Article> pageInfo = new PageInfo(articleRepository.findByType(ArticleType.JOKE.getValue(), keyword));
+
+        if (pageInfo.getList() != null) {
+            pageInfo.getList().forEach(article -> article.setLiked(userId));
+        }
+
+        return pageInfo;
     }
 
     @Override
@@ -189,16 +207,28 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         PageHelper.startPage(page, size);
-        return new PageInfo(articleRepository.findByTimeline(dto));
+        PageInfo<Article> pageInfo = new PageInfo(articleRepository.findByTimeline(dto));
+
+        if (pageInfo.getList() != null) {
+            pageInfo.getList().forEach(article -> article.setLiked(dto.getUserId()));
+        }
+
+        return pageInfo;
     }
 
     @Override
-    public List<Article> getArticlesByRandomInWeek(Integer size) {
+    public List<Article> getArticlesByRandomInWeek(Integer size, Long userId) {
         if (size == null || size == 0) {
             size = 20;
         }
 
         PageHelper.startPage(1, size);
-        return new PageInfo(articleRepository.findByRandomInWeek()).getList();
+
+        List<Article> list = new PageInfo(articleRepository.findByRandomInWeek()).getList();
+
+        if (list != null) {
+            list.forEach(article -> article.setLiked(userId));
+        }
+        return list;
     }
 }

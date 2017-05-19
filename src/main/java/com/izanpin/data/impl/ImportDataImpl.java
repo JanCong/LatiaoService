@@ -369,8 +369,8 @@ public class ImportDataImpl implements ImportData {
         article.setContent(content);
         article.setHashId(hashId);
         article.setCommentCount(0);
-        article.setLikeCount(0);
-        article.setHateCount(0);
+        article.setLikeCount(new Random().nextInt(1024));
+        article.setHateCount(new Random().nextInt(24));
         article.setType(articleType.getValue());
         article.setStatus(ArticleStatus.NORMAL.getValue());
 

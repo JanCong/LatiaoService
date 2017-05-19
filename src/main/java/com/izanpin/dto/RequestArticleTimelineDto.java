@@ -17,6 +17,8 @@ public class RequestArticleTimelineDto {
     private String keyword;
     @ApiParam("若指定此参数，则根据type返回Article (PICTURE/JOKE)")
     private ArticleType type;
+    @ApiParam("若指定此参数，则根据userId返回是否点赞/踩")
+    private Long userId;
 
     public Long getSinceId() {
         return sinceId;
@@ -56,5 +58,13 @@ public class RequestArticleTimelineDto {
 
     public void setType(ArticleType type) {
         this.type = type;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
