@@ -1186,13 +1186,13 @@ span.xx-slider-handle {
 }
 
 .x-play-btn {
-    background: url(http://wimg.spriteapp.cn/huodong/j_m_spriter160908.png) no-repeat;
+    background: url(http://storage.izanpin.com/j_m_spriter160908.png) no-repeat;
     background-size: 12.0625rem auto;
     -webkit-background-size: 12.0625rem auto
 }
 
 .x-audio-btn {
-    background: url(http://wimg.spriteapp.cn/huodong/j_m_spriter160908.png) -3.5625rem 0 no-repeat;
+    background: url(http://storage.izanpin.com/j_m_spriter160908.png) -3.5625rem 0 no-repeat;
     background-size: 12.0625rem auto;
     -webkit-background-size: 12.0625rem auto
 }
@@ -1279,7 +1279,7 @@ body {
 }
 
 .comment-voice:before, .icon-to-play:before, .ion-top-banner-close:before, .j-share-guide .j-ui-icon-guide:before, .j-ui-female:before, .j-ui-icon:before, .j-ui-male:before, .j-ui-qq:before, .j-ui-qzone:before, .j-ui-share:before, .j-ui-up:before, .j-ui-weibo:before, .j-ui-weixin:before, .j-ui-weixin_friend:before, .ui-icon-comments:before {
-    background: url(http://wimg.spriteapp.cn/huodong/j_m_spriter160908.png) no-repeat;
+    background: url(http://storage.izanpin.com/j_m_spriter160908.png) no-repeat;
     -webkit-background-size: 12.0625rem auto;
     background-size: 12.0625rem auto;
     content: "";
@@ -1549,7 +1549,7 @@ body {
 .comment-voice .voice-icon:before {
     width: 12px;
     height: 12px;
-    background: url(http://wimg.spriteapp.cn/huodong/j_m_spriter160908.png) -8.125rem -5.09375rem no-repeat;
+    background: url(http://storage.izanpin.com/j_m_spriter160908.png) -8.125rem -5.09375rem no-repeat;
     -webkit-background-size: 12.0625rem auto;
     background-size: 12.0625rem auto;
     display: block;
