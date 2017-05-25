@@ -185,4 +185,9 @@ public class UserServiceImpl implements UserService {
             return userTokenService.getUserTokenByUserId(userOAuth.getUserId());
         }
     }
+
+    @Override
+    public void addFriend(Long userId, Long friendId) {
+
+    }
 }

@@ -13,6 +13,9 @@ public class Image {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long articleId;
 
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long feedbackId;
+
     private String url;
 
     private String thumbnailUrl;
@@ -39,6 +42,22 @@ public class Image {
 
     public void setArticleId(Long articleId) {
         this.articleId = articleId;
+    }
+
+    public Long getFeedbackId() {
+        return feedbackId;
+    }
+
+    public void setFeedbackId(Long feedbackId) {
+        this.feedbackId = feedbackId;
+    }
+
+    public Boolean getVideo() {
+        return isVideo;
+    }
+
+    public void setVideo(Boolean video) {
+        isVideo = video;
     }
 
     public String getUrl() {

@@ -44,8 +44,8 @@
         order by article.status desc, article.id desc
     </select>
     <insert id="add" parameterType="com.izanpin.entity.Image">
-        insert into image (id, article_id, url, is_video, thumbnail_url, create_time)
-        values (#{id,jdbcType=BIGINT}, #{articleId,jdbcType=BIGINT}, #{url,jdbcType=VARCHAR}, #{isVideo},
+        insert into image (id, article_id, feedback_id, url, is_video, thumbnail_url, create_time)
+        values (#{id,jdbcType=BIGINT}, #{articleId,jdbcType=BIGINT},#{feedbackId}, #{url,jdbcType=VARCHAR}, #{isVideo},
       #{thumbnailUrl,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
 </mapper>

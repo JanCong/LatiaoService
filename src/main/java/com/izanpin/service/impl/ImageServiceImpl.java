@@ -61,7 +61,7 @@ public class ImageServiceImpl implements ImageService {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
-    public void addImage(String strUrl, long articleId) {
+    public void addImage(String strUrl, Long articleId) {
         String[] urls = strUrl.split("/");
         String objectKey = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(urls[urls.length - 1]);
         objectKey = objectKey.toLowerCase();
@@ -111,7 +111,6 @@ public class ImageServiceImpl implements ImageService {
         }
 
     }
-
 
     @Override
     public Image addImage(MultipartFile file) throws Exception {
@@ -182,7 +181,40 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public void addImage(MultipartFile file, long articleId) throws Exception {
+    public void addFeedbackImage(MultipartFile file, Long feedbackId) throws Exception {
+        if (file == null) {
+            throw new Exception("图片为空");
+        }
+
+        String objectKeyId = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId());
+        String extName = getExtensionName(file.getOriginalFilename());
+        String objectKey = objectKeyId + "." + extName;
+        objectKey = objectKey.toLowerCase();
+
+        Configuration cfg = new Configuration(Zone.zone2());
+        UploadManager uploadManager = new UploadManager(cfg);
+
+        Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
+        String upToken = auth.uploadToken(BUCKET);
+
+        Response response = uploadManager.put(file.getInputStream(), objectKey, upToken, null, null);
+
+        String finalUrl = String.format("%s/%s", DOMAIN, objectKey);
+
+        Image img = new Image();
+        SnowFlake snowFlake = new SnowFlake(0, 0);
+        img.setId(snowFlake.nextId());
+        img.setFeedbackId(feedbackId);
+        img.setUrl(finalUrl);
+        img.setIsVideo(file.getContentType().toLowerCase().contains("video"));
+        img.setThumbnailUrl(finalUrl.replace(objectKey, objectKey + "-thumbnail"));
+        img.setIsVideo(false);
+        img.setCreateTime(new Date());
+        imageRepository.add(img);
+    }
+
+    @Override
+    public void addImage(MultipartFile file, Long articleId) throws Exception {
         if (file == null) {
             throw new Exception("图片为空");
         }

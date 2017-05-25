@@ -30,4 +30,6 @@ public interface UserService {
     UserToken smsLogin(SmsLoginDto dto) throws Exception;
 
     UserToken oauthLogin(OAuthLoginDto dto) throws Exception;
+
+    void addFriend(Long userId, Long friendId);
 }
