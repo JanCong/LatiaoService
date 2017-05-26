@@ -13,12 +13,13 @@ public class UserFriend {
     public UserFriend() {
     }
 
-    public UserFriend(Long userId, Long friendId, Integer status) {
+    public UserFriend(Long userId, Long friendId, Integer status, String remark) {
         SnowFlake snowFlake = new SnowFlake(0, 0);
         this.id = snowFlake.nextId();
         this.userId = userId;
         this.friendId = friendId;
         this.status = status;
+        this.remark = remark;
         this.createTime = new Date();
         this.updateTime = new Date();
     }
@@ -33,6 +34,8 @@ public class UserFriend {
     private Long friendId;
 
     private Integer status;
+
+    private String remark;
 
     private Date createTime;
 
@@ -68,6 +71,14 @@ public class UserFriend {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Date getCreateTime() {

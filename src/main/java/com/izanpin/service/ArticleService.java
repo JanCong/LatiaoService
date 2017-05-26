@@ -3,6 +3,7 @@ package com.izanpin.service;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
+import com.izanpin.dto.RequestFriendArticleTimelineDto;
 import com.izanpin.entity.Article;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +34,8 @@ public interface ArticleService {
     void hate(Long id, Long userId) throws Exception;
 
     PageInfo getArticlesByTimeline(Integer page, Integer size, RequestArticleTimelineDto dto);
+
+    PageInfo<Article> getFriendArticlesByUserId(Integer page, Integer size, Long userId, RequestFriendArticleTimelineDto dto) throws Exception;
 
     List<Article> getArticlesByRandomInWeek(Integer size, Long userId);
 }

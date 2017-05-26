@@ -31,5 +31,9 @@ public interface UserService {
 
     UserToken oauthLogin(OAuthLoginDto dto) throws Exception;
 
-    void addFriend(Long userId, Long friendId);
+    void addFriend(Long userId, Long friendId, String remark) throws Exception;
+
+    void acceptFriend(Long userId, Long friendId) throws Exception;
+
+    List<User> getFriends(Long userId) throws Exception;
 }

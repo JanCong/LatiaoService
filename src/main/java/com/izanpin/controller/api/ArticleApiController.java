@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.izanpin.data.ImportData;
 import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
+import com.izanpin.dto.RequestFriendArticleTimelineDto;
 import com.izanpin.dto.ResultDto;
 import com.izanpin.entity.Article;
 import com.izanpin.entity.UserToken;
@@ -67,6 +68,29 @@ public class ArticleApiController {
     public ResultDto getArticlesByRandomInWeek(@ApiParam("取几条") @RequestParam(required = false) Integer size,
                                                @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
         return new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getArticlesByRandomInWeek(size, userId));
+    }
+
+    @ApiOperation(value = "获取好友辣条")
+    @RequestMapping(value = "/friend/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDto<List<Article>> getArticlesByTimeline(
+            @RequestHeader("token") String token,
+            @ApiParam("根据userId返回该用户的好友的辣条") @PathVariable Long userId,
+            @ModelAttribute RequestFriendArticleTimelineDto dto) {
+        ResultDto result;
+        try {
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(userId)) {
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getFriendArticlesByUserId(1, 1000, userId, dto));
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+
+        return result;
     }
 
     @ApiOperation(value = "根据ID获取")

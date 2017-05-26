@@ -4,18 +4,18 @@ import com.izanpin.common.util.StringEncrypt;
 import com.izanpin.dto.LoginDto;
 import com.izanpin.dto.OAuthLoginDto;
 import com.izanpin.dto.SmsLoginDto;
-import com.izanpin.entity.Image;
-import com.izanpin.entity.User;
-import com.izanpin.entity.UserOAuth;
-import com.izanpin.entity.UserToken;
+import com.izanpin.entity.*;
 import com.izanpin.enums.Gender;
+import com.izanpin.enums.UserFriendStatus;
 import com.izanpin.enums.UserType;
+import com.izanpin.repository.UserFriendRepository;
 import com.izanpin.repository.UserOAuthRepository;
 import com.izanpin.repository.UserRepository;
 import com.izanpin.service.ImageService;
 import com.izanpin.service.SmsService;
 import com.izanpin.service.UserService;
 import com.izanpin.service.UserTokenService;
+import org.omg.CORBA.FREE_MEM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
     ImageService imageService;
     @Autowired
     UserOAuthRepository userOAuthRepository;
+    @Autowired
+    UserFriendRepository userFriendRepository;
 
     @Override
     public List<User> getRobotUsers() {
@@ -187,7 +189,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addFriend(Long userId, Long friendId) {
+    public void addFriend(Long userId, Long friendId, String remark) throws Exception {
+        if (userId == null) {
+            throw new Exception("userId为空");
+        }
+        if (friendId == null) {
+            throw new Exception("friendId为空");
+        }
 
+        if (userFriendRepository.get(userId, friendId) != null) {
+            throw new Exception("已经添加过好友啦");
+        }
+
+        userFriendRepository.add(new UserFriend(userId, friendId, UserFriendStatus.UNVERIFIED.getValue(), remark));
+    }
+
+    @Override
+    public void acceptFriend(Long userId, Long friendId) throws Exception {
+        if (userId == null) {
+            throw new Exception("userId为空");
+        }
+        if (friendId == null) {
+            throw new Exception("friendId为空");
+        }
+
+        if (userFriendRepository.get(userId, friendId) != null) {
+            throw new Exception("已经添加过好友啦");
+        }
+
+        userFriendRepository.add(new UserFriend(userId, friendId, UserFriendStatus.NORMAL.getValue(), null));
+        userFriendRepository.updateStatus(friendId, userId, UserFriendStatus.NORMAL.getValue());
+    }
+
+    @Override
+    public List<User> getFriends(Long userId) throws Exception {
+        if (userId == null) {
+            throw new Exception("userId为空");
+        }
+
+        return userFriendRepository.getList(userId);
     }
 }

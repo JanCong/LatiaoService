@@ -179,4 +179,74 @@ public class UserApiController {
         }
         return result;
     }
+
+    @ApiOperation("添加好友")
+    @RequestMapping(value = "/{id}/friend", method = RequestMethod.POST)
+    public ResultDto addFriend(
+            @RequestHeader("token") String token,
+            @PathVariable Long id,
+            @RequestParam Long friendId,
+            @RequestParam(required = false) String remark
+    ) {
+        ResultDto result;
+        try {
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(id)) {
+                userService.addFriend(id, friendId, remark);
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+        return result;
+    }
+
+    @ApiOperation("同意验证好友")
+    @RequestMapping(value = "/{id}/friend/accept/{friendId}", method = RequestMethod.POST)
+    public ResultDto acceptFriend(
+            @RequestHeader("token") String token,
+            @PathVariable Long id,
+            @RequestParam Long friendId
+    ) {
+        ResultDto result;
+        try {
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(id)) {
+                userService.acceptFriend(id, friendId);
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+
+        return result;
+    }
+
+    @ApiOperation("获取所有好友")
+    @RequestMapping(value = "/{id}/friend", method = RequestMethod.GET)
+    public ResultDto getFriends(
+            @RequestHeader("token") String token,
+            @PathVariable Long id
+    ) {
+        ResultDto result;
+        try {
+            UserToken userToken = userTokenService.getUserTokenByToken(token);
+            if (userToken != null && userToken.getUserId().equals(id)) {
+                result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), userService.getFriends(id));
+            } else {
+                result = new ResultDto(ResultStatus.FAILED.getValue(), "token 错咯", null);
+            }
+        } catch (Exception e) {
+            logger.error("", e);
+            result = new ResultDto(ResultStatus.FAILED.getValue(), e.getMessage(), null);
+        }
+
+        return result;
+    }
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
+import com.izanpin.dto.RequestFriendArticleTimelineDto;
 import com.izanpin.entity.Article;
 import com.izanpin.entity.Hate;
 import com.izanpin.entity.Like;
@@ -211,6 +212,40 @@ public class ArticleServiceImpl implements ArticleService {
 
         if (pageInfo.getList() != null) {
             pageInfo.getList().forEach(article -> article.setLiked(dto.getUserId()));
+        }
+
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<Article> getFriendArticlesByUserId(
+            Integer page, Integer size,
+            Long userId, RequestFriendArticleTimelineDto dto) throws Exception {
+        if (userId == null) {
+            throw new Exception("userId为空");
+        }
+
+        if (page == null || page == 0) {
+            page = 1;
+        }
+        if (size == null || size == 0) {
+            size = 20;
+        }
+        if (dto.getSinceId() == null) {
+            dto.setSinceId(0L);
+        }
+        if (dto.getMaxId() == null) {
+            dto.setMaxId(0L);
+        }
+        if (dto.getAuthorId() == null) {
+            dto.setAuthorId(0L);
+        }
+
+        PageHelper.startPage(page, size);
+        PageInfo<Article> pageInfo = new PageInfo(articleRepository.findFriendByUserId(userId, dto));
+
+        if (pageInfo.getList() != null) {
+            pageInfo.getList().forEach(article -> article.setLiked(userId));
         }
 
         return pageInfo;
