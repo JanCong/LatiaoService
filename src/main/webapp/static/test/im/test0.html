@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <title>im test</title>
 
+    <!-- IE8及以下支持JSON -->
     <!--[if lt IE 9]>
     <script src="https://g.alicdn.com/aliww/ww/json/json.js" charset="utf-8"></script>
     <![endif]-->
     <!-- 自动适配移动端与pc端 -->
-    <script src="https://g.alicdn.com/aliww/??h5.openim.sdk/1.0.6/scripts/wsdk.js,h5.openim.kit/0.3.3/scripts/kit.js"
+    <script src="https://g.alicdn.com/aliww/??h5.imsdk/2.1.5/scripts/yw/wsdk.js,h5.openim.kit/0.4.0/scripts/kit.js?mobile=1"
             charset="utf-8"></script>
+
     <script>
         window.onload = function () {
             WKIT.init({
-                container: document.getElementById('J_demo'),
                 uid: 'test0',
                 appkey: 23872966,
                 credential: '123456',
