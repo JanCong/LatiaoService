@@ -3,6 +3,7 @@ package com.izanpin.controller.api;
 import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.AddFeedbackDto;
 import com.izanpin.dto.ResultDto;
+import com.izanpin.entity.Feedback;
 import com.izanpin.entity.UserToken;
 import com.izanpin.enums.ResultStatus;
 import com.izanpin.service.FeedbackService;
