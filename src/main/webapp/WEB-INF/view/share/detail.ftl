@@ -124,6 +124,8 @@
                style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">下载辣条
             <#if article.getCommentCount() gt 0>
                 查看<span id="more-comments">${article.getCommentCount()}</span>条精彩评论
+            <#else>
+                随时随地,想看就看
             </#if>
             </a>
         </div>
