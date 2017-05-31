@@ -61,6 +61,14 @@
                 <img src="${image.getUrl()!}" class="j-imglazyload"/>
             </#if>
         </#list>
+        <#--<div style="padding: 15px;text-align: center">-->
+        <#--<script type="text/javascript">var jd_union_unid = "29831", jd_ad_ids = "512:6", jd_union_pid = "CK2/0+fFKxCH6QEaACD86tqMAyoA";-->
+        <#--var jd_width = 336;-->
+        <#--var jd_height = 280;-->
+        <#--var jd_union_euid = "";-->
+        <#--var p = "BhYCURpYFwsRNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyUwcqYyVVfmxlA30jQ1dRYgN4WVIDVAtZK18XABUBVhlZHTIRD1wZWyUyTUMIRmtebBM3Cl8GSDISAl0cWBQLEgFUE1kQMhM3ZSs%3D";</script>-->
+        <#--<script type="text/javascript" charset="utf-8" src="//u-x.jd.com/static/js/auto.js"></script>-->
+        <#--</div>-->
         </section>
     </div>
     <section class="video-tool">
@@ -129,6 +137,7 @@
             </#if>
             </a>
         </div>
+
     </div>
     </section>
 </div>
