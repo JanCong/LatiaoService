@@ -133,6 +133,21 @@
         </if>
         order by article.status desc, article.id desc
     </select>
+    <select id="findByRandomInWeek" resultMap="ResultMap">
+        <include refid="select_join"></include>
+        <where>
+            <if test="type != null">
+                (article.type = #{type})
+            </if>
+            <if test="type != null and type == 0">
+                and (image.id is not null)
+            </if>
+            <if test="type == null">
+                and (article.type = 1 or (article.type = 0 and image.id is not null))
+            </if>
+        </where>
+        order by rand()
+    </select>
     <select id="find" resultMap="ResultMap">
         <include refid="select_join"></include>
         <if test="keyword != null">

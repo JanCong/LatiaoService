@@ -70,6 +70,14 @@ public class ArticleApiController {
         return new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getArticlesByRandomInWeek(size, userId));
     }
 
+    @ApiOperation(value = "获取推荐辣条")
+    @RequestMapping(value = "/recommend", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultDto getRecommendArticles(@ApiParam("取几条") @RequestParam(required = false) Integer size,
+                                          @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
+        return new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), articleService.getRecommendArticles(size, userId));
+    }
+
     @ApiOperation(value = "获取好友辣条")
     @RequestMapping(value = "/friend/{userId}", method = RequestMethod.GET)
     @ResponseBody

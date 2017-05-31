@@ -259,7 +259,23 @@ public class ArticleServiceImpl implements ArticleService {
 
         PageHelper.startPage(1, size);
 
-        List<Article> list = new PageInfo(articleRepository.findByRandomInWeek()).getList();
+        List<Article> list = new PageInfo(articleRepository.findByRandomInWeek(null)).getList();
+
+        if (list != null) {
+            list.forEach(article -> article.setLiked(userId));
+        }
+        return list;
+    }
+
+    @Override
+    public List<Article> getRecommendArticles(Integer size, Long userId) {
+        if (size == null || size == 0) {
+            size = 20;
+        }
+
+        PageHelper.startPage(1, size);
+
+        List<Article> list = new PageInfo(articleRepository.findByRandomInWeek(ArticleType.PICTURE.getValue())).getList();
 
         if (list != null) {
             list.forEach(article -> article.setLiked(userId));

@@ -3,9 +3,11 @@ package com.izanpin.repository;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.dto.RequestFriendArticleTimelineDto;
 import com.izanpin.entity.Article;
+import jdk.nashorn.internal.objects.annotations.Where;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.jdbc.SQL;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,19 +28,19 @@ public interface ArticleRepository {
 
     List<Article> findFriendByUserId(@Param("userId") Long userId, @Param("dto") RequestFriendArticleTimelineDto dto);
 
-    @ResultMap("ResultMap")
-    @Select("select article.*,\n" +
-            "       image.id as image_id,\n" +
-            "       image.article_id,\n" +
-            "       image.url,\n" +
-            "       image.thumbnail_url,\n" +
-            "       image.is_video,\n" +
-            "       image.create_time as image_create_time\n" +
-            "  from article\n" +
-            "  left join image on article.id= image.article_id\n" +
-            " where week(article.create_time)= week(now())\n" +
-            " order by rand()")
-    List<Article> findByRandomInWeek();
+    //    @ResultMap("ResultMap")
+//    @Select("select article.*,\n" +
+//            "       image.id as image_id,\n" +
+//            "       image.article_id,\n" +
+//            "       image.url,\n" +
+//            "       image.thumbnail_url,\n" +
+//            "       image.is_video,\n" +
+//            "       image.create_time as image_create_time\n" +
+//            "  from article\n" +
+//            "  left join image on article.id= image.article_id\n" +
+//            " where week(article.create_time)= week(now())\n" +
+//            " order by rand()")
+    List<Article> findByRandomInWeek(@Param("type") Integer type);
 
     void increaseCommentCount(@Param("id") Long id, @Param("count") Integer count);
 

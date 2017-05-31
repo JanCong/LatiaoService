@@ -38,4 +38,6 @@ public interface ArticleService {
     PageInfo<Article> getFriendArticlesByUserId(Integer page, Integer size, Long userId, RequestFriendArticleTimelineDto dto) throws Exception;
 
     List<Article> getArticlesByRandomInWeek(Integer size, Long userId);
+
+    List<Article> getRecommendArticles(Integer size, Long userId);
 }
