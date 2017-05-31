@@ -24,7 +24,7 @@
     </bean>
     <bean id="startWorkTriggerImportJokes" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="startWorkTaskImportJokes"></property>
-        <property name="cronExpression" value="0 5 0/2 * * ?"></property>
+        <property name="cronExpression" value="0 5 7,9,13,18 * * ?"></property>
     </bean>
     <bean id="startWorkTriggerImportPictures" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="jobDetail" ref="startWorkTaskImportPictures"></property>
