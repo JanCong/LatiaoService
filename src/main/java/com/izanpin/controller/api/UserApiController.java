@@ -7,6 +7,7 @@ import com.izanpin.dto.SmsLoginDto;
 import com.izanpin.entity.User;
 import com.izanpin.entity.UserToken;
 import com.izanpin.enums.ResultStatus;
+import com.izanpin.enums.UserStatus;
 import com.izanpin.service.UserService;
 import com.izanpin.service.UserTokenService;
 import com.wordnik.swagger.annotations.Api;
@@ -44,6 +45,10 @@ public class UserApiController {
             UserToken userToken = userService.login(dto);
             User user = userService.getUser(userToken.getUserId());
 
+            if (UserStatus.DISABLED.getValue().equals(user.getStatus())) {
+                throw new Exception("用户被禁用");
+            }
+
             HashMap map = new HashMap();
             map.put("token", userToken);
             map.put("user", user);
@@ -64,6 +69,10 @@ public class UserApiController {
             UserToken userToken = userService.smsLogin(dto);
             User user = userService.getUser(userToken.getUserId());
 
+            if (UserStatus.DISABLED.getValue().equals(user.getStatus())) {
+                throw new Exception("用户被禁用");
+            }
+
             HashMap map = new HashMap();
             map.put("token", userToken);
             map.put("user", user);
@@ -83,6 +92,10 @@ public class UserApiController {
         try {
             UserToken userToken = userService.oauthLogin(dto);
             User user = userService.getUser(userToken.getUserId());
+
+            if (UserStatus.DISABLED.getValue().equals(user.getStatus())) {
+                throw new Exception("用户被禁用");
+            }
 
             HashMap map = new HashMap();
             map.put("token", userToken);

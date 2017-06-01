@@ -136,8 +136,9 @@
     <select id="findByRandomInWeek" resultMap="ResultMap">
         <include refid="select_join"></include>
         <where>
+            week(article.create_time)= week(now())
             <if test="type != null">
-                (article.type = #{type})
+                and (article.type = #{type})
             </if>
             <if test="type != null and type == 0">
                 and (image.id is not null)
