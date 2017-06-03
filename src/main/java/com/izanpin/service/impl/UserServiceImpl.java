@@ -11,10 +11,8 @@ import com.izanpin.enums.UserType;
 import com.izanpin.repository.UserFriendRepository;
 import com.izanpin.repository.UserOAuthRepository;
 import com.izanpin.repository.UserRepository;
-import com.izanpin.service.ImageService;
-import com.izanpin.service.SmsService;
-import com.izanpin.service.UserService;
-import com.izanpin.service.UserTokenService;
+import com.izanpin.service.*;
+import com.taobao.api.domain.Userinfos;
 import org.omg.CORBA.FREE_MEM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +36,8 @@ public class UserServiceImpl implements UserService {
     SmsService smsService;
     @Autowired
     ImageService imageService;
+    @Autowired
+    BaichuanService baichuanService;
     @Autowired
     UserOAuthRepository userOAuthRepository;
     @Autowired
@@ -128,6 +128,8 @@ public class UserServiceImpl implements UserService {
         }
 
         if (encryptedPassword.equalsIgnoreCase(user.getPassword())) {
+            //登录成功
+            baichuanService.addOpenIMUser(user);
             return userTokenService.getUserTokenByUserId(user.getId());
         } else {
             throw new Exception("手机号或密码错误");
@@ -155,8 +157,12 @@ public class UserServiceImpl implements UserService {
                         dto.getPhone(), null, StringEncrypt.Encrypt(new Date().toString()), Gender.UNKNOWN.getValue(),
                         "http://storage.izanpin.com/1024.png", UserType.NORMAL.getValue());
                 this.addUser(user);
+                //登录成功
+                baichuanService.addOpenIMUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             } else {
+                //登录成功
+                baichuanService.addOpenIMUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             }
         }
@@ -182,8 +188,13 @@ public class UserServiceImpl implements UserService {
             this.addUser(user);
             userOAuth = new UserOAuth(user.getId(), dto.getOpenId(), dto.getPlatformType().getValue());
             userOAuthRepository.add(userOAuth);
+            //登录成功
+            baichuanService.addOpenIMUser(user);
             return userTokenService.getUserTokenByUserId(user.getId());
         } else {
+            //登录成功
+            User user = this.getUser(userOAuth.getUserId());
+            baichuanService.addOpenIMUser(user);
             return userTokenService.getUserTokenByUserId(userOAuth.getUserId());
         }
     }
