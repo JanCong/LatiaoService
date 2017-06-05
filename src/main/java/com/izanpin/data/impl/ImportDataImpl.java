@@ -163,6 +163,7 @@ public class ImportDataImpl implements ImportData {
             importPicturesFromShowapi2();
 //        importPicturesFromShowapi();
             importPicturesFromShowapi3();
+            importPicturesFromGiphy();
         } catch (Exception e) {
             logger.error("", e);
         }
@@ -359,6 +360,42 @@ public class ImportDataImpl implements ImportData {
             }
         } else {
             logger.warn(jsonString);
+        }
+    }
+
+    private void importPicturesFromGiphy() throws Exception {
+        logger.trace("importPicturesFromGiphy()");
+
+        String jsonString = Http.get("http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC");
+        JSONObject jsonObject = JSON.parseObject(jsonString);
+
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+
+        if (jsonArray != null && !jsonArray.isEmpty()) {
+            List<User> robots = userService.getRobotUsers();
+            jsonArray.forEach(obj -> {
+                JSONObject jObj = (JSONObject) obj;
+                String content = "";
+                String hashId = null;
+                try {
+                    hashId = SHA.toSHAString(jObj.toString());
+                } catch (NoSuchAlgorithmException e) {
+                    logger.error("", e);
+                }
+
+                String imgUrl = "https://i.giphy.com/" + jObj.getString("id") + ".gif";
+
+                if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                    Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                    try {
+                        articleService.addPicture(article, imgUrl);
+                    } catch (Exception e) {
+                        logger.error("", e);
+                    }
+                } else {
+                    logger.warn("hashId existed");
+                }
+            });
         }
     }
 
