@@ -378,7 +378,7 @@ public class ImportDataImpl implements ImportData {
                 String content = "";
                 String hashId = null;
                 try {
-                    hashId = SHA.toSHAString(jObj.toString());
+                    hashId = SHA.toSHAString(jObj.getString("id"));
                 } catch (NoSuchAlgorithmException e) {
                     logger.error("", e);
                 }
