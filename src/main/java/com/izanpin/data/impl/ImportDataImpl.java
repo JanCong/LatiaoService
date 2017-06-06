@@ -15,12 +15,15 @@ import com.izanpin.service.ImageService;
 import com.izanpin.service.UserService;
 import com.izanpin.common.util.Http;
 import com.izanpin.common.util.SnowFlake;
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -366,37 +369,55 @@ public class ImportDataImpl implements ImportData {
     private void importPicturesFromGiphy() throws Exception {
         logger.trace("importPicturesFromGiphy()");
 
-        String jsonString = Http.get("http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC");
-        JSONObject jsonObject = JSON.parseObject(jsonString);
+        List<String> urls = new ArrayList<String>();
 
-        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        urls.add("http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=funny&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=cat&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=cute&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=kawaii&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=lovely&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=girl&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=auto&api_key=dc6zaTOxFJmzC");
+        urls.add("http://api.giphy.com/v1/gifs/search?q=kid&api_key=dc6zaTOxFJmzC");
 
-        if (jsonArray != null && !jsonArray.isEmpty()) {
-            List<User> robots = userService.getRobotUsers();
-            jsonArray.forEach(obj -> {
-                JSONObject jObj = (JSONObject) obj;
-                String content = "";
-                String hashId = null;
-                try {
-                    hashId = SHA.toSHAString(jObj.getString("id"));
-                } catch (NoSuchAlgorithmException e) {
-                    logger.error("", e);
+        urls.forEach(u -> {
+            try {
+                String jsonString = null;
+                jsonString = Http.get(u);
+                JSONObject jsonObject = JSON.parseObject(jsonString);
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+
+                if (!jsonArray.isEmpty()) {
+                    List<User> robots = userService.getRobotUsers();
+                    jsonArray.forEach(obj -> {
+                        JSONObject jObj = (JSONObject) obj;
+                        String content = "";
+                        String hashId = null;
+                        try {
+                            hashId = SHA.toSHAString(jObj.getString("id"));
+                        } catch (NoSuchAlgorithmException e) {
+                            logger.error("", e);
+                        }
+
+                        String imgUrl = "https://i.giphy.com/" + jObj.getString("id") + ".gif";
+
+                        if (!imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
+                            Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                            try {
+                                articleService.addPicture(article, imgUrl);
+                            } catch (Exception e) {
+                                logger.error("", e);
+                            }
+                        } else {
+                            logger.warn("hashId existed");
+                        }
+                    });
                 }
-
-                String imgUrl = "https://i.giphy.com/" + jObj.getString("id") + ".gif";
-
-                if (imgUrl != null && !imgUrl.trim().isEmpty() && !articleService.existHashId(hashId)) {
-                    Article article = setArticle(content, hashId, ArticleType.PICTURE, robots);
-                    try {
-                        articleService.addPicture(article, imgUrl);
-                    } catch (Exception e) {
-                        logger.error("", e);
-                    }
-                } else {
-                    logger.warn("hashId existed");
-                }
-            });
-        }
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        });
     }
 
     private Article setArticle(String content, String hashId, ArticleType articleType, List<User> robots) {
