@@ -63,17 +63,10 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public void addImage(String strUrl, Long articleId) {
         String[] urls = strUrl.split("/");
-        String objectKey = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId()) + "." + getExtensionName(urls[urls.length - 1]);
+        String objectKeyId = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId());
+        String extName = getExtensionName(urls[urls.length - 1]);
+        String objectKey = objectKeyId + "." + extName;
         objectKey = objectKey.toLowerCase();
-
-        // 初始化一个BosClient
-//        BosClientConfiguration config = new BosClientConfiguration();
-//        config.setCredentials(new DefaultBceCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY));
-//        config.setEndpoint(endpoint);
-//        config.setConnectionTimeoutInMillis(0);
-//        config.setSocketTimeoutInMillis(0);
-//        BosClient client = new BosClient(config);
-
 
         Configuration cfg = new Configuration(Zone.zone2());
         UploadManager uploadManager = new UploadManager(cfg);
@@ -85,8 +78,7 @@ public class ImageServiceImpl implements ImageService {
             HttpURLConnection connection = (HttpURLConnection) new URL(strUrl).openConnection();
             DataInputStream stream = new DataInputStream(connection.getInputStream());
 
-//            PutObjectResponse putObjectFromFileResponse = client.putObject(bucketName, objectKey, stream);
-//            putObjectFromFileResponse.getETag();
+
             Response response = uploadManager.put(stream, objectKey, upToken, null, null);
 
 //            URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
@@ -100,9 +92,21 @@ public class ImageServiceImpl implements ImageService {
             image.setArticleId(articleId);
             image.setUrl(finalUrl);
             image.setThumbnailUrl(thumbnailUrl);
-            image.setIsVideo(Boolean.FALSE);
+            image.setIsVideo(objectKey.toLowerCase().contains("mp4"));
             image.setCreateTime(new Date());
 
+            if (image.getIsVideo()) {
+                //数据处理指令，支持多个指令
+                String saveJpgEntry = String.format("%s:%s.jpg", BUCKET, objectKeyId);
+                String vframeJpgFop = String.format("vframe/jpg/offset/1|saveas/%s", UrlSafeBase64.encodeToString(saveJpgEntry));
+
+                OperationManager operationManager = new OperationManager(auth, cfg);
+                operationManager.pfop(BUCKET, objectKey, vframeJpgFop, "latiao", true);
+
+                image.setThumbnailUrl(finalUrl.replace(extName, "jpg-thumbnail"));
+            } else {
+                image.setThumbnailUrl(finalUrl.replace(objectKey, objectKey + "-thumbnail"));
+            }
 
             imageRepository.add(image);
 

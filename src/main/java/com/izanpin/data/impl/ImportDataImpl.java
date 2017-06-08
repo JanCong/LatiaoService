@@ -53,8 +53,24 @@ public class ImportDataImpl implements ImportData {
     @Override
     public void importJokes() throws Exception {
 //        importJokesFromJuhe();
-        importJokesFromJisu();
-        importJokesFromShowapi();
+//        importJokesFromJisu();
+//        importJokesFromShowapi();
+
+        new Thread(() -> {
+            try {
+                importJokesFromJisu();
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importJokesFromShowapi();
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        }).start();
     }
 
     private void importJokesFromJuhe() throws Exception {
@@ -124,7 +140,7 @@ public class ImportDataImpl implements ImportData {
     }
 
     private void importJokesFromShowapi() throws Exception {
-        String jsonString = Http.get("https://route.showapi.com/341-1?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        String jsonString = Http.get("https://route.showapi.com/341-1?maxResult=50&page=1&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
         if (jsonObject.getInteger("showapi_res_code").equals(0)) {
@@ -161,16 +177,40 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importPictures() throws Exception {
-        try {
 //        importPicturesFromJuhe();
-            importPicturesFromShowapi2();
 //        importPicturesFromShowapi();
-            importPicturesFromShowapi3();
-            importPicturesFromGiphy();
-        } catch (Exception e) {
-            logger.error("", e);
-        }
 
+        new Thread(() -> {
+            try {
+                importPicturesFromShowapi2();
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importPicturesFromShowapi3();
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importPicturesFromGiphy();
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                importFromShowapiBSBDJ();
+            } catch (Exception e) {
+                logger.error("", e);
+            }
+        }).start();
     }
 
     private void importPicturesFromJuhe() throws Exception {
@@ -283,7 +323,7 @@ public class ImportDataImpl implements ImportData {
     private void importPicturesFromShowapi2() throws Exception {
         logger.trace("importPicturesFromShowapi2()");
 
-        String jsonString = Http.get("https://route.showapi.com/341-3?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        String jsonString = Http.get("https://route.showapi.com/341-3?maxResult=50&page=1&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
         if (jsonObject.getInteger("showapi_res_code").equals(0)) {
@@ -317,6 +357,8 @@ public class ImportDataImpl implements ImportData {
                         logger.warn("hashId existed");
                     }
                 });
+            } else {
+                logger.warn(jsonString);
             }
         } else {
             logger.warn(jsonString);
@@ -326,7 +368,7 @@ public class ImportDataImpl implements ImportData {
     private void importPicturesFromShowapi3() throws Exception {
         logger.trace("importPicturesFromShowapi3()");
 
-        String jsonString = Http.get("https://route.showapi.com/341-2?maxResult=50&page=" + new Random().nextInt(200) + "&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        String jsonString = Http.get("https://route.showapi.com/341-2?maxResult=50&page=1&showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
         if (jsonObject.getInteger("showapi_res_code").equals(0)) {
@@ -360,6 +402,70 @@ public class ImportDataImpl implements ImportData {
                         logger.warn("hashId existed");
                     }
                 });
+            } else {
+                logger.warn(jsonString);
+            }
+        } else {
+            logger.warn(jsonString);
+        }
+    }
+
+    //百思不得姐
+    private void importFromShowapiBSBDJ() throws Exception {
+        logger.trace("importPicturesFromShowapi4()");
+
+        String jsonString = Http.get("http://route.showapi.com/255-1?showapi_appid=33128&showapi_sign=954aa0d0d2bd48768d3b83ed3a8cdc78");
+        JSONObject jsonObject = JSON.parseObject(jsonString);
+
+        if (jsonObject.getInteger("showapi_res_code").equals(0)) {
+            JSONArray jsonArray = jsonObject.getJSONObject("showapi_res_body").getJSONObject("pagebean").getJSONArray("contentlist");
+
+            if (jsonArray != null && !jsonArray.isEmpty()) {
+                List<User> robots = userService.getRobotUsers();
+                jsonArray.forEach(obj -> {
+                    JSONObject jObj = (JSONObject) obj;
+                    String content = jObj.getString("text");
+                    if (content == null) {
+                        content = "";
+                    } else {
+                        content = content.trim();
+                    }
+                    String hashId = null;
+                    try {
+                        hashId = SHA.toSHAString(jObj.toString());
+                    } catch (NoSuchAlgorithmException e) {
+                        logger.error("", e);
+                    }
+
+                    String imgUrl = jObj.getString("image3");
+                    String videoUrl = jObj.getString("video_uri");
+                    String voiceUrl = jObj.getString("voice_uri");
+
+                    if (!articleService.existHashId(hashId)) {
+                        try {
+                            Article article;
+                            if (imgUrl != null && !imgUrl.isEmpty()) {
+                                article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                                articleService.addPicture(article, imgUrl);
+                            } else if (videoUrl != null && !videoUrl.isEmpty()) {
+                                article = setArticle(content, hashId, ArticleType.PICTURE, robots);
+                                articleService.addPicture(article, videoUrl);
+                            } else if (voiceUrl != null && !voiceUrl.isEmpty()) {
+                                logger.info("百思不得姐声音数据 ", voiceUrl);
+                            } else {
+                                article = setArticle(content, hashId, ArticleType.JOKE, robots);
+                                articleService.addArticle(article);
+                            }
+                        } catch (Exception e) {
+                            logger.error("", e);
+                        }
+
+                    } else {
+                        logger.warn("hashId existed");
+                    }
+                });
+            } else {
+                logger.warn(jsonString);
             }
         } else {
             logger.warn(jsonString);
@@ -427,7 +533,7 @@ public class ImportDataImpl implements ImportData {
         article.setContent(content);
         article.setHashId(hashId);
         article.setCommentCount(0);
-        article.setLikeCount(new Random().nextInt(1024));
+        article.setLikeCount(new Random().nextInt(512));
         article.setHateCount(new Random().nextInt(24));
         article.setType(articleType.getValue());
         article.setStatus(ArticleStatus.NORMAL.getValue());
