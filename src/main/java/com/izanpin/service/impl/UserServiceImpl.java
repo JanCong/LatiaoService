@@ -59,6 +59,7 @@ public class UserServiceImpl implements UserService {
             throw new Exception("userId为空哦");
         }
         userRepository.insert(user);
+        baichuanService.addOrUpdateOpenIMUser(user);
     }
 
     @Override
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
         User user = this.getUser(id);
         user.setNickname(nickname);
         userRepository.updateByPrimaryKeySelective(user);
+        baichuanService.addOrUpdateOpenIMUser(user);
     }
 
     @Override
@@ -87,6 +89,7 @@ public class UserServiceImpl implements UserService {
         User user = this.getUser(id);
         user.setPassword(StringEncrypt.Encrypt(password));
         userRepository.updateByPrimaryKeySelective(user);
+        baichuanService.addOrUpdateOpenIMUser(user);
     }
 
     @Override
@@ -103,6 +106,7 @@ public class UserServiceImpl implements UserService {
         User user = this.getUser(id);
         user.setAvatar(image.getUrl());
         userRepository.updateByPrimaryKeySelective(user);
+        baichuanService.addOrUpdateOpenIMUser(user);
     }
 
     @Override
@@ -129,7 +133,7 @@ public class UserServiceImpl implements UserService {
 
         if (encryptedPassword.equalsIgnoreCase(user.getPassword())) {
             //登录成功
-            baichuanService.addOpenIMUser(user);
+            baichuanService.addOrUpdateOpenIMUser(user);
             return userTokenService.getUserTokenByUserId(user.getId());
         } else {
             throw new Exception("手机号或密码错误");
@@ -158,11 +162,11 @@ public class UserServiceImpl implements UserService {
                         "http://storage.izanpin.com/1024.png", UserType.NORMAL.getValue());
                 this.addUser(user);
                 //登录成功
-                baichuanService.addOpenIMUser(user);
+                baichuanService.addOrUpdateOpenIMUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             } else {
                 //登录成功
-                baichuanService.addOpenIMUser(user);
+                baichuanService.addOrUpdateOpenIMUser(user);
                 return userTokenService.getUserTokenByUserId(user.getId());
             }
         }
@@ -189,12 +193,12 @@ public class UserServiceImpl implements UserService {
             userOAuth = new UserOAuth(user.getId(), dto.getOpenId(), dto.getPlatformType().getValue());
             userOAuthRepository.add(userOAuth);
             //登录成功
-            baichuanService.addOpenIMUser(user);
+            baichuanService.addOrUpdateOpenIMUser(user);
             return userTokenService.getUserTokenByUserId(user.getId());
         } else {
             //登录成功
             User user = this.getUser(userOAuth.getUserId());
-            baichuanService.addOpenIMUser(user);
+            baichuanService.addOrUpdateOpenIMUser(user);
             return userTokenService.getUserTokenByUserId(userOAuth.getUserId());
         }
     }

@@ -10,9 +10,9 @@ import java.util.List;
  * Created by pengyuancong on 2017/6/3.
  */
 public interface BaichuanService {
-    void addOpenIMUsers(List<Userinfos> userinfoss) throws ApiException;
+    void addOrUpdateOpenIMUsers(List<Userinfos> userinfoss) throws ApiException;
 
-    void addOpenIMUser(Userinfos userinfos) throws ApiException;
+    void addOrUpdateOpenIMUser(Userinfos userinfos) throws ApiException;
 
-    void addOpenIMUser(User user) throws ApiException;
+    void addOrUpdateOpenIMUser(User user) throws ApiException;
 }
