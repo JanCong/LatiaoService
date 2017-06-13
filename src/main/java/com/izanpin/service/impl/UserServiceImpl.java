@@ -88,6 +88,7 @@ public class UserServiceImpl implements UserService {
 
         User user = this.getUser(id);
         user.setPassword(StringEncrypt.Encrypt(password));
+        user.setUpdateTime(new Date());
         userRepository.updateByPrimaryKeySelective(user);
         baichuanService.addOrUpdateOpenIMUser(user);
     }
@@ -105,6 +106,7 @@ public class UserServiceImpl implements UserService {
 
         User user = this.getUser(id);
         user.setAvatar(image.getUrl());
+        user.setUpdateTime(new Date());
         userRepository.updateByPrimaryKeySelective(user);
         baichuanService.addOrUpdateOpenIMUser(user);
     }

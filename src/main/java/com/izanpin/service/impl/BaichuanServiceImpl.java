@@ -61,7 +61,11 @@ public class BaichuanServiceImpl implements BaichuanService {
         Userinfos userinfos = new Userinfos();
         userinfos.setUserid(user.getId().toString());
         userinfos.setNick(user.getNickname());
-        userinfos.setPassword(user.getPassword().substring(0, 5));
+        if (user.getPassword() == null) {
+            userinfos.setPassword("12345");
+        } else {
+            userinfos.setPassword(user.getPassword().substring(0, 5));
+        }
         userinfos.setName(user.getNickname());
         userinfos.setIconUrl(user.getAvatar());
         this.addOrUpdateOpenIMUser(userinfos);

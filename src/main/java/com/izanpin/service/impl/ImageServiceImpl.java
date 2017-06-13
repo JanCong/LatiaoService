@@ -54,7 +54,7 @@ public class ImageServiceImpl implements ImageService {
     String ACCESS_KEY = "c_dDAms5xIs12Vs9_uWK651hk4aJiXOs_MkZULUo";
     String SECRET_KEY = "JEA2Q5_cUfX_JGNN9ft_ft8apmMiOeVg7-j7fhSn";
     String BUCKET = "latiao";
-    String DOMAIN = "http://storage.izanpin.com";
+    String DOMAIN = "https://storage.izanpin.com";
 
     static Logger logger = LogManager.getLogger();
 
