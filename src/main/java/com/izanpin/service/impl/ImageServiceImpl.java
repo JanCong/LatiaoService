@@ -24,6 +24,7 @@ import com.qiniu.util.UrlSafeBase64;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.DatabaseStartupValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +62,7 @@ public class ImageServiceImpl implements ImageService {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     @Override
-    public void addImage(String strUrl, Long articleId) {
+    public void addImage(String strUrl, Long articleId, Boolean fromBSBDJ) {
         String[] urls = strUrl.split("/");
         String objectKeyId = sdf.format(new Date()) + "/" + String.valueOf(new SnowFlake(0, 0).nextId());
         String extName = getExtensionName(urls[urls.length - 1]);
@@ -114,6 +115,11 @@ public class ImageServiceImpl implements ImageService {
             logger.error("", e);
         }
 
+    }
+
+    @Override
+    public void addImage(String url, Long articleId) throws Exception {
+        this.addImage(url, articleId, false);
     }
 
     @Override

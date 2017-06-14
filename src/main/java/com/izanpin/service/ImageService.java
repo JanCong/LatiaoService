@@ -11,6 +11,8 @@ import java.io.IOException;
 public interface ImageService {
     void addImage(MultipartFile file, Long articleId) throws Exception;
 
+    void addImage(String url, Long articleId, Boolean fromBSBDJ) throws Exception;
+
     void addImage(String url, Long articleId) throws Exception;
 
     Image addImage(MultipartFile file) throws Exception;
