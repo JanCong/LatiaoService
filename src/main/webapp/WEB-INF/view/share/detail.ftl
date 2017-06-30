@@ -29,7 +29,7 @@
 <div class="topContent">
     <div class="ui-row-flex list-user-author">
         <div class="ui-avatar item-user">
-            <img class="j-imglazyload" src="${article.getAuthorAvatar()}" alt="笑公馆V">
+            <img class="j-imglazyload" src="${article.getAuthorAvatar()}" alt="${article.getAuthorName()}">
         </div>
         <div class="ui-list-info">
             <h4 class="ui-nowrap">${article.getAuthorName()}</h4>

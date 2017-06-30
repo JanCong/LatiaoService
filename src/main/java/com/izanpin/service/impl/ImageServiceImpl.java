@@ -1,5 +1,7 @@
 package com.izanpin.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baidubce.BceClientConfiguration;
 import com.baidubce.auth.DefaultBceCredentials;
 import com.baidubce.http.RetryPolicy;
@@ -8,6 +10,7 @@ import com.baidubce.services.bos.BosClientConfiguration;
 import com.baidubce.services.bos.model.PutObjectResponse;
 import com.baidubce.services.media.MediaClient;
 import com.baidubce.services.media.model.GetThumbnailJobResponse;
+import com.izanpin.common.util.Http;
 import com.izanpin.common.util.ThumbnailJob;
 import com.izanpin.entity.Image;
 import com.izanpin.repository.ImageRepository;
@@ -19,6 +22,7 @@ import com.qiniu.processing.OperationManager;
 import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 import com.qiniu.util.StringUtils;
 import com.qiniu.util.UrlSafeBase64;
 import org.apache.logging.log4j.LogManager;
@@ -35,6 +39,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by Smart on 2017/1/30.
@@ -79,7 +84,6 @@ public class ImageServiceImpl implements ImageService {
             HttpURLConnection connection = (HttpURLConnection) new URL(strUrl).openConnection();
             DataInputStream stream = new DataInputStream(connection.getInputStream());
 
-
             Response response = uploadManager.put(stream, objectKey, upToken, null, null);
 
 //            URL url = client.generatePresignedUrl(bucketName, objectKey, -1);
@@ -102,7 +106,28 @@ public class ImageServiceImpl implements ImageService {
                 String vframeJpgFop = String.format("vframe/jpg/offset/1|saveas/%s", UrlSafeBase64.encodeToString(saveJpgEntry));
 
                 OperationManager operationManager = new OperationManager(auth, cfg);
-                operationManager.pfop(BUCKET, objectKey, vframeJpgFop, "latiao", true);
+
+                String fops;
+                if (fromBSBDJ) {
+                    String jsonString = Http.get(finalUrl + "?avinfo");
+                    JSONObject jsonObject = JSON.parseObject(jsonString);
+                    double duration = jsonObject.getJSONObject("format").getDoubleValue("duration");
+
+                    if (duration > 15.5) {
+                        duration = duration - 15.5;
+                    }
+
+                    String vframeFop = String.format("avthumb/mp4/noDomain/1/t/%s|saveas/%s", duration,
+                            UrlSafeBase64.encodeToString(String.format("%s:%s", BUCKET, objectKey)));
+
+                    fops = StringUtils.join(new String[]{
+                            vframeJpgFop, vframeFop
+                    }, ";");
+                } else {
+                    fops = vframeJpgFop;
+                }
+
+                operationManager.pfop(BUCKET, objectKey, fops, "latiao", true);
 
                 image.setThumbnailUrl(finalUrl.replace(extName, "jpg-thumbnail"));
             } else {

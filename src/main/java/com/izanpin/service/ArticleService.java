@@ -19,6 +19,8 @@ public interface ArticleService {
 
     void addArticle(Article article) throws Exception;
 
+    void addPicture(Article article, String imageUrl, Boolean fromBSBDJ) throws Exception;
+
     void addPicture(Article article, String imageUrl) throws Exception;
 
     boolean existHashId(String hashId);

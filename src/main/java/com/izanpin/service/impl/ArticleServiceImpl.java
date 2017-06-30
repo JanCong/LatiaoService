@@ -73,9 +73,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void addPicture(Article article, String imageUrl) throws Exception {
+    public void addPicture(Article article, String imageUrl, Boolean fromBSBDJ) throws Exception {
         addArticle(article);
-        imageService.addImage(imageUrl, article.getId());
+        imageService.addImage(imageUrl, article.getId(), fromBSBDJ);
+    }
+
+    @Override
+    public void addPicture(Article article, String imageUrl) throws Exception {
+        this.addPicture(article, imageUrl, false);
     }
 
     @Override

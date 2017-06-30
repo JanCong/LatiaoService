@@ -449,7 +449,7 @@ public class ImportDataImpl implements ImportData {
                                 articleService.addPicture(article, imgUrl);
                             } else if (videoUrl != null && !videoUrl.isEmpty()) {
                                 article = setArticle(content, hashId, ArticleType.PICTURE, robots);
-                                articleService.addPicture(article, videoUrl);
+                                articleService.addPicture(article, videoUrl, true);
                             } else if (voiceUrl != null && !voiceUrl.isEmpty()) {
                                 logger.info("百思不得姐声音数据 ", voiceUrl);
                             } else {
@@ -477,8 +477,8 @@ public class ImportDataImpl implements ImportData {
 
         List<String> urls = new ArrayList<String>();
 
-        urls.add("http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC");
-        urls.add("http://api.giphy.com/v1/gifs/search?q=funny&api_key=dc6zaTOxFJmzC");
+//        urls.add("http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC");
+//        urls.add("http://api.giphy.com/v1/gifs/search?q=funny&api_key=dc6zaTOxFJmzC");
         urls.add("http://api.giphy.com/v1/gifs/search?q=cat&api_key=dc6zaTOxFJmzC");
         urls.add("http://api.giphy.com/v1/gifs/search?q=cute&api_key=dc6zaTOxFJmzC");
         urls.add("http://api.giphy.com/v1/gifs/search?q=kawaii&api_key=dc6zaTOxFJmzC");
