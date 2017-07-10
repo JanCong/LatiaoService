@@ -12,7 +12,8 @@
     <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-<div id="topBar" class="bar bar-header" style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);">
+<div id="topBar" class="bar bar-header"
+     style="transform-origin: 0px 0px 0px; opacity: 1; transform: scale(1, 1);z-index: 999999;">
     <button onclick="closeTopBar()"
             style="float: left; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
         <i class="ion-top-banner-close"></i>
@@ -27,11 +28,12 @@
     </button>
 </div>
 <div class="topContent">
-    <div id="iframe-box">
+    <div id="iframe-box" style="display: none;">
         <iframe id="iframe" src="${url}" frameborder="0" height="100%" width="100%"
                 marginheight="0" marginwidth="0" frameborder="0" scrolling="auto"></iframe>
     </div>
-    <section class="comments">
+    <div id="content"></div>
+    <section class="comments" style="display: none;">
         <div style="padding: 5px;">
             <a class="download-app j-ga" data-ga_category="引导下载点击" data-ga_action="下载点击-更多评论" data-ga_tag=""
                href="http://t.cn/RaZ38kL"
@@ -50,20 +52,42 @@
     }
 
     $(function () {
-//        $('iframe').width($(window).width());
-        $('#iframe-box').height($(window).height() - 130);
+        //$('iframe').width($(window).width());
+//        $('#iframe-box').height($(window).height() - 80);
+
+        $.get('${url}', function (data) {
+            data = data.replace(/\"\/index.php/g, '${url.getProtocol()}://${url.getHost()}/index.php');
+            $('#content').html(data);
+
+        <#--$('a').each(function () {-->
+        <#--var $this = $(this);-->
+        <#--if ($this.attr('href').startsWith('/')) {-->
+        <#--var href = $this.attr('href');-->
+        <#--$this.attr('href', '${url.getProtocol()}://${url.getHost()}' + href);-->
+        <#--}-->
+        <#--});-->
+        });
+    <#--$('#content').load('${url}', function () {-->
+    <#--$('a').each(function () {-->
+    <#--var $this = $(this);-->
+    <#--if ($this.attr('href').startsWith('/')) {-->
+    <#--var href = $this.attr('href');-->
+    <#--$this.attr('href', '${url.getProtocol()}://${url.getHost()}' + href);-->
+    <#--}-->
+    <#--});-->
+    <#--});-->
     });
 
-    var ifram = document.getElementById('iframe');
-    if (navigator.userAgent.match(/iPad|iPhone/i)) {
-        var iframe_box = document.getElementById('iframe-box');
-        iframe_box.style.width = 100 + '%';
-        iframe_box.style.overflowX = 'hidden';
-        iframe_box.style.overflowY = 'scroll';
-        iframe_box.style.webkitOverflowScrolling = 'touch';
-//        ifram.setAttribute('scrolling', 'no');
-        iframe_box.appendChild(ifram)
-    }
+    //    var ifram = document.getElementById('iframe');
+    //    if (navigator.userAgent.match(/iPad|iPhone/i)) {
+    //        var iframe_box = document.getElementById('iframe-box');
+    //        iframe_box.style.width = 100 + '%';
+    //        iframe_box.style.overflowX = 'hidden';
+    //        iframe_box.style.overflowY = 'scroll';
+    //        iframe_box.style.webkitOverflowScrolling = 'touch';
+    //        //        ifram.setAttribute('scrolling', 'no');
+    //        iframe_box.appendChild(ifram)
+    //    }
 
 </script>
 </body>

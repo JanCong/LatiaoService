@@ -1839,7 +1839,7 @@ h4.ui-nowrap {
 
 #topContent {
     width: 100%;
-    height: auto
+    height: auto;
 }
 
 #topContentHeader {
@@ -2160,4 +2160,8 @@ body {
     width: 1px;
     min-width: 100%;
     *width: 100%;
+}
+
+#content {
+    margin-top: 72px;
 }

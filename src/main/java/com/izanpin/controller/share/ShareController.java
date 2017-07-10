@@ -1,10 +1,8 @@
 package com.izanpin.controller.share;
 
 import com.izanpin.common.base.BaseController;
-import com.izanpin.entity.Article;
 import com.izanpin.service.ArticleService;
 import com.izanpin.service.CommentService;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.URLEncoder;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by pengyuancong on 2017/1/29.
@@ -32,7 +31,7 @@ public class ShareController extends BaseController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ModelAndView detail(@PathVariable("id") Long id) {
         ModelAndView mv = new ModelAndView("/share/detail");
-        mv.addObject("article", articleService.getById(id));
+        mv.addObject("article", articleService.getById(id, null));
         mv.addObject("comments", commentService.getComments(id, 1, 10));
         return mv;
     }
@@ -41,9 +40,9 @@ public class ShareController extends BaseController {
      * 分享 自定义
      */
     @RequestMapping(value = "/custom", method = RequestMethod.GET)
-    public ModelAndView custom(@RequestParam("url") String url) {
+    public ModelAndView custom(@RequestParam("url") String url) throws MalformedURLException {
         ModelAndView mv = new ModelAndView("/share/custom");
-        mv.addObject("url", url);
+        mv.addObject("url", new URL(url));
         return mv;
     }
 }

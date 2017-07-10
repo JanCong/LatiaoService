@@ -104,8 +104,9 @@ public class ArticleApiController {
     @ApiOperation(value = "根据ID获取")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public Article get(@PathVariable Long id) {
-        return articleService.getById(id);
+    public Article get(@PathVariable Long id,
+                       @ApiParam("当前用户id") @RequestParam(required = false) Long userId) {
+        return articleService.getById(id, userId);
     }
 
     @ApiOperation(value = "获取无聊图")

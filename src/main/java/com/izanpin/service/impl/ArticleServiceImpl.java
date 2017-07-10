@@ -168,8 +168,10 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getById(Long id) {
-        return articleRepository.get(id);
+    public Article getById(Long id, Long userId) {
+        Article article = articleRepository.get(id);
+        article.setLiked(userId);
+        return article;
     }
 
     @Override

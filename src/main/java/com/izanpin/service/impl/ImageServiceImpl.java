@@ -113,8 +113,8 @@ public class ImageServiceImpl implements ImageService {
                     JSONObject jsonObject = JSON.parseObject(jsonString);
                     double duration = jsonObject.getJSONObject("format").getDoubleValue("duration");
 
-                    if (duration > 15.5) {
-                        duration = duration - 15.5;
+                    if (duration > 15.3) {
+                        duration = duration - 15.3;
                     }
 
                     String vframeFop = String.format("avthumb/mp4/noDomain/1/t/%s|saveas/%s", duration,

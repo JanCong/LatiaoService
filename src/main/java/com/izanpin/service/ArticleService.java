@@ -5,7 +5,6 @@ import com.izanpin.dto.AddArticleDto;
 import com.izanpin.dto.RequestArticleTimelineDto;
 import com.izanpin.dto.RequestFriendArticleTimelineDto;
 import com.izanpin.entity.Article;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public interface ArticleService {
 
     PageInfo getJokes(Integer page, Integer size, String keyword, Long userId);
 
-    Article getById(Long id);
+    Article getById(Long id, Long userId);
 
     void like(Long id, Long userId) throws Exception;
 
