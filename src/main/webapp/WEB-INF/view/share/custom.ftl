@@ -30,7 +30,7 @@
 <div class="topContent">
     <div id="iframe-box" style="display: none;">
         <iframe id="iframe" src="${url}" frameborder="0" height="100%" width="100%"
-                marginheight="0" marginwidth="0" frameborder="0" scrolling="auto"></iframe>
+                marginheight="0" marginwidth="0" frameborder="0" scrolling="no"></iframe>
     </div>
     <div id="content"></div>
     <section class="comments" style="display: none;">
