@@ -147,5 +147,12 @@
         $('body').css('padding-top', '0');
     }
 </script>
+
+<script src="https://s19.cnzz.com/z_stat.php?id=1262914216&web_id=1262914216" language="JavaScript"></script>
+<script>
+    $(function () {
+        $('a[title="站长统计"]').hide();
+    });
+</script>
 </body>
 </html>
