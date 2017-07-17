@@ -23,7 +23,7 @@
     <div class="logo-title">辣条</div>
     <button class="button follow j-ga" data-ga_category="引导下载点击" data-ga_action="下载点击-顶部" data-ga_tag=""
             style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">
-        <a class="ui-btn ui-btn-primary" href="http://t.cn/RaZ38kL" style="padding:0 20px;">下载</a>
+        <a class="ui-btn ui-btn-primary" href="${appUrl}" style="padding:0 20px;">下载</a>
     </button>
 </div>
 <div class="topContent">
@@ -128,7 +128,7 @@
     </#if>
         <div style="padding: 15px;">
             <a class="download-app j-ga" data-ga_category="引导下载点击" data-ga_action="下载点击-更多评论" data-ga_tag=""
-               href="http://t.cn/RaZ38kL"
+               href="${appUrl}"
                style="touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);">下载辣条
             <#if article.getCommentCount() gt 0>
                 查看<span id="more-comments">${article.getCommentCount()}</span>条精彩评论
