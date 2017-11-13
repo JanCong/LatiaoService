@@ -7,7 +7,9 @@ public enum ArticleType {
     //无聊图
     PICTURE(0),
     //段子
-    JOKE(1);
+    JOKE(1),
+    //订单
+    ORDER(2);
 
     private Integer value;
 
