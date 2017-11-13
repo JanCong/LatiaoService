@@ -57,6 +57,8 @@ public class Article {
 
     private Integer type;
 
+    private String orderCode;
+
     private Integer status;
 
     private String ip;
@@ -161,6 +163,14 @@ public class Article {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
     }
 
     public Integer getStatus() {

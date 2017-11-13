@@ -183,6 +183,8 @@ public class ArticleApiController {
             @RequestParam Long userId,
             @ApiParam("内容")
             @RequestParam(required = false) String content,
+            @ApiParam("订单号")
+            @RequestParam(required = false) String orderCode,
             @ApiParam("设备")
             @RequestParam(required = false) String device,
             @ApiParam("图片网络地址数组")
@@ -193,7 +195,7 @@ public class ArticleApiController {
         try {
             UserToken userToken = userTokenService.getUserTokenByToken(token);
             if (userToken != null && userToken.getUserId().equals(userId)) {
-                AddArticleDto dto = new AddArticleDto(userId, content, device, imageUrls, images);
+                AddArticleDto dto = new AddArticleDto(userId, content, orderCode, device, imageUrls, images);
                 articleService.addArticle(dto);
                 result = new ResultDto(ResultStatus.SUCCESSFUL.getValue(), ResultStatus.SUCCESSFUL.name(), null);
             } else {

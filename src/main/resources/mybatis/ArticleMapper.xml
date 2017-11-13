@@ -13,6 +13,7 @@
         <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
         <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="ip" jdbcType="VARCHAR" property="ip"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -31,6 +32,7 @@
         <result column="like_count" jdbcType="INTEGER" property="likeCount"/>
         <result column="hate_count" jdbcType="INTEGER" property="hateCount"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="ip" jdbcType="VARCHAR" property="ip"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -64,6 +66,7 @@
         like_count,
         hate_count,
         type,
+        order_code,
         status,
         ip,
         create_time,

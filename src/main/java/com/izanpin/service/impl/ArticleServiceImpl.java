@@ -107,7 +107,10 @@ public class ArticleServiceImpl implements ArticleService {
 
         Article article = new Article(content, user.getId(), user.getNickname(), user.getAvatar(), dto.getDevice());
 
-        if (hasImages) {
+        if (dto.getOrderCode() != null && !dto.getOrderCode().isEmpty()) {
+            article.setOrderCode(dto.getOrderCode());
+            article.setType(ArticleType.ORDER.getValue());
+        } else if (hasImages) {
             article.setType(ArticleType.PICTURE.getValue());
         } else {
             article.setType(ArticleType.JOKE.getValue());
