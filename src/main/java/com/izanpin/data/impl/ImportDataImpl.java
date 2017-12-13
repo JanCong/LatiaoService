@@ -46,7 +46,7 @@ public class ImportDataImpl implements ImportData {
 
     @Override
     public void importData() throws Exception {
-        importJokes();
+//        importJokes();
         importPictures();
     }
 
@@ -56,21 +56,21 @@ public class ImportDataImpl implements ImportData {
 //        importJokesFromJisu();
 //        importJokesFromShowapi();
 
-        new Thread(() -> {
-            try {
-                importJokesFromJisu();
-            } catch (Exception e) {
-                logger.error("", e);
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                importJokesFromShowapi();
-            } catch (Exception e) {
-                logger.error("", e);
-            }
-        }).start();
+//        new Thread(() -> {
+//            try {
+//                importJokesFromJisu();
+//            } catch (Exception e) {
+//                logger.error("", e);
+//            }
+//        }).start();
+//
+//        new Thread(() -> {
+//            try {
+//                importJokesFromShowapi();
+//            } catch (Exception e) {
+//                logger.error("", e);
+//            }
+//        }).start();
     }
 
     private void importJokesFromJuhe() throws Exception {
